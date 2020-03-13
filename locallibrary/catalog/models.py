@@ -13,7 +13,7 @@ class Book(models.Model):
     # Foreign Key used because book can only have one author, but authors can have multiple books
     # Author as a string rather than object because it hasn't been declared yet in file.
     publisher = models.CharField(max_length=200)
-    publicationYear = models.IntegerField(max_length=4, help_text="Enter year of publication of the book")
+    publicationYear = models.IntegerField(help_text="Enter year of publication of the book")
     isbn = models.CharField('ISBN', max_length=13,
                             help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn'
                                     '">ISBN number</a>')
