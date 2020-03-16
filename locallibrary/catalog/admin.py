@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Book, Author, BookInstance
+from .models import Book, Author, BookInstance, Publisher, Review
 
 class BookInline(admin.TabularInline):
     model = Book
@@ -19,13 +19,18 @@ class AuthorAdmin(admin.ModelAdmin):
 # Register the admin class with the associated model
 admin.site.register(Author, AuthorAdmin)
 
+class PublisherAdmin(admin.ModelAdmin):
+    list_display = ('name', "description", 'main')
+
+admin.site.register(Publisher, PublisherAdmin)
+
 # Register the Admin classes for Book using the decorator
 class BooksInstanceInline(admin.TabularInline):
     model = BookInstance
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author')
+    list_display = ('title', 'author', 'publisher', 'publicationYear')
 
 # Register the Admin classes for BookInstance using the decorator
 @admin.register(BookInstance) 
