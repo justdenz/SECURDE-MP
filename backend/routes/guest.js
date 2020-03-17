@@ -7,7 +7,7 @@ router.use(function timeLog (req, res, next) {
 })
 
 router.get('/', (req, res) => {
-    res.send("API(ADMIN) is wokring properly")
+    res.send("API(GUEST) is wokring properly")
 })
 
 module.exports = router
