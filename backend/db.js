@@ -1,4 +1,6 @@
-module.exports = new Sequelize('testdb', 'root', 'password', {
+var Sequelize = require('sequelize');
+
+module.exports = new Sequelize('library', 'root', 'password', {
   host: 'localhost',
   dialect: 'mysql',
   operatorAliases: false,
@@ -10,4 +12,4 @@ module.exports = new Sequelize('testdb', 'root', 'password', {
     acquire: 30000,
     idle: 10000
   },
-});
+})
