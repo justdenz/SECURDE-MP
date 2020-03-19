@@ -11,7 +11,19 @@ class App extends Component {
     }
 
     onSubmit = values => {
-      
+      console.log(values)
+      return fetch("http://localhost:8000/validate_login", {
+        method: 'POST',
+        body: {
+          username: values.username,
+          password: values.password,
+        }
+      })
+      .then(res => res.text())
+      .then(res => console.log("Result:", res))
+      .catch((error) => {
+        console.log(error);
+      });
     };
 
     render() {
@@ -23,7 +35,7 @@ class App extends Component {
                 initialValues={{
                   remember: true,
                 }}
-                onSubmit={this.onSubmit}
+                onFinish={this.onSubmit}
               >
                 <Form.Item
                   name="username"
