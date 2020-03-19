@@ -46,8 +46,8 @@ app.get("/login", (req, res) => {
 })
 
 app.get("/validate_login", (req, res) => {
-    var username = "user"
-    var password = "password"
+    var username = req.body.username
+    var password = req.body.password
     User.findOne({
         raw: true,
         where: {

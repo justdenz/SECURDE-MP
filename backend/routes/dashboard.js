@@ -6,7 +6,8 @@ const db = require('../db.js')
 const User = require('../models/User.js')
 
 router.get('/', (req, res) => {
-    res.send(req.session.user)
+    var user = req.session.user
+    res.send(user.user_id+"")
     
 })
 
