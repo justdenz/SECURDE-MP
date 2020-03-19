@@ -60,8 +60,8 @@ app.get("/validate_login", (req, res) => {
             res.send("Incorrect password!")
         } else {
             req.session.user = user
-            console.log(req.session.user)
-            res.redirect("/dashboard")
+            res.send(req.session.user)
+            //res.redirect("/dashboard")
         }
     })
 })
