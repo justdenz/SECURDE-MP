@@ -12,18 +12,17 @@ class App extends Component {
 
     onSubmit = values => {
       console.log(values)
-      return fetch("http://localhost:8000/validate_login", {
+      const reqOptions = {
         method: 'POST',
-        body: {
-          username: values.username,
-          password: values.password,
-        }
-      })
-      .then(res => res.text())
-      .then(res => console.log("Result:", res))
-      .catch((error) => {
-        console.log(error);
-      });
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username: values.username, password: values.password})
+      }
+      fetch("http://localhost:8000/validate_login", reqOptions)
+        .then(res => res.text())
+        .then(res => console.log("Result:", res))
+        .catch((error) => {
+          console.error(error);
+        });
     };
 
     render() {
