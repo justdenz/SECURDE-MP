@@ -48,8 +48,6 @@ app.get("/login", (req, res) => {
 })
 
 app.post("/validate_login", (req, res) => {
-    console.log("Username", req.body.username)
-    console.log("Password", req.body.password)
     const username = req.body.username
     const password = req.body.password
     User.findOne({
@@ -59,13 +57,21 @@ app.post("/validate_login", (req, res) => {
         }
     }).then(function(user){
         if(!user){
-            res.send("User does not exists!")
+            res.send({
+                status: "ERROR",
+                payload: "User does not exists!"
+            })
         } else if(user.password != password){
-            res.send("Incorrect password!")
+            res.send({
+                status: "ERROR",
+                payload: "Incorrect password"
+            })
         } else {
             req.session.user = user
-            res.send(req.session.user)
-            //res.redirect("/dashboard")
+            res.send(res.send({
+                status: "OK",
+                payload: req.session.user 
+            }))
         }
     })
 })
