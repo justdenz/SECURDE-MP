@@ -2,7 +2,7 @@ const {GetUser} = require('./User_DB.js')
 
 async function ValidateLogin(username, password){
     let user = await GetUser(username)
-    
+
     let response = {
         status: '',
         payload: ''

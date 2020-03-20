@@ -53,33 +53,15 @@ app.post("/validate_login", async (req, res) => {
     const password = req.body.password
     const result = await ValidateLogin(username, password)
     
+    if (result.status == "OK"){
+        req.session.user = result.payload
+    }
+
+    console.log(req.session.user)
     res.send({
         status: result.status,
         payload: result.payload
     })
-    // GetUser(username).then(user => {
-    //     if(!user){
-    //         res.send({
-    //             status: "ERROR",
-    //             payload: "User does not exists!"
-    //         })
-    //     } else if(user.password != password){
-    //         res.send({
-    //             status: "ERROR",
-    //             payload: "Incorrect password"
-    //         })
-    //     } else {
-    //         req.session.user = user
-    //         res.send({
-    //             status: "OK",
-    //             payload: req.session.user 
-    //         })
-    //     }
-    // })
-    // .catch(err => {
-    //     console.log(err)
-    // })
-        
 })
 
 app.get("/signup", (req, res) => {
