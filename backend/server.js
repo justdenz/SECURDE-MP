@@ -8,6 +8,8 @@ const app = express()
 const PORT = process.env.PORT || 8000
 
 app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({
     extended: true
 }))
@@ -45,9 +47,11 @@ app.get("/login", (req, res) => {
     res.send("put login page here")
 })
 
-app.get("/validate_login", (req, res) => {
-    var username = req.body.username
-    var password = req.body.password
+app.post("/validate_login", (req, res) => {
+    console.log("Username", req.body.username)
+    console.log("Password", req.body.password)
+    const username = req.body.username
+    const password = req.body.password
     User.findOne({
         raw: true,
         where: {
