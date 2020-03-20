@@ -1,7 +1,7 @@
-const db = require('../models/index')
+const db = require('../models')
 
 //the user in db.user.etc is singular because it automatically becomes plural
-async function getAllUsers(){
+async function GetAllUsers(){
     const users = await db.user.findAll({
         raw: true
     })
@@ -9,5 +9,19 @@ async function getAllUsers(){
     return users
 }
 
+async function GetUser(username){
+    const user = await db.user.findOne({
+        raw: true,
+        where: {
+            username: username
+        }
+    })
 
-module.exports.getUsers = {getUsers}
+    if(user) return user
+    return null
+}
+
+module.exports = {
+    GetAllUsers,
+    GetUser
+}

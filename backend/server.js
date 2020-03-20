@@ -15,8 +15,9 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(cookieParser())
 
-//Models
-const User = require('./models/User.js')
+//Functions
+// const {GetUser} = require('./Services/User_DB.js')
+const {ValidateLogin} = require('./Services/User_Service.js')
 
 //Initializes session in a cookie
 app.use(session({
@@ -47,33 +48,38 @@ app.get("/login", (req, res) => {
     res.send("put login page here")
 })
 
-app.post("/validate_login", (req, res) => {
+app.post("/validate_login", async (req, res) => {
     const username = req.body.username
     const password = req.body.password
-    User.findOne({
-        raw: true,
-        where: {
-            username: username
-        }
-    }).then(function(user){
-        if(!user){
-            res.send({
-                status: "ERROR",
-                payload: "User does not exists!"
-            })
-        } else if(user.password != password){
-            res.send({
-                status: "ERROR",
-                payload: "Incorrect password"
-            })
-        } else {
-            req.session.user = user
-            res.send(res.send({
-                status: "OK",
-                payload: req.session.user 
-            }))
-        }
+    const result = await ValidateLogin(username, password)
+    
+    res.send({
+        status: result.status,
+        payload: result.payload
     })
+    // GetUser(username).then(user => {
+    //     if(!user){
+    //         res.send({
+    //             status: "ERROR",
+    //             payload: "User does not exists!"
+    //         })
+    //     } else if(user.password != password){
+    //         res.send({
+    //             status: "ERROR",
+    //             payload: "Incorrect password"
+    //         })
+    //     } else {
+    //         req.session.user = user
+    //         res.send({
+    //             status: "OK",
+    //             payload: req.session.user 
+    //         })
+    //     }
+    // })
+    // .catch(err => {
+    //     console.log(err)
+    // })
+        
 })
 
 app.get("/signup", (req, res) => {
