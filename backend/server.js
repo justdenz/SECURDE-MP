@@ -72,6 +72,7 @@ app.post("/validate_login", async (req, res) => {
 })
 
 app.get("/signup", (req, res) => {
+    var user_id = req.session.user_id
     var last_name = req.session.lastname
     var first_name = req.session.first_name
     var username = req.session.username
@@ -80,7 +81,7 @@ app.get("/signup", (req, res) => {
     var security_question = req.session.securityquestion
     var security_answer = req.session.securityanswer
 
-    User.createUser(last_name, first_name, username, password, email, security_question, security_answer)
+    User.createUser(user_id, last_name, first_name, username, password, email, security_question, security_answer)
     .then((user) => {
         res.send("1")
         req.session.user = user

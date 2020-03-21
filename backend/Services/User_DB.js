@@ -24,8 +24,9 @@ async function GetUser(username){
     return null
 }
 
-async function CreateUser(first_name, last_name, username, password, email, role_name){
+async function CreateUser(user_id, first_name, last_name, username, password, email, role_name){
     const newUser = await db.user.create({
+        user_id: user_id,
         first_name: first_name,
         last_name: last_name,
         username: username,
