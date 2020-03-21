@@ -23,7 +23,7 @@ class App extends Component {
             <Route path="/login" component={LoginForm}></Route>
             <Route path="/register" component={RegisterForm}></Route>
             <Route path="/forgot" component={ForgotForm}></Route>
-            <Route path="/dashboard" component={Dashboard}></Route>
+            <Route path="/dashboard" exact component={Dashboard}></Route>
           </Switch>
         </div>
       </Router>
