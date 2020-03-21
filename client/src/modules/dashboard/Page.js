@@ -8,7 +8,7 @@ class Page extends Component {
   render() {
     return (
       <div>
-        <h1>Forgot Password Page</h1>
+        <h1>Dashboard Page</h1>
       </div>
     );
   }
