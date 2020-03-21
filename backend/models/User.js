@@ -1,5 +1,4 @@
 'use strict';
-const DataTypes = require('Sequelize')
 
 module.exports = (sequelize, DataTypes)=>{
     return sequelize.define('user', {
@@ -41,9 +40,6 @@ module.exports = (sequelize, DataTypes)=>{
         type:DataTypes.STRING,
         required: true,
         allowNull: false,
-    }, 
-    deleted_at:{
-        type: DataTypes.DATE
     }
     }, {
         underscored: true,

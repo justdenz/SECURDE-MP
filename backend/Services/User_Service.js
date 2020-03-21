@@ -23,12 +23,9 @@ async function ValidateLogin(username, password){
     return response
 }
 
-async function ValidateAllUsers(){
-    let users = await GetAllUsers();
-}
 
-async function ValidateCreateUser(first_name, last_name, username, password, email, role_name){
-    let user = await CreateUser(first_name, last_name, username, password, email, role_name)
+async function ValidateCreateUser(user_id, first_name, last_name, username, password, email, role_name){
+    let user = await CreateUser(user_id, first_name, last_name, username, password, email, role_name)
 
     let response = {
         status: '',
