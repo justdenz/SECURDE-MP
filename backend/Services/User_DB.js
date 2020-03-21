@@ -13,17 +13,33 @@ async function GetAllUsers(){
 async function GetUser(username){
     const user = await db.user.findOne({
         raw: true,
-        attributes: ['user_id', 'first_name', 'last_name', 'username', 'password', 'email', 'role_name'],
         where: {
-            username: username
-        }
+            username: username,
+        },
+        paranoid: true,
+        attributes: ['user_id', 'first_name', 'last_name', 'username', 'password', 'email', 'role_name'],
     })
 
     if(user) return user
     return null
 }
 
+async function CreateUser(first_name, last_name, username, password, email, role_name){
+    const newUser = await db.user.create({
+        first_name: first_name,
+        last_name: last_name,
+        username: username,
+        password: password,
+        email: email,
+        role_name: role_name
+    })
+
+    if(newUser) return newUser
+    return null
+}
+
 module.exports = {
     GetAllUsers,
-    GetUser
+    GetUser,
+    CreateUser
 }

@@ -20,9 +20,10 @@ db.sequelize.sync()
 .then(console.log("DB has been initialized!"))
 .catch(err => console.log(err))
 
+
 //Functions
 // const {GetUser} = require('./Services/User_DB.js')
-const {ValidateLogin} = require('./Services/User_Service.js')
+const {ValidateLogin, ValidateCreateUser} = require('./Services/User_Service.js')
 
 //Initializes session in a cookie
 app.use(session({
@@ -42,11 +43,12 @@ app.use((req, res, next) => {
     next();
 });
 
+
 //Routes
 app.use('/dashboard', require('./routes/dashboard.js'));
 app.use('/admin', require('./routes/admin.js'));
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
 })
 
 app.get("/login", (req, res) => {

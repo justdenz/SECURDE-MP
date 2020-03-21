@@ -5,7 +5,9 @@ module.exports = (sequelize, DataTypes)=>{
     return sequelize.define('user', {
     user_id: {
         type: DataTypes.INTEGER(11),
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
     },
     first_name: {
         type: DataTypes.STRING,
@@ -46,7 +48,6 @@ module.exports = (sequelize, DataTypes)=>{
     }, {
         underscored: true,
         paranoid: true,
-        timestamps: false
     })
 }
 
