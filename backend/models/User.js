@@ -1,38 +1,47 @@
 'use strict';
+const DataTypes = require('Sequelize')
 
-module.exports = (sequelize, Datatypes)=>{
+module.exports = (sequelize, DataTypes)=>{
     return sequelize.define('user', {
     user_id: {
-        type: Datatypes.UUID,
-        primaryKey: true,
+        type: DataTypes.INTEGER(11),
+        primaryKey: true
     },
     first_name: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         isAlphanumeric: true,
         required: true,
         allowNull: false
     },
     last_name: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         isAlphanumeric: true,
         required: true,
         allowNull: false
     },
     username: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         required: true,
         allowNull: false
     },
     password: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         required: true,
         allowNull: false
     },
     email: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         required: true,
         allowNull: false,
         isEmail: true
+    },
+    role_name: {
+        type:DataTypes.STRING,
+        required: true,
+        allowNull: false,
+    }, 
+    deleted_at:{
+        type: DataTypes.DATE
     }
     }, {
         underscored: true,

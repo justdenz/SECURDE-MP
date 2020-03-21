@@ -3,6 +3,7 @@ const cors = require('cors')
 var bodyParser = require('body-parser')
 var session = require('express-session')
 var cookieParser = require('cookie-parser')
+const db = require('./models')
 
 const app = express()
 const PORT = process.env.PORT || 8000
@@ -14,6 +15,10 @@ app.use(bodyParser.urlencoded({
     extended: true
 }))
 app.use(cookieParser())
+
+db.sequelize.sync()
+.then(console.log("DB has been initialized!"))
+.catch(err => console.log(err))
 
 //Functions
 // const {GetUser} = require('./Services/User_DB.js')
