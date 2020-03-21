@@ -4,7 +4,9 @@ module.exports = (sequelize, DataTypes) => {
     return sequelize.define('book', {
         book_id: {
             type: DataTypes.INTEGER(11),
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true,
+            allowNull: false
         },
         title: {
             type: DataTypes.STRING,

@@ -84,4 +84,12 @@ db.book.hasMany(db.review, {
   }
 })
 
+db.book.hasMany(db.book_instance, {
+  foreignKey: {
+    name: 'book_id',
+    type: DataType.INTEGER(11),
+    allowNull: false
+  }
+})
+
 module.exports = db;
