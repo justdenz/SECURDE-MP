@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Button, Alert, Divider, Card, Row } from 'antd';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import 'antd/dist/antd.css';
 import './index.css';
 
@@ -13,6 +13,7 @@ class Page extends Component {
     this.state = {
       showAlert: false,
       alertMsg: "",
+      isAuthenticated: false,
     }
   }
 
@@ -27,6 +28,8 @@ class Page extends Component {
       .then(res => {
         if(res.status === "ERROR")
           this.setState({showAlert: true, alertMsg: res.payload})
+        else
+          this.setState({isAuthenticated: true})
       })
       .catch((error) => {
         console.error(error);
@@ -35,27 +38,30 @@ class Page extends Component {
 
   render() {
     return (
-      <Card>
-        <Form name="normal_login" className="login-form" onFinish={this.onSubmit}>
-          <UserNameInput/>
-          <PasswordInput/>
+      <div style={{width: 400, marginBottom: "100px"}}>
+        <Card>
+          <h1 style={{marginBottom: 20}}>Login</h1>
+          <Form name="normal_login" className="login-form" onFinish={this.onSubmit}>
+            <UserNameInput/>
+            <PasswordInput/>
 
-          {this.state.showAlert ? <Alert message={this.state.alertMsg} type="error" showIcon /> : null}
+            {this.state.showAlert ? <Alert message={this.state.alertMsg} type="error" showIcon /> : null}
 
-          <Form.Item>
-            <Link to="/forgot"><a>Forgot password</a></Link>
-          </Form.Item>
+            <Form.Item>
+              <Link to="/forgot">Forgot password</Link>
+            </Form.Item>
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit" className="login-form-button"> Log in</Button>
-            <Divider/>
-            <span>
-              <Link to="/dashboard"><a>Continue as Guest <br/></a></Link>
-              Or <Link to="/register"><a> register now</a></Link>
-            </span>
-          </Form.Item>
-        </Form>
-      </Card>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" className="login-form-button"> Log in</Button>
+              <Divider/>
+              <span>
+                <Link to="/dashboard">Continue as guest <br/></Link>
+                or <Link to="/register">Register here</Link>
+              </span>
+            </Form.Item>
+          </Form>
+        </Card>
+      </div>
     );
   }
 }
