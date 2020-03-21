@@ -1,5 +1,4 @@
 'use strict';
-const DataTypes = require('Sequelize')
 
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('book', {
@@ -26,13 +25,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER(13).UNSIGNED,
             required: true,
             allowNull: false,
-        },
-        deleted_at: {
-            type: DataTypes.DATE
         }
     }, {
         underscored: true,
-        paranoid: true,
-        timestamps: false
+        paranoid: true
     })
 }

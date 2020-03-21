@@ -69,4 +69,19 @@ db.author.hasMany(db.book_author, {
   }
 })
 
+db.user.hasMany(db.review, {
+  foreignKey: {
+    name: 'user_id',
+    type: DataType.INTEGER(11),
+    allowNull: false,
+  }
+})
+db.book.hasMany(db.review, {
+  foreignKey: {
+    name: 'book_id',
+    type: DataType.INTEGER(11),
+    allowNull: false,
+  }
+})
+
 module.exports = db;
