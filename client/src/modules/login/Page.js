@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Form, Button, Alert } from 'antd';
+import { Form, Button, Alert, Divider, Card, Row } from 'antd';
+import { Link } from 'react-router-dom'
 import 'antd/dist/antd.css';
 import './index.css';
 
@@ -34,29 +35,27 @@ class Page extends Component {
 
   render() {
     return (
-      <Form
-        name="normal_login"
-        className="login-form"
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={this.onSubmit}
-      >
-        <UserNameInput/>
-        <PasswordInput/>
-        {this.state.showAlert ? <Alert message={this.state.alertMsg} type="error" showIcon /> : null}
-        <Form.Item>
-          <a href="">
-            Forgot password
-          </a>
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" className="login-form-button">
-            Log in
-          </Button>
-          Or <a href="">register now!</a>
-        </Form.Item>
-      </Form>
+      <Card>
+        <Form name="normal_login" className="login-form" onFinish={this.onSubmit}>
+          <UserNameInput/>
+          <PasswordInput/>
+
+          {this.state.showAlert ? <Alert message={this.state.alertMsg} type="error" showIcon /> : null}
+
+          <Form.Item>
+            <Link to="/forgot"><a>Forgot password</a></Link>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" className="login-form-button"> Log in</Button>
+            <Divider/>
+            <span>
+              <Link to="/dashboard"><a>Continue as Guest <br/></a></Link>
+              Or <Link to="/register"><a> register now</a></Link>
+            </span>
+          </Form.Item>
+        </Form>
+      </Card>
     );
   }
 }
