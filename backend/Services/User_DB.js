@@ -10,7 +10,7 @@ async function GetAllUsers(){
     return users
 }
 
-async function GetUser(username){
+async function GetUserByUsername(username){
     const user = await db.user.findOne({
         raw: true,
         where: {
@@ -22,6 +22,41 @@ async function GetUser(username){
 
     if(user) return user
     return null
+}
+
+async function CheckExistingEmail(email){
+    const user = await db.user.findOne({
+        raw: true,
+        where: {
+            email: email
+        },
+        paranoid: true,
+    })
+
+    if(user) return 1
+    return 0
+}
+
+async function CheckExistingUsername(username){
+    const user = await db.user.findOne({
+        raw: true,
+        where: {
+            username: username
+        },
+        paranoid: true,
+    })
+
+    if(user) return 1
+    return 0
+}
+
+async function DeleteUser(user_id){
+    await db.user.destroy({
+        where:{
+            user_id: user_id
+        }
+    }).then(console.log('User' + user_id + 'has been deleted!'))
+    .catch(err => console.log(err))
 }
 
 async function CreateUser(user_id, first_name, last_name, username, password, email, role_name){
@@ -39,8 +74,23 @@ async function CreateUser(user_id, first_name, last_name, username, password, em
     return null
 }
 
+async function ChangePassword(user_id, new_password){
+    await db.user.update({
+        password: new_password
+    }, {
+        where: {
+            user_id: user_id
+        }
+    })
+    .then(console.log(user_id + "has changed password successfully!"))
+    .catch(err => console.log(err))
+}
+
 module.exports = {
     GetAllUsers,
-    GetUser,
-    CreateUser
+    GetUserByUsername,
+    CreateUser,
+    CheckExistingEmail,
+    CheckExistingUsername,
+    ChangePassword
 }

@@ -23,7 +23,7 @@ class Page extends Component {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({username: values.username, password: values.password})
     }
-    fetch("http://localhost:8000/validate_login", reqOptions)
+    fetch("http://localhost:8000/user/validate_login", reqOptions)
       .then(res => res.json())
       .then(res => {
         if(res.status === "ERROR")

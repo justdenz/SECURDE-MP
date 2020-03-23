@@ -1,7 +1,7 @@
-const {GetUser, GetAllUsers, CreateUser} = require('./User_DB.js')
+const {GetUserByUsername, GetAllUsers, CreateUser, CheckExistingEmail, CheckExistingUsername, ChangePassword} = require('./User_DB.js')
 
 async function ValidateLogin(username, password){
-    let user = await GetUser(username)
+    let user = await GetUserByUsername(username)
 
     let response = {
         status: '',
@@ -9,11 +9,11 @@ async function ValidateLogin(username, password){
     }
 
     if(!user){
-        response.status= "ERROR",
+        response.status= "ERROR"
         response.payload= "User does not exists!"
         
     } else if(user.password != password){
-        response.status= "ERROR",
+        response.status= "ERROR"
         response.payload= "Incorrect password"
     } else {
         response.status= "OK",
@@ -25,24 +25,53 @@ async function ValidateLogin(username, password){
 
 
 async function ValidateCreateUser(user_id, first_name, last_name, username, password, email, role_name){
-    let user = await CreateUser(user_id, first_name, last_name, username, password, email, role_name)
-
     let response = {
         status: '',
         payload: ''
     }
-    
-    if(!user){
-        response.status = "ERROR",
-        response.payload = "There was an error creating the user..."
+
+    //Returns 1 if existing and returns 0 if doesn't exist yet
+    let checkUsernameResult = await CheckExistingUsername(username)
+    let checkEmailResult = await CheckExistingEmail(email)
+
+    console.log(checkUsernameResult)
+    console.log(checkEmailResult)
+
+    if(checkUsernameResult === 1 && checkEmailResult === 1){
+        response.status = "DUPLICATE"
+        response.payload = "The email and username already exists, please try another one..."
+    } else if(checkUsernameResult === 0 && checkEmailResult === 1){
+        response.status = "DUPLICATE"
+        response.payload = "The email already exists, please try another one..."
+    } else if(checkUsernameResult === 1 && checkEmailResult === 0){
+        response.status = "DUPLICATE"
+        response.payload = "The username already exists, please try another one..."
     } else{
-        response.status = "OK"
-        response.payload = user
+        let user = await CreateUser(user_id, first_name, last_name, username, password, email, role_name)
+        .then(console.log("User created successfully!"))
+        .catch(err => console.log("Error in creating user!"))
+        if(!user){
+            response.status="ERROR"
+            response.payload = "There was an error creating the user, please try again..."
+        } else{
+            response.status = "OK"
+            response.payload = user
+        }
     }
+    
     return response
+}
+
+async function ValidateChangePassword(user_id, new_password){
+    await ChangePassword(user_id, password)
+}
+
+async function ValidateDeleteUser(user_id){
+    await DeleteUser(user_id)
 }
 
 module.exports = {
     ValidateLogin,
-    ValidateCreateUser
+    ValidateCreateUser,
+    ValidateChangePassword
 }
