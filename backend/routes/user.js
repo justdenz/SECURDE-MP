@@ -7,24 +7,31 @@ const {
     ValidateChangePassword
 } = require('../Services/User_Service.js')
 
-router.get('/', async (req, res) => {
-    //await ValidateCreateUser(11726059, 'denzel', 'co', 'user', 'password', 'denzel@gmail.com', 'student')
+router.get('/', (req, res) => {
 })
 
-router.post("/validate_login", async (req, res) => {
-    const username = req.body.username
-    const password = req.body.password
+function hasSession(req, res, next) {
+    if (!req.session.user) {
+        //redirect to logout page
+    } else{
+        next();
+    }
+};
+
+router.get("/validate_login", async (req, res) => {
+    const username = 'user' //req.body.username
+    const password = 'password' //req.body.password
     const result = await ValidateLogin(username, password)
     
     if (result.status == "OK"){
         req.session.user = result.payload
     }
 
-    console.log(req.session.user)
     res.send({
         status: result.status,
         payload: result.payload
     })
+
 })
 
 router.get("/validate_signup", async (req, res) => {
