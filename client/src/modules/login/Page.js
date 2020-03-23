@@ -55,7 +55,7 @@ class Page extends Component {
               <Button type="primary" htmlType="submit" className="login-form-button"> Log in</Button>
               <Divider/>
               <span>
-                <Link to="/dashboard">Continue as guest <br/></Link>
+                <Link to="/dashboard" onClick={() => console.log("clicked!")}>Continue as guest <br/></Link>
                 or <Link to="/register">Register here</Link>
               </span>
             </Form.Item>
