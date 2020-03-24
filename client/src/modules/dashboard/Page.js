@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom"
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import { connect } from 'react-redux';
+import { Link } from "react-router-dom"
 import 'antd/dist/antd.css';
 import './index.css';
 import { Layout, Menu } from 'antd';
@@ -75,17 +75,17 @@ class Page extends Component {
             <div className="logo" />
             <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" onClick={this.handleClick}>
               <Menu.Item key="Library"><span><BookOutlined/><span>Library</span></span></Menu.Item>
-
-              <SubMenu key="sub1" title={<span><UserOutlined /><span>User</span></span>}>
-                <Menu.Item key="History">History</Menu.Item>
-                <Menu.Item key="Books">Books</Menu.Item>
-                <Menu.Item key="Reviews">Reviews</Menu.Item>
-              </SubMenu>
-
-              <SubMenu key="sub2"title={<span><ToolOutlined /><span>Settings</span></span>}>
-                <Menu.Item key="ChangePass">Change Password</Menu.Item>
-                <Menu.Item key="logout"><Link to="/login">Logout</Link></Menu.Item>
-              </SubMenu>
+              {this.props.userType !== "GUEST" && 
+                <SubMenu key="sub1" title={<span><UserOutlined /><span>User</span></span>}>
+                  <Menu.Item key="History">History</Menu.Item>
+                  <Menu.Item key="Books">Books</Menu.Item>
+                  <Menu.Item key="Reviews">Reviews</Menu.Item>
+                </SubMenu>}
+              {this.props.userType !== "GUEST" && 
+                <SubMenu key="sub2"title={<span><ToolOutlined /><span>Settings</span></span>}>
+                  <Menu.Item key="ChangePass">Change Password</Menu.Item>
+                  <Menu.Item key="logout"><Link to="/login">Logout</Link></Menu.Item>
+                </SubMenu>}
             </Menu>
           </Sider>
           <Layout className="site-layout">
@@ -102,4 +102,11 @@ class Page extends Component {
   }
 }
 
-export default Page;
+const mapDispatchToProps = dispatch => ({})
+
+const mapStateToProps = state => ({
+  user: state.simpleReducer.user,
+  userType: state.simpleReducer.userType
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Page);

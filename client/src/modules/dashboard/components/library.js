@@ -63,8 +63,8 @@ class Page extends Component {
           title: 'Actions',
           key: 'action',
           render: (text, record) => (
-            <span onClick={() => this.setState({selectedBook: record.title, drawerVisible: true})}>
-              <a style={{ marginRight: 16 }}>View Reviews</a>
+            <span>
+              <a style={{ marginRight: 16 }} onClick={() => this.setState({selectedBook: record.title, drawerVisible: true})}>View Reviews</a>
               {record.status ? <a>Borrow</a> : null}
             </span>
           ),

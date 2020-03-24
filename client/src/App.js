@@ -9,9 +9,6 @@ import Dashboard from "./modules/dashboard/Page"
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      user: {} //determines if there is a user logged in
-    }
   }
 
   render() {
