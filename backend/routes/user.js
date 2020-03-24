@@ -7,7 +7,7 @@ const {
     ValidateChangePassword
 } = require('../Services/User_Service.js')
 
-router.get('/', (req, res) => {
+router.post('/', (req, res) => {
 })
 
 function hasSession(req, res, next) {
@@ -18,9 +18,9 @@ function hasSession(req, res, next) {
     }
 };
 
-router.get("/validate_login", async (req, res) => {
-    const username = 'user' //req.body.username
-    const password = 'password' //req.body.password
+router.post("/validate_login", async (req, res) => {
+    const username = req.body.username
+    const password = req.body.password
     const result = await ValidateLogin(username, password)
     
     if (result.status == "OK"){
@@ -34,20 +34,16 @@ router.get("/validate_login", async (req, res) => {
 
 })
 
-router.get("/validate_signup", async (req, res) => {
-    var user_id = req.session.user_id
-    var first_name = req.session.first_name
-    var last_name = req.session.lastname
-    var username = req.session.username
-    var password = req.session.password
-    var email = req.session.email
-    var role_name = req.session.role
+router.post("/validate_signup", async (req, res) => {
+    var user_id = req.body.id_number
+    var first_name = req.body.first_name
+    var last_name = req.body.last_name
+    var username = req.body.username
+    var password = req.body.password
+    var email = req.body.email
+    var role_name = req.body.role_name
 
     const result = await ValidateCreateUser(user_id, first_name, last_name, username, password, email, role_name)
-
-    if (result.status == "OK"){
-        req.session.user = result.payload
-    }
 
     res.send({
         status: result.status,

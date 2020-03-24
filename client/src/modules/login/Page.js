@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Form, Button, Alert, Divider, Card, Row } from 'antd';
+import { connect } from 'react-redux';
+import { Form, Button, Alert, Divider, Card, message } from 'antd';
 import { Link, Redirect } from 'react-router-dom'
 import 'antd/dist/antd.css';
 import './index.css';
+
+import { loginAsUser, loginAsGuest } from '../../redux/actions'
 
 import UserNameInput from "./components/username"
 import PasswordInput from "./components/password"
@@ -17,6 +20,10 @@ class Page extends Component {
     }
   }
 
+  onContinueAsGuest = () => {
+    this.props.loginAsGuest()
+  }
+
   onSubmit = values => {
     const reqOptions = {
       method: 'POST',
@@ -28,8 +35,11 @@ class Page extends Component {
       .then(res => {
         if(res.status === "ERROR")
           this.setState({showAlert: true, alertMsg: res.payload})
-        else
+        else{
+          message.success("Successfully logged in!")
+          this.props.loginAsUser(res.payload)
           this.setState({isAuthenticated: true})
+        }
       })
       .catch((error) => {
         console.error(error);
@@ -39,7 +49,9 @@ class Page extends Component {
   render() {
     return (
       <div style={{width: 400, marginBottom: "100px"}}>
-        <Card>
+        {this.state.isAuthenticated ? 
+        <Redirect to={this.props.userType === "EDUCATION" ? "/dashboard" : "/forgot" }/> :
+          <Card>
           <h1 style={{marginBottom: 20}}>Login</h1>
           <Form name="normal_login" className="login-form" onFinish={this.onSubmit}>
             <UserNameInput/>
@@ -55,15 +67,25 @@ class Page extends Component {
               <Button type="primary" htmlType="submit" className="login-form-button"> Log in</Button>
               <Divider/>
               <span>
-                <Link to="/dashboard">Continue as guest <br/></Link>
+                <Link to="/dashboard" onClick={() => this.onContinueAsGuest()}>Continue as guest <br/></Link>
                 or <Link to="/register">Register here</Link>
               </span>
             </Form.Item>
           </Form>
-        </Card>
+        </Card>}
       </div>
     );
   }
 }
 
-export default Page;
+const mapDispatchToProps = dispatch => ({
+  loginAsGuest: () => dispatch(loginAsGuest()),
+  loginAsUser: (data) => dispatch(loginAsUser(data)),
+})
+
+const mapStateToProps = state => ({
+  user: state.simpleReducer.user,
+  userType: state.simpleReducer.userType
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Page);

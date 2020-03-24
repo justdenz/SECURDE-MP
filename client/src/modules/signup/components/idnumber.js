@@ -15,7 +15,7 @@ export default () => {
         },
         {
           min: 8,
-          message: 'Please input a valid ID number!',
+          message: 'Please input a valid DLSU ID number!',
         },
       ]}
     >
