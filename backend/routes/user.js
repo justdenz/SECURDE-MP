@@ -21,7 +21,7 @@ router.post("/validate_login", async (req, res) => {
     }
 
     res.send({
-        status: result.status,
+        status: result.status,a
         payload: result.payload
     })
 
