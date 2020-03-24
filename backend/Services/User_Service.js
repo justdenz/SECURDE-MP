@@ -1,5 +1,28 @@
 const {GetUserByUsername, GetAllUsers, CreateUser, CheckExistingEmail, CheckExistingUsername, ChangePassword} = require('./User_DB.js')
 
+//returns null if there is no users 
+async function ValidateGetAllUsers(){
+    let users = await GetAllUsers()
+
+    let response = {
+        status: '',
+        payload: ''
+    }
+
+    if(users === undefined || users.length == 0) {
+        response.status = "EMPTY"
+        response.payload = "There are no users created yet..."
+    }
+    else if(users){
+        response.status = "OK"
+        response.payload = users
+    }
+    else
+        response.status = "ERROR"
+        response.payload = "There was an error getting all the users, please try again..."
+
+    return response
+}
 async function ValidateLogin(username, password){
     let user = await GetUserByUsername(username)
 
@@ -73,5 +96,6 @@ async function ValidateDeleteUser(user_id){
 module.exports = {
     ValidateLogin,
     ValidateCreateUser,
-    ValidateChangePassword
+    ValidateChangePassword,
+    ValidateGetAllUsers
 }
