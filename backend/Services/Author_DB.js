@@ -45,7 +45,7 @@ async function CheckExistingAuthor(first_name, last_name){
     paranoid: true,
   })
 
-  if(user) return 1
+  if(author) return 1
   return 0
 }
 
@@ -58,9 +58,8 @@ async function DeleteAuthor(author_id){
   .catch(err => console.log(err))
 }
 
-async function CreateAuthor(author_id, first_name, last_name){
+async function CreateAuthor(first_name, last_name){
   const newAuthor = await db.author.create({
-      author_id: author_id,
       first_name: first_name,
       last_name: last_name
   })
