@@ -5,8 +5,11 @@ const db = require('../models')
     - What does author mean here?
 2. Under createauthor, why is author_id being passed lang? (based on user_id)
     - Diba dapat auto generated ang IDs, and increments siya?
+    - Ohh for the user, the user_id is being passed because tayo mismo mag iinput ng id number 
 3. For DeleteAuthor, is it right na author_id yung parameter? 
     - So like, start with GetAuthorByFullName -> para mahanap and makuha ID -> then delete??
+    - React has a way of storing the whole object per element so tuwing idedelete ang isang author, 
+    pass the author id of what was clikced lang
  */
 async function GetAllAuthors(){
   const authors = await db.author.findAll({
