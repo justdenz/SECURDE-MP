@@ -36,6 +36,13 @@ async function AddBook(title, publisher, year_publication, isbn){
   return null
 }
 
+async function AddBookAuthor(book_id, author_id){
+  await db.book_author.create({
+    book_id: book_id,
+    author_id: author_id
+  })
+}
+
 async function UpdateBook(book_id, title, publisher, year_publication, isbn){
   await db.book.update({
     title: title,
@@ -145,5 +152,6 @@ module.exports = {
   AddBookInstance,
   UpdateBookInstance,
   DeleteBookInstanceByID,
-  DeleteBookInstanceByBookID
+  DeleteBookInstanceByBookID,
+  AddBookAuthor
 }
