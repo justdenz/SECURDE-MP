@@ -6,11 +6,8 @@ import './index.css';
 import { Layout, Menu } from 'antd';
 import { UserOutlined, BookOutlined, ToolOutlined} from '@ant-design/icons';
 
-import Books from "./components/books"
-import ChangePass from "./components/changePass"
-import History from "./components/history"
-import Library from "./components/library"
-import Reviews from "./components/reviews"
+import { Books, ChangePass, History, Reviews, Library} from "./components/education/"
+import { ManagerBooks, Authors, BookInstances } from "./components/manager"
 
 const { Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -21,7 +18,7 @@ class Page extends Component {
       width: 0, 
       height: 0, 
       collapsed: false,
-      currPage: <Library/>, 
+      currPage: this.props.userType === "MANAGER" ? <ManagerBooks/> : <Library/>, 
     };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
@@ -43,7 +40,7 @@ class Page extends Component {
     this.setState({ collapsed });
   };
 
-  handleClick = e => {
+  handleEducationMenu = e => {
     let nextPage = null
     switch(e.key){
       case "Library":
@@ -67,26 +64,57 @@ class Page extends Component {
     this.setState({currPage: nextPage})
   };
 
+  handleManagerMenu = e => {
+    let nextPage = null
+    switch(e.key){
+      case "ManagerBooks":
+        nextPage = <ManagerBooks/>
+        break;
+      case "BookInstances":
+        nextPage = <BookInstances/>
+        break;
+      case "Authors":
+        nextPage = <Authors/>
+        break;
+      default:
+        break
+    }
+    this.setState({currPage: nextPage})
+  };
+
   render() {
     return (
       <div style={{width: this.state.width, height: this.state.height, marginTop: "-100px"}}>
         <Layout style={{ minHeight: '100vh'}}>
           <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
             <div className="logo" />
-            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" onClick={this.handleClick}>
-              <Menu.Item key="Library"><span><BookOutlined/><span>Library</span></span></Menu.Item>
-              {this.props.userType !== "GUEST" && 
+            { this.props.userType === "EDUCATION"  &&
+              <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" onClick={this.handleEducationMenu}>
+                <Menu.Item key="Library"><span><BookOutlined/><span>Library</span></span></Menu.Item>
+                
                 <SubMenu key="sub1" title={<span><UserOutlined /><span>User</span></span>}>
                   <Menu.Item key="History">History</Menu.Item>
                   <Menu.Item key="Books">Books</Menu.Item>
                   <Menu.Item key="Reviews">Reviews</Menu.Item>
-                </SubMenu>}
-              {this.props.userType !== "GUEST" && 
+                </SubMenu>
+                
                 <SubMenu key="sub2"title={<span><ToolOutlined /><span>Settings</span></span>}>
                   <Menu.Item key="ChangePass">Change Password</Menu.Item>
                   <Menu.Item key="logout"><Link to="/login">Logout</Link></Menu.Item>
-                </SubMenu>}
-            </Menu>
+                </SubMenu>   
+              </Menu>}
+            { this.props.userType === "MANAGER" &&
+              <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" onClick={this.handleManagerMenu}>
+                <Menu.Item key="History">History</Menu.Item>
+                <Menu.Item key="Books">Books</Menu.Item>
+                <Menu.Item key="Reviews">Reviews</Menu.Item>
+                
+                <SubMenu key="sub2"title={<span><ToolOutlined /><span>Settings</span></span>}>
+                  <Menu.Item key="ChangePass">Change Password</Menu.Item>
+                  <Menu.Item key="logout"><Link to="/login">Logout</Link></Menu.Item>
+                </SubMenu>   
+              </Menu>
+            } 
           </Sider>
           <Layout className="site-layout">
             <Content style={{ margin: '0 16px' }}>

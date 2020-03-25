@@ -50,7 +50,7 @@ class Page extends Component {
     return (
       <div style={{width: 400, marginBottom: "100px"}}>
         {this.state.isAuthenticated ? 
-        <Redirect to={this.props.userType === "EDUCATION" ? "/dashboard" : "/forgot" }/> :
+        <Redirect to="/dashboard"/> :
           <Card>
           <h1 style={{marginBottom: 20}}>Login</h1>
           <Form name="normal_login" className="login-form" onFinish={this.onSubmit}>
