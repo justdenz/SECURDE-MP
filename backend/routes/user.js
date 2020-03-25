@@ -4,19 +4,12 @@ const router = express.Router()
 const {
     ValidateLogin,
     ValidateCreateUser,
-    ValidateChangePassword
+    ValidateChangePassword,
+    ValidateGetAllUsers
 } = require('../Services/User_Service.js')
 
-router.post('/', (req, res) => {
+router.get('/', (req, res) => {
 })
-
-function hasSession(req, res, next) {
-    if (!req.session.user) {
-        //redirect to logout page
-    } else{
-        next();
-    }
-};
 
 router.post("/validate_login", async (req, res) => {
     const username = req.body.username

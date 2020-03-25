@@ -38,8 +38,7 @@ app.use(session({
 
 app.use((req, res, next) => {
     if (req.cookies.user_sid && !req.session.user) {
-        // res.clearCookie('user_sid');        
-        console.log("Session test")
+        res.clearCookie('user_sid');       
     }
     next();
 });
@@ -48,6 +47,7 @@ app.use((req, res, next) => {
 //Routes
 app.use('/user', require('./routes/user.js'));
 app.use('/admin', require('./routes/admin.js'));
+app.use('/book', require('./routes/book.js'))
 
 app.get("/", (req, res) => {
 })
