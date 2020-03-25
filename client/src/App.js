@@ -22,7 +22,8 @@ class App extends Component {
             <Route path="/login" component={LoginForm}></Route>
             <Route path="/register" component={RegisterForm}></Route>
             <Route path="/forgot" component={ForgotForm}></Route>
-            {this.props.userType !== "" && <Route path="/dashboard" exact component={Dashboard}></Route>}
+            <Route path="/dashboard" exact component={Dashboard}></Route>
+            {/* {this.props.userType !== "" && <Route path="/dashboard" exact component={Dashboard}></Route>} */}
             <Route path="/admin" component={Admin}></Route>
           </Switch>
         </div>
