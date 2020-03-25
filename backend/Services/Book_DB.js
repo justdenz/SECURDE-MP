@@ -43,6 +43,16 @@ async function AddBookAuthor(book_id, author_id){
   })
 }
 
+async function DeleteBookAuthors(book_id){
+  await db.book_author.destroy({
+    where: {
+      book_id: book_id
+    }
+  })
+  .then(console.log("Book authors has been deleted!"))
+  .catch(err => console.log(err))
+}
+
 async function UpdateBook(book_id, title, publisher, year_publication, isbn){
   await db.book.update({
     title: title,
@@ -54,7 +64,7 @@ async function UpdateBook(book_id, title, publisher, year_publication, isbn){
       book_id: book_id
     }
   })
-  .then(console.log("Book " + book_id + " has been updated!"))
+  .then(console.log("Book Updated successfully!"))
   .catch(err => console.log(err))
 }
 
@@ -68,8 +78,18 @@ async function DeleteBookByID(book_id){
   .catch(err => console.log(err))
 }
 
+async function GetAllBookInstance(){
+  let bookInstances = await db.book_instance.findAll({
+    raw: true,
+    paranoid: true,
+    attributes: ['bookinstance_id', 'status', 'book_id']
+  })
+
+  return bookInstances
+}
+
 async function GetBookInstanceByID(bookinstance_id){
-  let bookInstance = await db.book_instance.findOne({
+  let bookInstance = await db.book_instance.findAll({
     raw: true,
     where: {
       bookinstance_id: bookinstance_id
@@ -82,7 +102,7 @@ async function GetBookInstanceByID(bookinstance_id){
   return null
 }
 
-async function GetBookInstanceByBookID(book_id){
+async function GetBookInstancesByBookID(book_id){
   let bookInstances = await db.book_instance.findAll({
     raw: true,
     where: {
@@ -96,9 +116,8 @@ async function GetBookInstanceByBookID(book_id){
   return null
 }
 
-async function AddBookInstance(status, book_id){
+async function AddBookInstance(book_id){
   let newBookInstance = await db.book_instance.create({
-    status: status,
     book_id: book_id
   })
 
@@ -120,7 +139,7 @@ async function UpdateBookInstance(bookinstance_id, status){
 
 
 async function DeleteBookInstanceByID(bookinstance_id){
-  db.bookinstance_id.destroy({
+  db.book_instance.destroy({
     where: {
       bookinstance_id: bookinstance_id
     }
@@ -130,7 +149,7 @@ async function DeleteBookInstanceByID(bookinstance_id){
 }
 
 async function DeleteBookInstanceByBookID(book_id){
-  db.bookinstance_id.destroy({
+  db.book_instance.destroy({
     where: {
       book_id: book_id
     }
@@ -148,10 +167,12 @@ module.exports = {
   UpdateBook,
   DeleteBookByID,
   GetBookInstanceByID,
-  GetBookInstanceByBookID,
+  GetBookInstancesByBookID,
   AddBookInstance,
   UpdateBookInstance,
   DeleteBookInstanceByID,
   DeleteBookInstanceByBookID,
-  AddBookAuthor
+  AddBookAuthor,
+  GetAllBookInstance,
+  DeleteBookAuthors
 }

@@ -1,6 +1,6 @@
 const {GetAllAuthors, GetAuthorByFullName, CheckExistingAuthor, DeleteAuthor, CreateAuthor, ChangeDetails} = require('./Author_DB')
 
-async function ValidateCreateAuthor(author_id, first_name, last_name){
+async function ValidateCreateAuthor(first_name, last_name){
   let response = {
     status: '',
     payload: ''
@@ -13,7 +13,7 @@ async function ValidateCreateAuthor(author_id, first_name, last_name){
     response.payload = "The author already exists!"
   } else{
     let author = await CreateAuthor(first_name, last_name)
-    .then(Console.log("Successfully created Author!"))
+    .then(console.log("Successfully created Author!"))
     .catch(err => console.log("Error in creating Author!"))
     if(!author){
       response.status="ERROR"
