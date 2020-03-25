@@ -169,7 +169,20 @@ async function ValidateUpdateBookInstance(status, book_id){
 }
 
 async function ValidateDeleteBookInstanceByID(bookinstance_id){
-  await DeleteBookInstanceByID(bookinstance_id)
+  let response = {
+    status: '',
+    payload: ''
+  }
+  let bookInstance = await GetBookInstanceByID(bookinstance_id)
+
+  if(bookInstance.status == 0){
+    response.status = 'ERROR'
+    response.status = "This book instance is being reserved by someone..."
+  } else{
+    await DeleteBookInstanceByID(bookinstance_id)
+    response.status = "OK"
+    response.status = "Book instance has been deleted!"
+  }
 }
 
 module.exports = {
