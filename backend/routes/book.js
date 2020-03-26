@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/get_book', async (req, res) => {
-  const result = await ValidateGetBookByID(req.body.book_id)
+  const result = await ValidateGetBookByID(req.query.book_id)
 
   res.send({
     status: result.status,
@@ -42,11 +42,11 @@ router.get('/get_book', async (req, res) => {
 })
 
 router.get('/create_book', async(req, res) => {
-  let title = req.body.title
-  let publisher = req.body.publisher
-  let year_publication = req.body.year_publication
-  let isbn = req.body.isbn
-  let authors = req.body.authors
+  let title = req.query.title
+  let publisher = req.query.publisher
+  let year_publication = req.query.year_publication
+  let isbn = req.query.isbn
+  let authors = req.query.authors
 
   // let title = 'Title Test'
   // let publisher = 'Publisher Test'
@@ -63,12 +63,12 @@ router.get('/create_book', async(req, res) => {
 })
 
 router.get('/update_book', async (req, res) => {
-  let book_id = req.body.book_id
-  let title = req.body.title
-  let publisher = req.body.publisher
-  let year_publication = req.body.year_publication
-  let isbn = req.body.isbn
-  let authors = req.body.authors
+  let book_id = req.query.book_id
+  let title = req.query.title
+  let publisher = req.query.publisher
+  let year_publication = req.query.year_publication
+  let isbn = req.query.isbn
+  let authors = req.query.authors
 
   const result = await ValidateUpdateBook(book_id, title, publisher, year_publication, isbn, authors)
 
@@ -79,7 +79,7 @@ router.get('/update_book', async (req, res) => {
 })
 
 router.get('/delete_book', async (req, res) => {
-  const result = await ValidateDeleteBookByID(req.body.book_id)
+  const result = await ValidateDeleteBookByID(req.query.book_id)
 
   res.send({
     status: result.status,
@@ -97,7 +97,7 @@ router.get('/get_all_bookinstances', async (req, res) => {
 })
 
 router.get('/get_bookinstance_byid', async (req, res) => {
-  const result = await ValidateGetBookInstanceByID(req.body.bookinstance_id)
+  const result = await ValidateGetBookInstanceByID(req.query.bookinstance_id)
 
   res.send({
     status: result.status,
@@ -106,7 +106,7 @@ router.get('/get_bookinstance_byid', async (req, res) => {
 })
 
 router.get('/get_bookinstance_bybookid', async (req, res) => {
-  const result = await ValidateGetBookInstancesByBookID(req.body.book_id)
+  const result = await ValidateGetBookInstancesByBookID(req.query.book_id)
 
   res.send({
     status: result.status,
@@ -115,7 +115,7 @@ router.get('/get_bookinstance_bybookid', async (req, res) => {
 })
 
 router.get('/add_bookinstance', async (req, res) => {
-  const result = await ValidateAddBookInstance(req.body.book_id)
+  const result = await ValidateAddBookInstance(req.query.book_id)
 
   res.send({
     status: result.status,
@@ -127,7 +127,7 @@ router.get('/update_bookinstance', async (req, res) =>{
   //Put condition to check whether education or manager
   //Only manger can access this route
   if(req.session.user.role_name == 'manager'){
-    await ValidateUpdateBookInstance(req.body.bookinstance_id)
+    await ValidateUpdateBookInstance(req.query.bookinstance_id)
     .then(res.send({
       status: "OK",
       payload: "Changed book status back to available!"
@@ -157,7 +157,7 @@ router.get('/borrow_bookinstance', async (req, res) => {
   //Only education can access this route
 
   if(req.session.user.role_name == 'education'){
-    await ValidateBorrowBookInstance(req.body.bookinstance_id)
+    await ValidateBorrowBookInstance(req.query.bookinstance_id)
     .then(res.send({
       status: "OK",
       payload: "User has borrowed book!"
@@ -183,7 +183,7 @@ router.get('/borrow_bookinstance', async (req, res) => {
 })
 
 router.get("/delete_bookinstance", async (req, res) => {
-  await ValidateDeleteBookInstanceByID(req.body.bookinstance_id)
+  await ValidateDeleteBookInstanceByID(req.query.bookinstance_id)
   .then(result => {
     res.send({
       status: result.status,
