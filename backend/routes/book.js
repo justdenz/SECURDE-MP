@@ -16,6 +16,7 @@ const {
     ValidateBorrowBookInstance
   } = require('../Services/Book_Service.js')
 
+const {ValidateCreateAuthor} = require('../Services/Author_Service.js')
 
 router.use(function timeLog (req, res, next) {
     next()
@@ -23,7 +24,6 @@ router.use(function timeLog (req, res, next) {
 
 router.get('/', async (req, res) => {
   const result = await ValidateGetAllBooks()
-
   res.send({
     status: result.status,
     payload: result.payload
@@ -39,7 +39,7 @@ router.post('/get_book', async (req, res) => {
   })
 })
 
-router.post('/create_book', async(req, res) => {
+router.get('/create_book', async(req, res) => {
   let title = req.body.title
   let publisher = req.body.publisher
   let year_publication = req.body.year_publication
