@@ -8,17 +8,17 @@ import AddBookComponents from "./components/bookDrawer"
 //   {
 //     key: '1',
 //     title: 'The Smiths',
-//     authors: 'John Smith',
+//     authors: ['John Smith ', 'John Smith ', 'John Smith ', 'John Smith ', 'John Smith ', 'John Smith ', 'John Smith ', 'John Smith '],
 //     publisher: 'New York Publications',
-//     publication: 2010,
+//     year_publication: 2010,
 //     isbn: 1234567890123,
 //   },
 //   {
 //     key: '2',
 //     title: 'The Smiths Part 2',
-//     authors: 'John Smith',
+//     authors: ['John Smith'],
 //     publisher: 'New York Publications',
-//     publication: 2010,
+//     year_publication: 2010,
 //     isbn: 1234567890123,
 //   },
 // ];
@@ -41,6 +41,12 @@ class Page extends Component {
           title: 'Authors',
           dataIndex: 'authors',
           key: 'authors',
+          render: authors => {
+            if(authors.length > 1)
+              return (authors[0] + "et al.")
+            else
+              return (authors[0])
+          }
         },
         {
           title: 'Publisher',
@@ -49,7 +55,7 @@ class Page extends Component {
         },
         {
           title: 'Year of Publication',
-          dataIndex: 'publication',
+          dataIndex: 'year_publication',
           key: 'publication',
         },
         {
@@ -78,8 +84,9 @@ class Page extends Component {
     fetch("http://localhost:8000/book/")
       .then(res => res.json())
       .then(res => {
-        if(res.status !== "ERROR")
+        if(res.status !== "ERROR"){
           this.setState({books: res.payload})
+        }
       })
   }
 
@@ -93,14 +100,14 @@ class Page extends Component {
 
   handleAddBookSubmit = values => {
     const reqOptions = {
-      method: 'GET',
+      method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         title: values.title,
         publisher: values.publisher,
         year_publication: values.publication,
         isbn: values.isbn,
-        authors: values.authors,
+        authors: [values.authors],
       })
     }
     fetch("http://localhost:8000/book/create_book", reqOptions)

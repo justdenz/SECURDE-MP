@@ -44,7 +44,11 @@ export default () => {
           <Form.Item
             name="publication"
             label="Year of Publication"
-            rules={[{ required: true, message: 'Please enter year of publication' }]}
+            rules={[
+              { required: true, message: 'Please enter year of publication' },
+              {  min: 4, message: 'Please input a valid year!'},
+              {  max: 4, message: 'Please input a valid year!'},
+            ]}
           >
             <Input type="number" placeholder="Enter year of publication"/>
           </Form.Item>
@@ -55,9 +59,13 @@ export default () => {
           <Form.Item
             name="isbn"
             label="ISBN"
-            rules={[{ required: true, message: 'Please enter book ISBN' }]}
+            rules={[
+              { required: true, message: 'Please enter book ISBN' },
+              {  min: 13, message: 'Please input a valid ISBN number!'},
+              {  max: 13, message: 'Please input a valid ISBN number!'},
+            ]}
           >
-            <Input autoComplete="off" placeholder="Please enter book ISBN"/>
+            <Input type="number" autoComplete="off" placeholder="Please enter book ISBN"/>
           </Form.Item>
         </Col>
       </Row>
