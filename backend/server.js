@@ -49,10 +49,8 @@ app.use('/user', require('./routes/user.js'));
 app.use('/admin', require('./routes/admin.js'));
 app.use('/book', require('./routes/book.js'))
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
 })
-
-
 
 
 app.listen(PORT, function () {
