@@ -105,7 +105,7 @@ class Page extends Component {
                 </SubMenu>   
               </Menu>}
             { this.props.userType === "MANAGER" &&
-              <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" onClick={this.handleManagerMenu}>
+              <Menu theme="dark" defaultSelectedKeys={['ManagerBooks']} mode="inline" onClick={this.handleManagerMenu}>
                 <Menu.Item key="ManagerBooks"><span><BookOutlined/><span>Books</span></span></Menu.Item>
                 <Menu.Item key="BookInstances"><span><BarcodeOutlined/><span>Book Instances</span></span></Menu.Item>
                 <Menu.Item key="Authors"><span><UserOutlined/><span>Authors</span></span></Menu.Item>

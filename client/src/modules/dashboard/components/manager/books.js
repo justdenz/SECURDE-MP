@@ -4,26 +4,24 @@ import { PlusOutlined } from '@ant-design/icons';
 
 import AddBookComponents from "./components/bookDrawer"
 
-const dummy_data = [
-  {
-    key: '1',
-    title: 'The Smiths',
-    authors: 'John Smith',
-    publisher: 'New York Publications',
-    publication: 2010,
-    isbn: 1234567890123,
-    status: 0,
-  },
-  {
-    key: '2',
-    title: 'The Smiths Part 2',
-    authors: 'John Smith',
-    publisher: 'New York Publications',
-    publication: 2010,
-    isbn: 1234567890123,
-    status: 1,
-  },
-];
+// const dummy_data = [
+//   {
+//     key: '1',
+//     title: 'The Smiths',
+//     authors: 'John Smith',
+//     publisher: 'New York Publications',
+//     publication: 2010,
+//     isbn: 1234567890123,
+//   },
+//   {
+//     key: '2',
+//     title: 'The Smiths Part 2',
+//     authors: 'John Smith',
+//     publisher: 'New York Publications',
+//     publication: 2010,
+//     isbn: 1234567890123,
+//   },
+// ];
 class Page extends Component {
   constructor(props) {
     super(props);
@@ -60,18 +58,6 @@ class Page extends Component {
           key: 'isbn',
         },
         {
-          title: 'Status',
-          key: 'status',
-          dataIndex: 'status',
-          render: status => (
-            <span>
-              <Tag color={status ? 'green' : 'volcano'}>
-                {status ? 'AVAILABLE' : 'RESERVED'}
-              </Tag>
-            </span>
-          ),
-        },
-        {
           title: 'Actions',
           key: 'action',
           render: (text, record) => {
@@ -88,6 +74,15 @@ class Page extends Component {
     }
   }
 
+  componentDidMount(){
+    fetch("http://localhost:8000/book/")
+      .then(res => res.json())
+      .then(res => {
+        if(res.status !== "ERROR")
+          this.setState({books: res.payload})
+      })
+  }
+
   toggleAddDrawer(AddDrawerVisible){
     this.setState({AddDrawerVisible})
   }
@@ -97,9 +92,30 @@ class Page extends Component {
   }
 
   handleAddBookSubmit = values => {
-    message.success("Book Successfully Added!")
-    this.toggleAddDrawer(false)
-    console.log("Values of New Book: ", values);
+    const reqOptions = {
+      method: 'GET',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        title: values.title,
+        publisher: values.publisher,
+        year_publication: values.publication,
+        isbn: values.isbn,
+        authors: values.authors,
+      })
+    }
+    fetch("http://localhost:8000/book/create_book", reqOptions)
+      .then(res => res.json())
+      .then(res => {
+        if(res.status === "ERROR")
+          console.log("Cause of Error: ", res.payload);
+        else{
+          message.success("Book Successfully Added!")
+          this.toggleAddDrawer(false)
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   handleUpdateBookSubmit = values => {
@@ -116,7 +132,7 @@ class Page extends Component {
         <Button type="primary" style={{marginTop: 20, marginBottom: 20}} onClick={() => this.toggleAddDrawer(true)}>
           <PlusOutlined /> Add book
         </Button>
-        <Table columns={this.state.columns} dataSource={dummy_data} />
+        <Table columns={this.state.columns} dataSource={this.state.books} />
         <Drawer
           title="Create a new book"
           width={720}
