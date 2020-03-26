@@ -4,24 +4,24 @@ import { PlusOutlined } from '@ant-design/icons';
 
 import AddBookComponents from "./components/bookDrawer"
 
-// const dummy_data = [
-//   {
-//     key: '1',
-//     title: 'The Smiths',
-//     authors: ['John Smith ', 'John Smith ', 'John Smith ', 'John Smith ', 'John Smith ', 'John Smith ', 'John Smith ', 'John Smith '],
-//     publisher: 'New York Publications',
-//     year_publication: 2010,
-//     isbn: 1234567890123,
-//   },
-//   {
-//     key: '2',
-//     title: 'The Smiths Part 2',
-//     authors: ['John Smith'],
-//     publisher: 'New York Publications',
-//     year_publication: 2010,
-//     isbn: 1234567890123,
-//   },
-// ];
+const dummy_data = [
+  {
+    key: '1',
+    title: 'The Smiths',
+    authors: ['John Smith ', 'John Smith ', 'John Smith ', 'John Smith ', 'John Smith ', 'John Smith ', 'John Smith ', 'John Smith '],
+    publisher: 'New York Publications',
+    year_publication: 2010,
+    isbn: 1234567890123,
+  },
+  {
+    key: '2',
+    title: 'The Smiths Part 2',
+    authors: ['John Smith'],
+    publisher: 'New York Publications',
+    year_publication: 2010,
+    isbn: 1234567890123,
+  },
+];
 class Page extends Component {
   constructor(props) {
     super(props);
@@ -85,7 +85,8 @@ class Page extends Component {
       .then(res => res.json())
       .then(res => {
         if(res.status !== "ERROR"){
-          this.setState({books: res.payload})
+          console.log(res.payload);
+          //this.setState({books: res.payload})
         }
       })
   }
@@ -139,7 +140,7 @@ class Page extends Component {
         <Button type="primary" style={{marginTop: 20, marginBottom: 20}} onClick={() => this.toggleAddDrawer(true)}>
           <PlusOutlined /> Add book
         </Button>
-        <Table columns={this.state.columns} dataSource={this.state.books} />
+        <Table columns={this.state.columns} dataSource={dummy_data} />
         <Drawer
           title="Create a new book"
           width={720}

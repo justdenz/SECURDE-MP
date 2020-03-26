@@ -61,8 +61,8 @@ export default () => {
             label="ISBN"
             rules={[
               { required: true, message: 'Please enter book ISBN' },
-              {  min: 13, message: 'Please input a valid ISBN number!'},
-              {  max: 13, message: 'Please input a valid ISBN number!'},
+              // {  min: 13, message: 'Please input a valid ISBN number!'},
+              // {  max: 13, message: 'Please input a valid ISBN number!'},
             ]}
           >
             <Input type="number" autoComplete="off" placeholder="Please enter book ISBN"/>
