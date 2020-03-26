@@ -85,5 +85,6 @@ module.exports = {
   ValidateGetAllAuthors,
   ValidateCreateAuthor,
   ValidateChangeDetails,
-  ValidateDeleteAuthor
+  ValidateDeleteAuthor,
+  ValidateGetAuthorByID
 }
