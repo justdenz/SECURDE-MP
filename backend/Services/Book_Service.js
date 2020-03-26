@@ -26,7 +26,7 @@ async function ValidateGetAllBooks(){
 
   if(books === undefined || books.length == 0) {
     response.status = "ERROR"
-    response.payload = "There is no books created at this moment..."
+    response.payload = "There are no books created at this moment..."
   }
   else if(books){
     var book

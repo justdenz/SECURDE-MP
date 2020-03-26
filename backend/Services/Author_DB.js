@@ -20,12 +20,11 @@ async function GetAllAuthors(){
   return authors
 }
 
-async function GetAuthorByFullName(first_name, last_name){
+async function GetAuthorByID(author_id){
   const author = await db.author.findOne({
     raw: true,
     where: {
-      first_name: first_name,
-      last_name: last_name,
+      author_id: author_id
     },
     paranoid: true,
     attributes: ['author_id', 'first_name', 'last_name']
@@ -83,7 +82,7 @@ async function ChangeDetails(author_id, new_first_name, new_last_name){
 
 module.exports = {
   GetAllAuthors,
-  GetAuthorByFullName,
+  GetAuthorByID,
   CheckExistingAuthor,
   DeleteAuthor,
   CreateAuthor,
