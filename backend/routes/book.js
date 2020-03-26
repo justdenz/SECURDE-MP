@@ -39,7 +39,7 @@ router.post('/get_book', async (req, res) => {
   })
 })
 
-router.get('/create_book', async(req, res) => {
+router.post('/create_book', async(req, res) => {
   let title = req.body.title
   let publisher = req.body.publisher
   let year_publication = req.body.year_publication
