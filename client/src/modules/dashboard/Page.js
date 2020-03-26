@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import 'antd/dist/antd.css';
 import './index.css';
 import { Layout, Menu } from 'antd';
-import { UserOutlined, BookOutlined, ToolOutlined} from '@ant-design/icons';
+import { UserOutlined, BookOutlined, ToolOutlined, BarcodeOutlined} from '@ant-design/icons';
 
 import { Books, ChangePass, History, Reviews, Library} from "./components/education/"
 import { ManagerBooks, Authors, BookInstances } from "./components/manager"
@@ -18,7 +18,8 @@ class Page extends Component {
       width: 0, 
       height: 0, 
       collapsed: false,
-      currPage: this.props.userType === "MANAGER" ? <ManagerBooks/> : <Library/>, 
+      currPage: <ManagerBooks/>,
+      // currPage: this.props.userType === "MANAGER" ? <ManagerBooks/> : <Library/>, 
     };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
@@ -104,10 +105,10 @@ class Page extends Component {
                 </SubMenu>   
               </Menu>}
             { this.props.userType === "MANAGER" &&
-              <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" onClick={this.handleManagerMenu}>
-                <Menu.Item key="History">History</Menu.Item>
-                <Menu.Item key="Books">Books</Menu.Item>
-                <Menu.Item key="Reviews">Reviews</Menu.Item>
+              <Menu theme="dark" defaultSelectedKeys={['ManagerBooks']} mode="inline" onClick={this.handleManagerMenu}>
+                <Menu.Item key="ManagerBooks"><span><BookOutlined/><span>Books</span></span></Menu.Item>
+                <Menu.Item key="BookInstances"><span><BarcodeOutlined/><span>Book Instances</span></span></Menu.Item>
+                <Menu.Item key="Authors"><span><UserOutlined/><span>Authors</span></span></Menu.Item>
                 
                 <SubMenu key="sub2"title={<span><ToolOutlined /><span>Settings</span></span>}>
                   <Menu.Item key="ChangePass">Change Password</Menu.Item>
