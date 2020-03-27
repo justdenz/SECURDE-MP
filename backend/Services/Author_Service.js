@@ -70,7 +70,7 @@ async function ValidateCreateAuthor(first_name, last_name){
 }
 
 async function ValidateChangeDetails(author_id, new_first_name, new_last_name){
-  await ChangeDetails(author_id, new_first_name, new_first_name)
+  await ChangeDetails(author_id, new_first_name, new_last_name)
   .then(console.log("Author has been updated!"))
   .catch(err => {
     console.log(err)

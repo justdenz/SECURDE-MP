@@ -28,9 +28,10 @@ router.post("/add_author", async (req, res) => {
 })
 
 router.post("/edit_author", async (req, res) => {
+  let author_id = req.body.author_id
   let first_name = req.body.first_name
   let last_name = req.body.last_name
-  await ValidateChangeDetails(first_name, last_name)
+  await ValidateChangeDetails(author_id, first_name, last_name)
   .then(res.send({
     status: "OK",
     payload: "Author has been updated!"
