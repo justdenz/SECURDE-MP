@@ -18,7 +18,7 @@ class Page extends Component {
       width: 0, 
       height: 0, 
       collapsed: false,
-      currPage: <BookInstances/>,
+      currPage: <Authors/>,
       // currPage: this.props.userType === "MANAGER" ? <ManagerBooks/> : <Library/>, 
     };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);

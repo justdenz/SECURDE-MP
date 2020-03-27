@@ -33,7 +33,7 @@ router.post("/edit_author", async (req, res) => {
   await ValidateChangeDetails(first_name, last_name)
   .then(res.send({
     status: "OK",
-    payload: "Author had been updated!"
+    payload: "Author has been updated!"
   }))
   .catch(err => {
     res.send({
