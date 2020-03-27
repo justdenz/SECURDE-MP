@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 import "antd/dist/antd.css";
-import { Form, Row, Select, Table, Button, Modal } from "antd";
+import { Form, Row, Select, Table, Button, Modal, Tag, message, Radio } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
-const dummy_data = [
-  {
-    key: '1',
-    bookinstance_id: 2,
-    book_id: 2,
-  },
-]
 class Page extends Component {
   state = {
     selectedBookInstance: {},
@@ -28,9 +21,22 @@ class Page extends Component {
         title: 'Book Title',
         dataIndex: 'book_id',
         key: 'book_id',
-        // render: (book_id) => {
-        //   //get the book title corresponding to the book id then display on table
-        // }
+        render: (book_id) => {
+          const book = this.state.books.filter(book => book.book_id === book_id)
+          return book[0].title
+        }
+      },
+      {
+        title: 'Status',
+        key: 'status',
+        dataIndex: 'status',
+        render: status => (
+          <span>
+            <Tag color={status ? 'green' : 'volcano'}>
+              {status ? 'AVAILABLE' : 'RESERVED'}
+            </Tag>
+          </span>
+        ),
       },
       {
         title: 'Actions',
@@ -49,16 +55,88 @@ class Page extends Component {
   }
 
   componentDidMount(){
-    //get all book ids then load it to Select
-    //get all book instances then load it to the Table
+    this.getAllBooks()
+    this.getAllBookInstances()
+  }
+
+  getBook(id){
+    const reqOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({book_id: id})
+    }
+    fetch("http://localhost:8000/book/get_book", reqOptions)
+      .then(res => res.json())
+      .then(res => {
+        if(res.status === "ERROR"){
+          console.log("Cause of Error: ", res.payload);
+          return null
+        } else{
+          return res.payload
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  getAllBooks(){
+    fetch("http://localhost:8000/book/")
+      .then(res => res.json())
+      .then(res => {
+        if(res.status !== "ERROR"){
+          let books = res.payload.map(book => {
+            return({
+              key: book.book_id,
+              ...book,
+            })
+          })
+          this.setState({books})
+        }
+      })
+  }
+
+  getAllBookInstances(){
+    fetch("http://localhost:8000/book/get_all_bookinstances")
+      .then(res => res.json())
+      .then(res => {
+        if(res.status !== "ERROR"){
+          let instances = res.payload.map(instance => {
+            return({
+              key: instance.bookinstance_id,
+              ...instance,
+            })
+          })
+          this.setState({instances})
+        }
+      })
   }
 
   handleAddBookInstanceSubmit = value => {
-    console.log("Value: ", value);
+    const reqOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({book_id: value.instance})
+    }
+    fetch("http://localhost:8000/book/add_bookinstance", reqOptions)
+      .then(res => res.json())
+      .then(res => {
+        if(res.status === "ERROR")
+          console.log("Cause of Error: ", res.payload);
+        else{
+          message.success("Book Instance Successfully Added!")
+          this.getAllBookInstances()
+          this.toggleModal(false)
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   handleUpdateBookInstance = value => {
-    console.log("");
+    console.log("Value: ", value);
+    this.toggleModal(false)
   }
 
   toggleModal = modalVisible => {
@@ -66,6 +144,7 @@ class Page extends Component {
   }
 
   render() {
+    const { books, selectedBookInstance } = this.state
     return (
       <div>
         <h1 style={{marginBottom: 50}}>Book Instances Page</h1>
@@ -76,8 +155,7 @@ class Page extends Component {
               rules={[{ required: true, message: 'Please select a book'}]}
             >
               <Select style={{ width: 300 }} placeholder="Please select a book">
-                <Option value="Xiaoxiao Fu">Xiaoxiao Fu</Option>
-                <Option value="Maomao Zhou">Maomao Zhou</Option>
+                {books.map(book => <Option key={book.book_id} value={book.book_id}>{book.title}</Option>)}
               </Select>
             </Form.Item>
             <Form.Item>
@@ -87,14 +165,33 @@ class Page extends Component {
             </Form.Item>
           </Row>
         </Form>
-        <Table style={{marginTop: 50}} columns={this.state.columns} dataSource={dummy_data}/>
+        <Table style={{marginTop: 50}} columns={this.state.columns} dataSource={this.state.instances}/>
         <Modal
           title="Edit Book Instance"
           visible={this.state.modalVisible}
-          onOk={() => this.toggleModal(false)}
+          footer={null}
           onCancel={() => this.toggleModal(false)}
+          destroyOnClose
         >
-          <p>Hello World</p>
+          <Form layout="inline" hideRequiredMark onFinish={this.handleUpdateBookInstance}
+            initialValues={{status: Number(selectedBookInstance.status)}}>
+            <Row style={{width: "100%"}} justify="center">
+              <Form.Item
+                name="status"
+                label="Status"
+                rules={[{ required: true, message: 'Please input status of book instance!'},]}
+              >
+                <Radio.Group value={this.state.selectedBookInstance.status}>
+                  <Radio value={0}><Tag color="volcano">RESERVED</Tag></Radio>
+                  <Radio value={1}><Tag color="green">AVAILABLE</Tag></Radio>
+                </Radio.Group>
+              </Form.Item>
+            </Row>
+            <Row style={{width: "100%", marginTop: 20}} justify="end">
+              <Button onClick={() => this.toggleModal(false)} style={{ marginRight: 8 }}>Cancel</Button>
+              <Button type="primary" htmlType="submit">Save</Button>
+            </Row>      
+          </Form>
         </Modal>
       </div>
     );

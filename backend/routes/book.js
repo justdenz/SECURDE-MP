@@ -124,7 +124,7 @@ router.post('/add_bookinstance', async (req, res) => {
 router.post('/update_bookinstance', async (req, res) =>{
   //Put condition to check whether education or manager
   //Only manger can access this route
-  if(req.session.user.role_name == 'manager'){
+  if(req.session.user.role_name === 'MANAGER'){
     await ValidateUpdateBookInstance(req.body.bookinstance_id)
     .then(res.send({
       status: "OK",
@@ -154,7 +154,7 @@ router.post('/borrow_bookinstance', async (req, res) => {
   //Put condition to check whether education or manager
   //Only education can access this route
 
-  if(req.session.user.role_name == 'education'){
+  if(req.session.user.role_name === 'EDUCATION'){
     await ValidateBorrowBookInstance(req.body.bookinstance_id)
     .then(res.send({
       status: "OK",
