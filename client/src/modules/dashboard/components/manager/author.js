@@ -56,9 +56,7 @@ class Page extends Component {
           let authors = res.payload.map(author => {
             return ({
                 key: author.author_id,
-                author_id: author.author_id,
-                first_name: author.first_name,
-                last_name: author.last_name,
+                ...author,
             })
           })
           this.setState({authors})
@@ -89,7 +87,7 @@ class Page extends Component {
     const reqOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ first_name: values.firstname, last_name: values.lastname})
+      body: JSON.stringify({ author_id: this.state.selectedAuthor.author_id, first_name: values.firstname, last_name: values.lastname})
     }
     fetch("http://localhost:8000/author/edit_author", reqOptions)
       .then(res => res.json())
@@ -122,14 +120,14 @@ class Page extends Component {
               label="First Name"
               rules={[{ required: true, message: 'Please input author first name!'},]}
             >
-              <Input />
+              <Input autoComplete="off"/>
             </Form.Item>
             <Form.Item
               name="lastname"
               label="Last Name"
               rules={[{ required: true, message: 'Please input author last name!'},]}
             >
-              <Input />
+              <Input autoComplete="off"/>
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">
@@ -154,14 +152,14 @@ class Page extends Component {
                 label="First Name"
                 rules={[{ required: true, message: 'Please input author first name!'},]}
               >
-                <Input />
+                <Input autoComplete="off"/>
               </Form.Item>
               <Form.Item
                 name="lastname"
                 label="Last Name"
                 rules={[{ required: true, message: 'Please input author last name!'},]}
               >
-                <Input />
+                <Input autoComplete="off"/>
               </Form.Item>
             </Row>
             <Row style={{width: "100%", marginTop: 20}} justify="end">

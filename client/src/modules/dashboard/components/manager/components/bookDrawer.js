@@ -1,10 +1,10 @@
 import React from "react";
 import "antd/dist/antd.css";
-import { Form, Input, Row, Col, Select, DatePicker,  } from "antd";
+import { Form, Input, Row, Col, Select } from "antd";
 
 const { Option } = Select;
 
-export default () => {
+export default (props) => {
   return (
     <div>
       <Row gutter={16}>
@@ -24,8 +24,7 @@ export default () => {
             rules={[{ required: true, message: 'Please select book author(s)' }]}
           >
             <Select mode="multiple" placeholder="Please select book author(s)">
-              <Option value="Xiaoxiao Fu">Xiaoxiao Fu</Option>
-              <Option value="Maomao Zhou">Maomao Zhou</Option>
+              {props.options.map(author => <Option key={author.author_id} value={author.author_id}>{author.first_name} {author.last_name}</Option>)}
             </Select>
           </Form.Item>
         </Col>
@@ -46,8 +45,6 @@ export default () => {
             label="Year of Publication"
             rules={[
               { required: true, message: 'Please enter year of publication' },
-              {  min: 4, message: 'Please input a valid year!'},
-              {  max: 4, message: 'Please input a valid year!'},
             ]}
           >
             <Input type="number" placeholder="Enter year of publication"/>
