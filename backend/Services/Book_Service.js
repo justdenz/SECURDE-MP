@@ -101,9 +101,10 @@ async function ValidateUpdateBook(book_id, title, publisher, year_publication, i
     response.status="ERROR"
     response.payload = "There was an error updating the book, please try again..."
   } else{
-    author_ids.forEach(async id => {
+    var id
+    for(id of author_ids){
       await AddBookAuthor(book_id, id)
-    });
+    }
     response.status = "OK"
     response.payload = "Book has been updated!"
   }
