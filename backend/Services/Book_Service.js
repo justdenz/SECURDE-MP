@@ -16,6 +16,19 @@ const {
   GetBookAuthorID
 } = require("./Book_DB.js")
 
+const { 
+  Register,
+  Login,
+  Logout,
+  BorrowBook,
+  EditBookInstance,
+  DeleteBookInstance,
+  AddBookAction,
+  EditBook,
+  DeleteBook,
+  ReviewBook,
+  AddBookInstanceAction} = require("./UserAction_DB")
+
 async function ValidateGetAllBooks(){
   let books = await GetAllBooks()
 
@@ -107,6 +120,8 @@ async function ValidateUpdateBook(book_id, title, publisher, year_publication, i
     }
     response.status = "OK"
     response.payload = "Book has been updated!"
+
+    await EditBook(user_id, book_id)
   }
 
   return response
@@ -141,6 +156,8 @@ async function ValidateDeleteBookByID(book_id){
       await DeleteBookInstanceByBookID(book_id)
       response.status = 'OK'
       response.payload = "Book " + book_id + " has been deleted!"
+
+      await DeleteBook(user_id, book_id)
     }
 
   } else{
@@ -209,6 +226,8 @@ async function ValidateAddBookInstance(book_id){
   } else {
     response.status = "OK",
     response.payload = "Book instance has been added successfully!"
+
+    await AddBookInstanceAction(user_id, book_id)
   }
 
   return response
@@ -220,6 +239,7 @@ async function ValidateUpdateBookInstance(bookinstance_id){
     RESERVED: '0'
   }
   await UpdateBookInstance(bookinstance_id, status.AVAILABLE)
+  await EditBookInstance(user_id, book_id)
 }
 
 async function ValidateBorrowBookInstance(bookinstance_id){
