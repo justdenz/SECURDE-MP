@@ -76,6 +76,15 @@ db.user.hasMany(db.review, {
     allowNull: false,
   }
 })
+
+db.user.hasMany(db.user_action,{
+  foreignKey: {
+    name: 'user_id',
+    type: DataType.INTEGER(11),
+    allowNull: false
+  }
+})
+
 db.book.hasMany(db.review, {
   foreignKey: {
     name: 'book_id',
@@ -92,6 +101,23 @@ db.book.hasMany(db.book_instance, {
     allowNull: false
   }
 })
+
+db.book.hasMany(db.user_action, {
+  foreignKey: {
+    name: 'book_id',
+    type: DataType.INTEGER(11),
+    allowNull: true
+  }
+})
+
+db.action.hasMany(db.user_action,{
+  foreignKey: {
+    name: 'action_id',
+    type: DataType.INTEGER(11),
+    allowNull: false
+  }
+})
+
 
 
 module.exports = db;
