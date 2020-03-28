@@ -22,7 +22,6 @@ db.sequelize.sync()
 
 
 //Functions
-// const {GetUser} = require('./Services/User_DB.js')
 
 //Initializes session in a cookie
 app.use(session({
@@ -47,9 +46,10 @@ app.use((req, res, next) => {
 //Routes
 app.use('/user', require('./routes/user.js'));
 app.use('/admin', require('./routes/admin.js'));
-app.use('/book', require('./routes/book.js'))
+app.use('/book', require('./routes/book.js'));
+app.use('/author', require('./routes/author.js'));
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
 })
 
 

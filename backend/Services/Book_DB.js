@@ -36,6 +36,31 @@ async function AddBook(title, publisher, year_publication, isbn){
   return null
 }
 
+async function GetBookAuthorID(book_id){
+  let author_ids = await db.book_author.findAll({
+    raw: true,
+    where: {
+      book_id: book_id
+    },
+    attributes: ['author_id']
+  })
+  var authors = []
+  var id
+
+  for(id of author_ids){
+    let tempAuthor = await db.author.findOne({
+      raw: true,
+      where: {
+        author_id: id.author_id
+      },
+      paranoid: true,
+      attributes: ['first_name', 'last_name']
+    })
+    authors.push(tempAuthor.last_name + ", " + tempAuthor.first_name)
+  }
+  return authors
+}
+
 async function AddBookAuthor(book_id, author_id){
   await db.book_author.create({
     book_id: book_id,
@@ -174,5 +199,6 @@ module.exports = {
   DeleteBookInstanceByBookID,
   AddBookAuthor,
   GetAllBookInstance,
-  DeleteBookAuthors
+  DeleteBookAuthors,
+  GetBookAuthorID
 }

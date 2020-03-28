@@ -1,14 +1,203 @@
 import React, { Component } from 'react';
+import { Table, Drawer, Button, Form, message, Select} from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
+import AddBookComponents from "./components/bookDrawer"
 class Page extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      books: [],
+      authors: [],
+      selectedBook: {},
+      AddDrawerVisible: false,
+      EditDrawerVisible: false,
+      columns: [
+        {
+          title: 'Title',
+          dataIndex: 'title',
+          key: 'title',
+        },
+        {
+          title: 'Authors',
+          dataIndex: 'authors',
+          key: 'authors',
+          render: authors => authors.length > 1 ? (authors[0] + " et al.") : (authors[0])
+        },
+        {
+          title: 'Publisher',
+          dataIndex: 'publisher',
+          key: 'publisher',
+        },
+        {
+          title: 'Year of Publication',
+          dataIndex: 'year_publication',
+          key: 'publication',
+        },
+        {
+          title: 'ISBN',
+          dataIndex: 'isbn',
+          key: 'isbn',
+        },
+        {
+          title: 'Actions',
+          key: 'action',
+          render: (text, record) => {
+            return(
+              <span>
+                <a style={{ marginRight: 16 }} 
+                onClick={() => this.setState({selectedBook: record, EditDrawerVisible: true})}>Edit</a>
+                <a>Delete</a>
+              </span>
+            )
+          },
+        },
+      ],
+    }
+  }
+
+  componentDidMount(){
+    this.getAllBooks()
+    this.getAllAuthors()
+  }
+
+  getAllBooks(){
+    fetch("http://localhost:8000/book/")
+      .then(res => res.json())
+      .then(res => {
+        if(res.status !== "ERROR"){
+          let books = res.payload.map(book => {
+            return({
+              key: book.book_id,
+              ...book,
+            })
+          })
+          this.setState({books})
+        }
+      })
+  }
+
+  getAllAuthors(){
+    fetch("http://localhost:8000/author/")
+      .then(res => res.json())
+      .then(res => {
+        if(res.status !== "ERROR")
+          this.setState({authors: res.payload})
+      })
+  }
+
+  toggleAddDrawer(AddDrawerVisible){
+    this.setState({AddDrawerVisible})
+  }
+
+  toggleEditDrawer(EditDrawerVisible){
+    this.setState({EditDrawerVisible})
+  }
+
+  handleAddBookSubmit = values => {
+    const reqOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        title: values.title,
+        publisher: values.publisher,
+        year_publication: values.publication,
+        isbn: values.isbn,
+        authors: values.authors,
+      })
+    }
+    fetch("http://localhost:8000/book/create_book", reqOptions)
+      .then(res => res.json())
+      .then(res => {
+        if(res.status === "ERROR")
+          console.log("Cause of Error: ", res.payload);
+        else{
+          message.success("Book Successfully Added!")
+          this.getAllBooks()
+          this.toggleAddDrawer(false)
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  handleUpdateBookSubmit = values => {
+    const reqOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        book_id: this.state.selectedBook.book_id,
+        title: values.title,
+        publisher: values.publisher,
+        year_publication: values.publication,
+        isbn: values.isbn,
+        authors: values.authors,
+      })
+    }
+    fetch("http://localhost:8000/book/update_book", reqOptions)
+      .then(res => res.json())
+      .then(res => {
+        if(res.status === "ERROR")
+          console.log("Cause of Error: ", res.payload);
+        else{
+          message.success("Book Successfully Updated!")
+          this.getAllBooks()
+          this.toggleEditDrawer(false)
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   render() {
+    const { selectedBook, authors } = this.state
     return (
       <div>
-        <h1>Manager Books Page</h1>
+        <h1>Books Page</h1>
+        <Button type="primary" style={{marginTop: 20, marginBottom: 20}} onClick={() => this.toggleAddDrawer(true)}>
+          <PlusOutlined /> Add book
+        </Button>
+        <Table columns={this.state.columns} dataSource={this.state.books} />
+        <Drawer
+          title="Create a new book"
+          width={720}
+          onClose={() => this.toggleAddDrawer(false)}
+          visible={this.state.AddDrawerVisible}
+          bodyStyle={{ paddingBottom: 80 }}
+        >
+          <Form layout="vertical" hideRequiredMark onFinish={this.handleAddBookSubmit}>
+            <AddBookComponents options={authors}/>
+            <div style={{ textAlign: 'right'}}>
+              <Button onClick={() => this.toggleAddDrawer(false)} style={{ marginRight: 8 }}>Cancel</Button>
+              <Button type="primary" htmlType="submit">Add</Button>
+            </div>
+          </Form>
+        </Drawer>
+        
+        <Drawer
+          title="Edit book details"
+          width={720}
+          onClose={() => this.toggleEditDrawer(false)}
+          visible={this.state.EditDrawerVisible}
+          bodyStyle={{ paddingBottom: 80 }}
+        >
+          <Form layout="vertical" hideRequiredMark onFinish={this.handleUpdateBookSubmit} 
+            initialValues={{
+              title: selectedBook.title,
+              authors: selectedBook.authors,
+              publisher: selectedBook.publisher,
+              publication: selectedBook.year_publication,
+              isbn: selectedBook.isbn,
+            }}>
+            <AddBookComponents options={authors}/>
+            <div style={{ textAlign: 'right'}}>
+              <Button onClick={() => this.toggleEditDrawer(false)} style={{ marginRight: 8 }}>Cancel</Button>
+              <Button type="primary" htmlType="submit">Save</Button>
+            </div>
+          </Form>
+        </Drawer>
       </div>
     );
   }

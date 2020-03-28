@@ -12,7 +12,8 @@ const {
   DeleteBookInstanceByBookID,
   AddBookAuthor,
   GetAllBookInstance,
-  DeleteBookAuthors
+  DeleteBookAuthors,
+  GetBookAuthorID
 } = require("./Book_DB.js")
 
 async function ValidateGetAllBooks(){
@@ -24,16 +25,20 @@ async function ValidateGetAllBooks(){
   }
 
   if(books === undefined || books.length == 0) {
-      response.status = "ERROR"
-      response.payload = "There is no books created at this moment..."
+    response.status = "ERROR"
+    response.payload = "There are no books created at this moment..."
   }
   else if(books){
-      response.status = "OK"
-      response.payload = books
+    var book
+    for(book of books){
+      book.authors = await GetBookAuthorID(book.book_id)
+    }
+    response.status = "OK"
+    response.payload = books
   }
   else{
-      response.status = "ERROR"
-      response.payload = "There was an error getting all the books, please try again..."
+    response.status = "ERROR"
+    response.payload = "There was an error getting all the books, please try again..."
   }
   return response
 }
@@ -50,6 +55,7 @@ async function ValidateGetBookByID(book_id){
     response.status = "ERROR"
     response.payload = "Book does not exists"
   } else if (book){
+    book.authors = await GetBookAuthorID(book.book_id)
     response.status = "OK"
     response.payload = book
   } else {
@@ -95,9 +101,10 @@ async function ValidateUpdateBook(book_id, title, publisher, year_publication, i
     response.status="ERROR"
     response.payload = "There was an error updating the book, please try again..."
   } else{
-    author_ids.forEach(async id => {
+    var id
+    for(id of author_ids){
       await AddBookAuthor(book_id, id)
-    });
+    }
     response.status = "OK"
     response.payload = "Book has been updated!"
   }
