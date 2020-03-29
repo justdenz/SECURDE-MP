@@ -4,7 +4,8 @@ async function Register(user_id){
   await db.user_action.create({
     action_id: 1,
     user_id: user_id,
-    book_id: null
+    book_id: null,
+    bookinstance_id: null
   })
 }
 
@@ -12,7 +13,8 @@ async function Login(user_id){
   await db.user_action.create({
     action_id: 2,
     user_id: user_id,
-    book_id: null
+    book_id: null,
+    bookinstance_id: null
   })
 }
 
@@ -20,31 +22,35 @@ async function Logout(user_id){
   await db.user_action.create({
     action_id: 3,
     user_id: user_id,
-    book_id: null
+    book_id: null,
+    bookinstance_id: null
   })
 }
 
-async function BorrowBook(user_id, book_id){
+async function BorrowBook(user_id, book_id, bookinstance_id){
   await db.user_action.create({
     action_id: 4,
     user_id: user_id,
-    book_id: book_id
+    book_id: book_id,
+    bookinstance_id: bookinstance_id
   })
 }
 
-async function EditBookInstance(user_id, book_id){
+async function EditBookInstance(user_id, book_id, bookinstance_id){
   await db.user_action.create({
     action_id: 5,
     user_id: user_id,
-    book_id: book_id
+    book_id: book_id,
+    bookinstance_id: bookinstance_id
   })
 }
 
-async function DeleteBookInstance(user_id, book_id){
+async function DeleteBookInstance(user_id, book_id, bookinstance_id){
   await db.user_action.create({
     action_id: 6,
     user_id: user_id,
-    book_id: book_id
+    book_id: book_id,
+    bookinstance_id
   })
 }
 
@@ -80,11 +86,12 @@ async function ReviewBook(user_id, book_id){
   })
 }
 
-async function AddBookInstanceAction(user_id, book_id){
+async function AddBookInstanceAction(user_id, book_id, bookinstance_id){
   await db.user_action.create({
     action_id: 11,
     user_id: user_id,
-    book_id: book_id
+    book_id: book_id,
+    bookinstance_id: bookinstance_id
   })
 }
 

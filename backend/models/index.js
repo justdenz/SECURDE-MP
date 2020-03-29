@@ -110,6 +110,14 @@ db.book.hasMany(db.user_action, {
   }
 })
 
+db.book_instance.hasMany(db.user_action,{
+  foreignKey:{
+    name: 'bookinstance_id',
+    type: DataType.INTEGER(11),
+    allowNull: true
+  }
+})
+
 db.action.hasMany(db.user_action,{
   foreignKey: {
     name: 'action_id',
@@ -117,6 +125,7 @@ db.action.hasMany(db.user_action,{
     allowNull: false
   }
 })
+
 
 
 
