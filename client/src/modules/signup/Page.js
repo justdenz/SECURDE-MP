@@ -4,12 +4,7 @@ import { Link, Redirect } from 'react-router-dom'
 import 'antd/dist/antd.css';
 import './index.css'
 
-import Firstname from "./components/firstname"
-import Lastname from "./components/lastname"
-import Username from "./components/username"
-import Password from "./components/password"
-import Email from "./components/email"
-import IdNum from "./components/idnumber"
+import { Firstname, Lastname, Username, Password, Email, IdNum } from "./components/index"
 
 const formItemLayout = {
   labelCol: {
