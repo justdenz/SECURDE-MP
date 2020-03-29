@@ -15,7 +15,7 @@ export default () => {
           },
       ]}
       >
-      <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+      <Input autoComplete="off" prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
     </Form.Item>
   );
 };

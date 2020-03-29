@@ -17,7 +17,7 @@ class Page extends Component {
 
   render() {
     return (
-      <div style={{width: 400, marginBottom: "100px"}}>
+      <div>
         {this.state.isAuthorized ? <AdminDashboard/> : <AdminLogin toggleIsAuthorized={this.toggleIsAuthorized}/>}
       </div>
     );

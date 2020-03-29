@@ -18,8 +18,7 @@ class Page extends Component {
       width: 0, 
       height: 0, 
       collapsed: false,
-      currPage: <BookInstances/>,
-      // currPage: this.props.userType === "MANAGER" ? <ManagerBooks/> : <Library/>, 
+      currPage: this.props.userType === "MANAGER" ? <ManagerBooks/> : <Library/>, 
     };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
@@ -119,7 +118,7 @@ class Page extends Component {
           </Sider>
           <Layout className="site-layout">
             <Content style={{ margin: '0 16px' }}>
-              <div className="site-layout-background" style={{ padding: 30, minHeight: 575, marginTop: 16 }}>
+              <div className="site-layout-background" style={{ padding: 30, minHeight: 650, marginTop: 16 }}>
                 {this.state.currPage}
               </div>
             </Content>
