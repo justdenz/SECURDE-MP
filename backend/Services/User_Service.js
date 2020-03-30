@@ -1,5 +1,5 @@
 const {GetUserByUsername, GetAllUsers, CreateUser, CheckExistingEmail, CheckExistingUsername, ChangePassword} = require('./User_DB.js')
-
+const {Register, Login} = require("./UserAction_DB.js")
 //returns null if there is no users 
 async function ValidateGetAllUsers(){
     let users = await GetAllUsers()
@@ -41,6 +41,12 @@ async function ValidateLogin(username, password){
     } else {
         response.status= "OK",
         response.payload= user
+
+        /*User Action*/
+        await Login(user.user_id)
+        .then(console.log("Action logged as Login"))
+        .catch(err => console.log(err))
+
     }
 
     return response
@@ -79,6 +85,11 @@ async function ValidateCreateUser(user_id, first_name, last_name, username, pass
         } else{
             response.status = "OK"
             response.payload = user
+
+            /*User Action*/
+            await Register(user_id)
+            .then(console.log("Action logged as Register!"))
+            .catch(err => console.log(err))
         }
     }
     
