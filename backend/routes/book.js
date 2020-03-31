@@ -79,7 +79,7 @@ router.post('/update_book', async (req, res) => {
 })
 
 router.post('/delete_book', async (req, res) => {
-  const result = await ValidateDeleteBookByID(req.session.user_id, req.body.book_id)
+  const result = await ValidateDeleteBookByID(req.body.book_id)
 
   res.send({
     status: result.status,
@@ -115,7 +115,7 @@ router.post('/get_bookinstance_bybookid', async (req, res) => {
 })
 
 router.post('/add_bookinstance', async (req, res) => {
-  const result = await ValidateAddBookInstance(req.session.user_id, req.body.book_id)
+  const result = await ValidateAddBookInstance(req.body.book_id)
 
   res.send({
     status: result.status,
@@ -127,7 +127,7 @@ router.post('/update_bookinstance', async (req, res) =>{
   //Put condition to check whether education or manager
   //Only manger can access this route
   if(req.session.user.role_name === 'MANAGER'){
-    await ValidateUpdateBookInstance(req.session.user_id, req.body.bookinstance_id)
+    await ValidateUpdateBookInstance(req.body.bookinstance_id)
     .then(res.send({
       status: "OK",
       payload: "Changed book status back to available!"
@@ -157,7 +157,7 @@ router.post('/borrow_bookinstance', async (req, res) => {
   //Only education can access this route
 
   if(req.session.user.role_name === 'EDUCATION'){
-    await ValidateBorrowBookInstance(req.session.user_id,req.body.bookinstance_id)
+    await ValidateBorrowBookInstance(req.body.bookinstance_id)
     .then(res.send({
       status: "OK",
       payload: "User has borrowed book!"
@@ -183,7 +183,7 @@ router.post('/borrow_bookinstance', async (req, res) => {
 })
 
 router.post("/delete_bookinstance", async (req, res) => {
-  await ValidateDeleteBookInstanceByID(req.session.user_id, req.body.bookinstance_id)
+  await ValidateDeleteBookInstanceByID(req.body.bookinstance_id)
   .then(result => {
     res.send({
       status: result.status,
