@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from "react-router-dom"
 import 'antd/dist/antd.css';
 import './index.css';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Row } from 'antd';
 import { UserOutlined, BookOutlined, ToolOutlined, BarcodeOutlined} from '@ant-design/icons';
 
 import { Books, ChangePass, History, Reviews, Library} from "./components/education/"
@@ -90,32 +90,34 @@ class Page extends Component {
           <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
             <div className="logo" />
             { (userType === "EDUCATION" || userType === "GUEST")  &&
-              <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" onClick={this.handleEducationMenu}>
-                <Menu.Item key="Library"><span><BookOutlined/><span>Library</span></span></Menu.Item>
+              <Menu theme="dark" defaultSelectedKeys={['Library']} mode="inline" onClick={this.handleEducationMenu}>
+                <Menu.Item key="Library">
+                  <Row justify="left"><span><BookOutlined/><span>Library</span></span></Row>
+                </Menu.Item>
                 
                 { userType === "EDUCATION" && 
-                <SubMenu key="sub1" title={<span><UserOutlined /><span>User</span></span>}>
-                  <Menu.Item key="History">History</Menu.Item>
-                  <Menu.Item key="Books">Books</Menu.Item>
-                  <Menu.Item key="Reviews">Reviews</Menu.Item>
+                <SubMenu key="sub1" title={<Row justify="left"><span><UserOutlined /><span>User</span></span></Row>}>
+                  <Menu.Item key="History"><Row justify="left">History</Row></Menu.Item>
+                  <Menu.Item key="Books"><Row justify="left">Books</Row></Menu.Item>
+                  <Menu.Item key="Reviews"><Row justify="left">Reviews</Row></Menu.Item>
                 </SubMenu>}
                 
                 { userType === "EDUCATION" && 
-                <SubMenu key="sub2"title={<span><ToolOutlined /><span>Settings</span></span>}>
-                  <Menu.Item key="ChangePass">Change Password</Menu.Item>
-                  <Menu.Item key="logout"><Link to="/login">Logout</Link></Menu.Item>
+                <SubMenu key="sub2"title={<Row justify="left"><span><ToolOutlined /><span>Settings</span></span></Row>}>
+                  <Menu.Item key="ChangePass"><Row justify="left">Change Password</Row></Menu.Item>
+                  <Menu.Item key="logout"><Link to="/login"><Row justify="left">Logout</Row></Link></Menu.Item>
                 </SubMenu>} 
                 
               </Menu>}
             { userType === "MANAGER" &&
               <Menu theme="dark" defaultSelectedKeys={['ManagerBooks']} mode="inline" onClick={this.handleManagerMenu}>
-                <Menu.Item key="ManagerBooks"><span><BookOutlined/><span>Books</span></span></Menu.Item>
-                <Menu.Item key="BookInstances"><span><BarcodeOutlined/><span>Book Instances</span></span></Menu.Item>
-                <Menu.Item key="Authors"><span><UserOutlined/><span>Authors</span></span></Menu.Item>
+                <Menu.Item key="ManagerBooks"><Row justify="left"><span><BookOutlined/><span>Books</span></span></Row></Menu.Item>
+                <Menu.Item key="BookInstances"><Row justify="left"><span><BarcodeOutlined/><span>Book Instances</span></span></Row></Menu.Item>
+                <Menu.Item key="Authors"><Row justify="left"><span><UserOutlined/><span>Authors</span></span></Row></Menu.Item>
                 
-                <SubMenu key="sub2"title={<span><ToolOutlined /><span>Settings</span></span>}>
-                  <Menu.Item key="ChangePass">Change Password</Menu.Item>
-                  <Menu.Item key="logout"><Link to="/login">Logout</Link></Menu.Item>
+                <SubMenu key="sub2"title={<Row justify="left"><span><ToolOutlined /><span>Settings</span></span></Row>}>
+                  <Menu.Item key="ChangePass"><Row justify="left">Change Password</Row></Menu.Item>
+                  <Menu.Item key="logout"><Link to="/login"><Row justify="left">Logout</Row></Link></Menu.Item>
                 </SubMenu>   
               </Menu>
             } 
