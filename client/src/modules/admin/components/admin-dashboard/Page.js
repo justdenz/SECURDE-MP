@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from "react-router-dom"
 import 'antd/dist/antd.css';
 import './index.css';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Row} from 'antd';
 import { UserOutlined, ToolOutlined, HistoryOutlined} from '@ant-design/icons';
 
 import { Manager, SystemLogs } from "./components/index"
@@ -61,12 +61,12 @@ class Page extends Component {
           <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
             <div className="logo" />
               <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" onClick={this.handleAdminMenu}>
-                <Menu.Item key="Manager"><UserOutlined/><span>Managers</span></Menu.Item>
-                <Menu.Item key="System"><HistoryOutlined/><span>System Logs</span></Menu.Item>
+                <Menu.Item key="Manager"><Row justify="left"><span><UserOutlined/></span><span>Managers</span></Row></Menu.Item>
+                <Menu.Item key="System"><Row justify="left"><span><HistoryOutlined/></span><span>System Logs</span></Row></Menu.Item>
                 
-                <SubMenu key="sub2"title={<span><ToolOutlined /><span>Settings</span></span>}>
-                  <Menu.Item key="ChangePass">Change Password</Menu.Item>
-                  <Menu.Item key="logout"><Link to="/login">Logout</Link></Menu.Item>
+                <SubMenu key="sub2"title={<Row justify="left"><span><ToolOutlined /><span>Settings</span></span></Row>}>
+                  <Menu.Item key="ChangePass"><Row justify="left">Change Password</Row></Menu.Item>
+                  <Menu.Item key="logout"><Link to="/login"><Row justify="left">Logout</Row></Link></Menu.Item>
                 </SubMenu>   
               </Menu>
           </Sider>

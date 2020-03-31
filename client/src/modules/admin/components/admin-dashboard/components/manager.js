@@ -45,8 +45,8 @@ class Page extends Component {
       },
       {
         title: 'Username',
-        dataIndex: 'user_name',
-        key: 'user_name',
+        dataIndex: 'username',
+        key: 'username',
       },
       {
         title: 'Email',
@@ -54,6 +54,26 @@ class Page extends Component {
         key: 'email',
       },
     ],
+  }
+
+  componentDidMount(){
+    this.getAllManagers()
+  }
+
+  getAllManagers(){
+    fetch("http://localhost:8000/admin/get_all_manager")
+      .then(res => res.json())
+      .then(res => {
+        if(res.status !== "ERROR"){
+          let managers = res.payload.map(manager => {
+            return({
+              key: manager.user_id,
+              ...manager,
+            })
+          })
+          this.setState({managers})
+        }
+      })
   }
 
   toggleAddModal = modalVisible => {
@@ -90,13 +110,14 @@ class Page extends Component {
   }
 
   render() {
+    const { columns, managers } = this.state
     return (
       <div>
         <h1>Managers Page</h1>
         <Button type="primary" style={{marginTop: 20, marginBottom: 20}} onClick={() => this.toggleAddModal(true)}>
-          <PlusOutlined /> Add amanager
+          <PlusOutlined /> Add manager
         </Button>
-        <Table columns={this.state.columns} dataSource={[]}></Table>
+        <Table columns={columns} dataSource={managers}></Table>
 
         <Modal
           title="Add Manager"

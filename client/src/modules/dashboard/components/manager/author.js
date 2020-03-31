@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "antd/dist/antd.css";
-import { Form, Row, Input, Table, Button, Modal, message} from "antd";
+import { Form, Row, Input, Table, Button, Modal, message, Popconfirm} from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 
 class Page extends Component {
@@ -32,7 +32,13 @@ class Page extends Component {
             <span>
               <a style={{ marginRight: 16 }} 
                 onClick={() => this.setState({selectedAuthor: record, modalVisible: true})}>Edit</a>
-              <a>Delete</a>
+              <Popconfirm
+                title="Are you sure delete this author?"
+                onConfirm={() => this.deleteAuthor()}
+                okText="Confirm"
+                cancelText="Cancel">
+                <a onClick={() => this.setState({selectedAuthor: record})}>Delete</a>
+              </Popconfirm>
             </span>
           )
         },
@@ -99,6 +105,27 @@ class Page extends Component {
           message.success("Author Successfully Updated!")
           this.getAllAuthors()
           this.toggleModal(false)
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  deleteAuthor(){
+    const reqOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({author_id: this.state.selectedAuthor.author_id})
+    }
+    fetch("http://localhost:8000/author/delete_author", reqOptions)
+      .then(res => res.json())
+      .then(res => {
+        if(res.status === "ERROR")
+          console.log("Cause of Error: ", res.payload);
+        else{
+          message.success(res.payload)
+          this.getAllAuthors()
         }
       })
       .catch((error) => {
