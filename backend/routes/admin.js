@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 })
 
 router.get('/get_all_manager', async (req, res) => {
-    let result = ValidateGetUserByRole("MANAGER")
+    let result = await ValidateGetUserByRole("MANAGER")
     res.send({
         status: result.status,
         payload: result.payload
