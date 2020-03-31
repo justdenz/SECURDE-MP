@@ -48,7 +48,7 @@ class Page extends Component {
 
   render() {
     return (
-      <div style={{width: 400, marginBottom: "100px"}}>
+      <div style={{width: 400, marginBottom: "100px", marginTop: "50px"}}>
         {this.state.isAuthenticated ? 
         <Redirect to="/dashboard"/> :
           <Card>
