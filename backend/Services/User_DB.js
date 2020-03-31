@@ -25,7 +25,7 @@ async function GetUserByUsername(username){
 }
 
 async function GetUserByRole(role){
-    const user = await db.user.findOne({
+    const user = await db.user.findAll({
         raw: true,
         where: {
             role_name: role,
