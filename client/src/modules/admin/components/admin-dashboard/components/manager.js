@@ -45,8 +45,8 @@ class Page extends Component {
       },
       {
         title: 'Username',
-        dataIndex: 'user_name',
-        key: 'user_name',
+        dataIndex: 'username',
+        key: 'username',
       },
       {
         title: 'Email',
@@ -65,14 +65,13 @@ class Page extends Component {
       .then(res => res.json())
       .then(res => {
         if(res.status !== "ERROR"){
-          console.log(res.payload);
-          // let managers = res.payload.map(managers => {
-          //   return({
-          //     key: book.book_id,
-          //     ...book,
-          //   })
-          // })
-          // this.setState({books})
+          let managers = res.payload.map(manager => {
+            return({
+              key: manager.user_id,
+              ...manager,
+            })
+          })
+          this.setState({managers})
         }
       })
   }
@@ -111,13 +110,14 @@ class Page extends Component {
   }
 
   render() {
+    const { columns, managers } = this.state
     return (
       <div>
         <h1>Managers Page</h1>
         <Button type="primary" style={{marginTop: 20, marginBottom: 20}} onClick={() => this.toggleAddModal(true)}>
-          <PlusOutlined /> Add amanager
+          <PlusOutlined /> Add manager
         </Button>
-        <Table columns={this.state.columns} dataSource={[]}></Table>
+        <Table columns={columns} dataSource={managers}></Table>
 
         <Modal
           title="Add Manager"

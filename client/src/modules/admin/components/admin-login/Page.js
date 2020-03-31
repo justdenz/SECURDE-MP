@@ -23,7 +23,7 @@ class Page extends Component {
 
   render() {
     return (
-      <div style={{width: 400, marginBottom: "100px"}}>
+      <div style={{width: 400, marginBottom: "100px", marginTop: "100px"}}>
         <Card>
           <h1 style={{marginBottom: 20}}>Admin</h1>
           <Form name="normal_login" className="login-form" onFinish={this.onSubmit}>
