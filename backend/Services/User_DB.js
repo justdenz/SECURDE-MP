@@ -24,6 +24,20 @@ async function GetUserByUsername(username){
     return null
 }
 
+async function GetUserByRole(role){
+    const user = await db.user.findOne({
+        raw: true,
+        where: {
+            role_name: role,
+        },
+        paranoid: true,
+        attributes: ['user_id', 'first_name', 'last_name', 'username', 'password', 'email', 'role_name'],
+    })
+
+    if(user) return user
+    return null
+}
+
 async function CheckExistingEmail(email){
     const user = await db.user.findOne({
         raw: true,
@@ -92,5 +106,6 @@ module.exports = {
     CreateUser,
     CheckExistingEmail,
     CheckExistingUsername,
-    ChangePassword
+    ChangePassword,
+    GetUserByRole
 }

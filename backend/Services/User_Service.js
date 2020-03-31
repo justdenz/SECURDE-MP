@@ -1,4 +1,10 @@
-const {GetUserByUsername, GetAllUsers, CreateUser, CheckExistingEmail, CheckExistingUsername, ChangePassword} = require('./User_DB.js')
+const {GetUserByUsername, 
+    GetAllUsers, 
+    CreateUser, 
+    CheckExistingEmail, 
+    CheckExistingUsername, 
+    ChangePassword,
+    GetUserByRole} = require('./User_DB.js')
 
 //returns null if there is no users 
 async function ValidateGetAllUsers(){
@@ -46,6 +52,28 @@ async function ValidateLogin(username, password){
     return response
 }
 
+async function ValidateGetUserByRole(role){
+    let user = await GetUserByRole(role)
+
+    let response = {
+        status: '',
+        payload: ''
+    }
+
+    if(!user){
+        response.status= "ERROR"
+        response.payload= "There are no " + role + " at this moment..."
+        
+    } else if(user){
+        response.status= "OK"
+        response.payload= user
+    } else {
+        response.status= "ERROR",
+        response.payload= "An error has occurred, please try again..."
+    }
+
+    return response
+}
 
 async function ValidateCreateUser(user_id, first_name, last_name, username, password, email, role_name){
     let response = {
@@ -97,5 +125,6 @@ module.exports = {
     ValidateLogin,
     ValidateCreateUser,
     ValidateChangePassword,
-    ValidateGetAllUsers
+    ValidateGetAllUsers,
+    ValidateGetUserByRole
 }

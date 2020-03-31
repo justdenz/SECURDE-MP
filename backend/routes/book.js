@@ -12,14 +12,19 @@ const {
     ValidateUpdateBookInstance,
     ValidateDeleteBookInstanceByID,
     ValidateGetAllBookInstance,
-    ValidateGetBookInstancesByBookID,
-    ValidateBorrowBookInstance
+    ValidateGetBookInstancesByBookID
   } = require('../Services/Book_Service.js')
 
-const {ValidateCreateAuthor} = require('../Services/Author_Service.js')
 
 router.use(function timeLog (req, res, next) {
+  if(req.session.user.role_name == "MANAGER"){
     next()
+  } else {
+    res.send({
+      status: "ERROR",
+      payload: "Only managers can access this link..."
+    })
+  }
 })
 
 router.get('/', async (req, res) => {
@@ -122,62 +127,37 @@ router.post('/add_bookinstance', async (req, res) => {
 })
 
 router.post('/update_bookinstance', async (req, res) =>{
-  //Put condition to check whether education or manager
-  //Only manger can access this route
-  if(req.session.user.role_name === 'MANAGER'){
-    await ValidateUpdateBookInstance(req.body.bookinstance_id)
-    .then(res.send({
-      status: "OK",
-      payload: "Changed book status back to available!"
-    }))
-    .catch(err => {
-      res.send({
-        status: "ERROR",
-        payload: err
+    const status = {
+      AVAILABLE: '1',
+      RESERVED: '0'
+    }
+    if(req.body.status == 0){
+      await ValidateUpdateBookInstance(req.body.bookinstance_id, status.RESERVED)
+      .then(res.send({
+        status: "OK",
+        payload: "Changed book status back to reserved!"
+      }))
+      .catch(err => {
+        res.send({
+          status: "ERROR",
+          payload: err
+        })
       })
-    })
-  } else {
-    res.send({
-      status: "ERROR",
-      payload: "Only manager accounts can access this link..."
-    })
-    .catch(err => {
-      res.send({
-        status: "ERROR",
-        payload: err
+      
+    } else if(req.body.status == 1){
+      await ValidateUpdateBookInstance(req.body.bookinstance_id, status.AVAILABLE)
+      .then(res.send({
+        status: "OK",
+        payload: "Changed book status back to available!"
+      }))
+      .catch(err => {
+        res.send({
+          status: "ERROR",
+          payload: err
+        })
       })
-    })
-  }
-})
-
-router.post('/borrow_bookinstance', async (req, res) => {
-  //Put condition to check whether education or manager
-  //Only education can access this route
-
-  if(req.session.user.role_name === 'EDUCATION'){
-    await ValidateBorrowBookInstance(req.body.bookinstance_id)
-    .then(res.send({
-      status: "OK",
-      payload: "User has borrowed book!"
-    }))
-    .catch(err => {
-      res.send({
-        status: "ERROR",
-        payload: err
-      })
-    })
-  } else {
-    res.send({
-      status: "ERROR",
-      payload: "Only eduaction accounts can access this link..."
-    })
-    .catch(err => {
-      res.send({
-        status: "ERROR",
-        payload: err
-      })
-    })
-  }
+    }
+  
 })
 
 router.post("/delete_bookinstance", async (req, res) => {

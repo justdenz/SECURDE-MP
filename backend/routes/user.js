@@ -8,6 +8,8 @@ const {
     ValidateGetAllUsers
 } = require('../Services/User_Service.js')
 
+const {ValidateBorrowBookInstance} = require('../Services/Book_Service')
+
 router.get('/', (req, res) => {
 })
 
@@ -41,6 +43,24 @@ router.post("/validate_signup", async (req, res) => {
     res.send({
         status: result.status,
         payload: result.payload
+    })
+})
+
+
+router.post('/borrow_bookinstance', async (req, res) => {
+    //Put condition to check whether education or manager
+    //Only education can access this route
+    await ValidateBorrowBookInstance(req.body.bookinstance_id)
+    .then(res.send({
+        status: "OK",
+        payload: "User has borrowed book!"
+        })
+    )
+    .catch(err => {
+        res.send({
+            status: "ERROR",
+            payload: err
+        })
     })
 })
 

@@ -217,12 +217,8 @@ async function ValidateAddBookInstance(book_id){
   return response
 }
 
-async function ValidateUpdateBookInstance(bookinstance_id){
-  const status = {
-    AVAILABLE: '1',
-    RESERVED: '0'
-  }
-  await UpdateBookInstance(bookinstance_id, status.AVAILABLE)
+async function ValidateUpdateBookInstance(bookinstance_id, status){
+  await UpdateBookInstance(bookinstance_id, status)
 }
 
 async function ValidateBorrowBookInstance(bookinstance_id){
