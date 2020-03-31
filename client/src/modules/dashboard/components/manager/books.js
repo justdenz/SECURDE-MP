@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Drawer, Button, Form, message, Select} from 'antd';
+import { Table, Drawer, Button, Form, message, Popconfirm} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import AddBookComponents from "./components/bookDrawer"
@@ -47,7 +47,13 @@ class Page extends Component {
               <span>
                 <a style={{ marginRight: 16 }} 
                 onClick={() => this.setState({selectedBook: record, EditDrawerVisible: true})}>Edit</a>
-                <a>Delete</a>
+                <Popconfirm
+                  title="Are you sure delete this book?"
+                  onConfirm={() => this.deleteBook()}
+                  okText="Confirm"
+                  cancelText="Cancel">
+                <a onClick={() => this.setState({selectedBook: record})}>Delete</a>
+                </Popconfirm>
               </span>
             )
           },
@@ -144,6 +150,27 @@ class Page extends Component {
           message.success("Book Successfully Updated!")
           this.getAllBooks()
           this.toggleEditDrawer(false)
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  deleteBook(){
+    const reqOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({book_id: this.state.selectedBook.book_id})
+    }
+    fetch("http://localhost:8000/book/delete_book", reqOptions)
+      .then(res => res.json())
+      .then(res => {
+        if(res.status === "ERROR")
+          console.log("Cause of Error: ", res.payload);
+        else{
+          message.success("Book Deleted!")
+          this.getAllBooks()
         }
       })
       .catch((error) => {
