@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "antd/dist/antd.css";
-import { Form, Row, Select, Table, Button, Modal, Tag, message, Radio } from "antd";
+import { Form, Row, Select, Table, Button, Modal, Tag, message, Radio, Popconfirm } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
@@ -46,7 +46,13 @@ class Page extends Component {
             <span>
               <a style={{ marginRight: 16 }} 
                 onClick={() => this.setState({selectedBookInstance: record, modalVisible: true})}>Edit</a>
-              <a>Delete</a>
+              <Popconfirm
+                title="Are you sure delete this book instance?"
+                onConfirm={() => this.deleteBookInstance()}
+                okText="Confirm"
+                cancelText="Cancel">
+                <a onClick={() => this.setState({selectedBookInstance: record})}>Delete</a>
+              </Popconfirm>
             </span>
           )
         },
@@ -59,25 +65,8 @@ class Page extends Component {
     this.getAllBookInstances()
   }
 
-  getBook(id){
-    const reqOptions = {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({book_id: id})
-    }
-    fetch("http://localhost:8000/book/get_book", reqOptions)
-      .then(res => res.json())
-      .then(res => {
-        if(res.status === "ERROR"){
-          console.log("Cause of Error: ", res.payload);
-          return null
-        } else{
-          return res.payload
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  componentDidUpdate(){
+    this.getAllBookInstances()
   }
 
   getAllBooks(){
@@ -110,6 +99,27 @@ class Page extends Component {
           this.setState({instances})
         }
       })
+  }
+
+  deleteBookInstance(){
+    const reqOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({bookinstance_id: this.state.selectedBookInstance.bookinstance_id})
+    }
+    fetch("http://localhost:8000/book/delete_bookinstance", reqOptions)
+      .then(res => res.json())
+      .then(res => {
+        if(res.status === "ERROR")
+          console.log("Cause of Error: ", res.payload);
+        else{
+          message.success("Book Instance Deleted!")
+          this.getAllBookInstances()
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   handleAddBookInstanceSubmit = value => {
