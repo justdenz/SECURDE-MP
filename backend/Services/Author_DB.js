@@ -49,7 +49,7 @@ async function CheckExistingAuthor(first_name, last_name){
 }
 
 async function DeleteAuthor(author_id){
-  await db.user.destroy({
+  await db.author.destroy({
     where:{
       author_id: author_id
     }

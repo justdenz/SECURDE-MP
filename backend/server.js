@@ -22,6 +22,8 @@ db.sequelize.sync()
 
 
 //Functions
+const {CreateAuthors} = require('./TestData/TestAuthor')
+const {CreateBooks} = require('./TestData/TestBooks')
 
 //Initializes session in a cookie
 app.use(session({
