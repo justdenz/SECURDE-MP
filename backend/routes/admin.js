@@ -9,7 +9,14 @@ const {
 } = require('../Services/User_Service')
 
 router.use(function timeLog (req, res, next) {
-    next()
+    if(req.session.role_name == "ADMIN"){
+        next()
+    } else {
+        res.send({
+            status: "ERROR",
+            payload: "Only admins have access to these routes..."
+        })
+    }
 })
 
 router.get('/', (req, res) => {

@@ -42,6 +42,7 @@ async function GetBookAuthorID(book_id){
     where: {
       book_id: book_id
     },
+    paranoid: false,
     attributes: ['author_id']
   })
   var authors = []
@@ -53,7 +54,7 @@ async function GetBookAuthorID(book_id){
       where: {
         author_id: id.author_id
       },
-      paranoid: true,
+      paranoid: false,
       attributes: ['first_name', 'last_name']
     })
     authors.push(tempAuthor.last_name + ", " + tempAuthor.first_name)

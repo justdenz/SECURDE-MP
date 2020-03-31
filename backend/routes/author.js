@@ -51,4 +51,18 @@ router.post("/get_author_byid", async (req, res) => {
     payload: result.payload
   })
 })
+
+router.post("/delete_author", async (req, res) => {
+  await ValidateDeleteAuthor(req.body.author_id)
+  .then(res.send({
+    status: "OK",
+    payload: "Author has been deleted!"
+  }))
+  .catch(err => {
+    res.send({
+      status: "ERROR",
+      payload: err
+    })
+  })
+})
 module.exports = router
