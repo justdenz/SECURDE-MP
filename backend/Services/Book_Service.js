@@ -16,7 +16,7 @@ const {
   GetBookAuthorID
 } = require("./Book_DB.js")
 
-const {BorrowBook, EditBookInstance, DeleteBookInstance, AddBookAction, EditBook, DeleteBook} = require("./UserAction_DB.js")
+const {BorrowBook, EditBookInstance, DeleteBookInstance, AddBookAction, EditBook, DeleteBook, AddBookInstanceAction} = require("./UserAction_DB.js")
 
 async function ValidateGetAllBooks(){
   let books = await GetAllBooks()
@@ -126,7 +126,7 @@ async function ValidateUpdateBook(user_id, book_id, title, publisher, year_publi
 }
 
 //when de
-async function ValidateDeleteBookByID(book_id){
+async function ValidateDeleteBookByID(user_id, book_id){
 
   let response = {
     status: '',
@@ -155,6 +155,10 @@ async function ValidateDeleteBookByID(book_id){
       response.status = 'OK'
       response.payload = "Book " + book_id + " has been deleted!"
 
+      /*User Action*/
+      await DeleteBook(user_id, book_id)
+      .then(console.log("Action logged as Delete Book"))
+      .catch(err => console.log(err))
     }
 
   } else{
@@ -209,7 +213,7 @@ async function ValidateGetBookInstancesByBookID(book_id){
   return response
 }
 
-async function ValidateAddBookInstance(book_id){
+async function ValidateAddBookInstance(user_id, book_id){
   let response = {
     status: '',
     payload: ''
@@ -224,28 +228,40 @@ async function ValidateAddBookInstance(book_id){
     response.status = "OK",
     response.payload = "Book instance has been added successfully!"
 
+    /*User Action*/
+    await AddBookInstanceAction(user_id, book_id)
+    .then(console.log("Action logged as Add Book Instance"))
+    .catch(err => console.log(err))
+
   }
 
   return response
 }
 
-async function ValidateUpdateBookInstance(bookinstance_id){
+async function ValidateUpdateBookInstance(user_id, bookinstance_id){
   const status = {
     AVAILABLE: '1',
     RESERVED: '0'
   }
   await UpdateBookInstance(bookinstance_id, status.AVAILABLE)
+  await EditBookInstance(user_id, bookinstance_id)
+  .then(console.log("Action logged as Edit Book Instance"))
+  .catch(err => console.log(err))
 }
 
-async function ValidateBorrowBookInstance(bookinstance_id){
+async function ValidateBorrowBookInstance(user_id, bookinstance_id){
   const status = {
     AVAILABLE: '1',
     RESERVED: '0'
   }
   await UpdateBookInstance(bookinstance_id, status.RESERVED)
+  /*User Action*/
+  await BorrowBook(user_id, bookinstance_id)
+  .then(console.log("Action logged as Borrow Book"))
+  .catch(err => console.log(err))
 }
 
-async function ValidateDeleteBookInstanceByID(bookinstance_id){
+async function ValidateDeleteBookInstanceByID(user_id, bookinstance_id){
   let response = {
     status: '',
     payload: ''
@@ -258,6 +274,11 @@ async function ValidateDeleteBookInstanceByID(bookinstance_id){
     await DeleteBookInstanceByID(bookinstance_id)
     response.status = "OK"
     response.payload = "Book instance has been deleted!"
+
+    /*User Action*/
+    await DeleteBookInstance(user_id, bookinstance_id)
+    .then(console.log("Action logged as Delete Book Instance"))
+    .catch(err=>(console.log(err)))
   }
 
   return response
