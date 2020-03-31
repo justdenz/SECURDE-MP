@@ -83,27 +83,31 @@ class Page extends Component {
   };
 
   render() {
+    const { userType } = this.props
     return (
       <div style={{width: this.state.width, height: this.state.height, marginTop: "-100px"}}>
         <Layout style={{ minHeight: '100vh'}}>
           <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
             <div className="logo" />
-            { this.props.userType === "EDUCATION"  &&
+            { (userType === "EDUCATION" || userType === "GUEST")  &&
               <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" onClick={this.handleEducationMenu}>
                 <Menu.Item key="Library"><span><BookOutlined/><span>Library</span></span></Menu.Item>
                 
+                { userType === "EDUCATION" && 
                 <SubMenu key="sub1" title={<span><UserOutlined /><span>User</span></span>}>
                   <Menu.Item key="History">History</Menu.Item>
                   <Menu.Item key="Books">Books</Menu.Item>
                   <Menu.Item key="Reviews">Reviews</Menu.Item>
-                </SubMenu>
+                </SubMenu>}
                 
+                { userType === "EDUCATION" && 
                 <SubMenu key="sub2"title={<span><ToolOutlined /><span>Settings</span></span>}>
                   <Menu.Item key="ChangePass">Change Password</Menu.Item>
                   <Menu.Item key="logout"><Link to="/login">Logout</Link></Menu.Item>
-                </SubMenu>   
+                </SubMenu>} 
+                
               </Menu>}
-            { this.props.userType === "MANAGER" &&
+            { userType === "MANAGER" &&
               <Menu theme="dark" defaultSelectedKeys={['ManagerBooks']} mode="inline" onClick={this.handleManagerMenu}>
                 <Menu.Item key="ManagerBooks"><span><BookOutlined/><span>Books</span></span></Menu.Item>
                 <Menu.Item key="BookInstances"><span><BarcodeOutlined/><span>Book Instances</span></span></Menu.Item>

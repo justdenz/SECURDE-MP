@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom"
 import './App.css';
 
 import LoginForm from "./modules/login/Page"
@@ -22,8 +22,9 @@ class App extends Component {
             <Route path="/login" component={LoginForm}></Route>
             <Route path="/register" component={RegisterForm}></Route>
             <Route path="/forgot" component={ForgotForm}></Route>
-            <Route path="/dashboard" exact component={Dashboard}></Route>
-            {/* {this.props.userType !== "" && <Route path="/dashboard" exact component={Dashboard}></Route>} */}
+            {this.props.userType === "" && <Redirect exact from="/dashboard" to="/" />}
+            {this.props.userType === "" && <Redirect exact from="*" to="/" />}
+            {this.props.userType !== "" && <Route path="/dashboard" exact component={Dashboard}></Route>}
             <Route path="/admin" component={Admin}></Route>
           </Switch>
         </div>
