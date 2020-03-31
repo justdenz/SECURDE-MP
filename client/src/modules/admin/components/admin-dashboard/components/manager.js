@@ -56,6 +56,27 @@ class Page extends Component {
     ],
   }
 
+  componentDidMount(){
+    this.getAllManagers()
+  }
+
+  getAllManagers(){
+    fetch("http://localhost:8000/admin/get_all_manager")
+      .then(res => res.json())
+      .then(res => {
+        if(res.status !== "ERROR"){
+          console.log(res.payload);
+          // let managers = res.payload.map(managers => {
+          //   return({
+          //     key: book.book_id,
+          //     ...book,
+          //   })
+          // })
+          // this.setState({books})
+        }
+      })
+  }
+
   toggleAddModal = modalVisible => {
     this.setState({modalVisible})
   }
