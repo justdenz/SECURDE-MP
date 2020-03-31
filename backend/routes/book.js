@@ -16,16 +16,16 @@ const {
   } = require('../Services/Book_Service.js')
 
 
-router.use(function timeLog (req, res, next) {
-  if(req.session.user.role_name == "MANAGER"){
-    next()
-  } else {
-    res.send({
-      status: "ERROR",
-      payload: "Only managers can access this link..."
-    })
-  }
-})
+// router.use(function timeLog (req, res, next) {
+//   if(req.session.user.role_name == "MANAGER"){
+//     next()
+//   } else {
+//     res.send({
+//       status: "ERROR",
+//       payload: "Only managers can access this link..."
+//     })
+//   }
+// })
 
 router.get('/', async (req, res) => {
   const result = await ValidateGetAllBooks()

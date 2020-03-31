@@ -32,8 +32,8 @@ class Page extends Component {
         dataIndex: 'status',
         render: status => (
           <span>
-            <Tag color={status ? 'green' : 'volcano'}>
-              {status ? 'AVAILABLE' : 'RESERVED'}
+            <Tag color={Number(status) ? 'green' : 'volcano'}>
+              {Number(status) ? 'AVAILABLE' : 'RESERVED'}
             </Tag>
           </span>
         ),
@@ -136,7 +136,6 @@ class Page extends Component {
         else{
           message.success("Book Instance Successfully Added!")
           this.getAllBookInstances()
-          this.toggleModal(false)
         }
       })
       .catch((error) => {
@@ -145,8 +144,26 @@ class Page extends Component {
   }
 
   handleUpdateBookInstance = value => {
-    console.log("Value: ", value);
-    this.toggleModal(false)
+    const reqOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({bookinstance_id: this.state.selectedBookInstance.bookinstance_id, status: value.status})
+    }
+    fetch("http://localhost:8000/book/update_bookinstance", reqOptions)
+      .then(res => res.json())
+      .then(res => {
+        if(res.status === "ERROR")
+          console.log("Cause of Error: ", res.payload);
+        else{
+          message.success("Book Instance Updated!")
+          console.log(res.payload);
+          this.getAllBookInstances()
+          this.toggleModal(false)
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   toggleModal = modalVisible => {

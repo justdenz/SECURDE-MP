@@ -77,6 +77,7 @@ class Page extends Component {
           console.log("Cause of Error: ", res.payload);
         else
           message.success("Author Successfully Added!")
+          this.getAllAuthors()
       })
       .catch((error) => {
         console.error(error);
@@ -96,6 +97,7 @@ class Page extends Component {
           console.log("Cause of Error: ", res.payload);
         else{
           message.success("Author Successfully Updated!")
+          this.getAllAuthors()
           this.toggleModal(false)
         }
       })

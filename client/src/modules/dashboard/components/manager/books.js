@@ -67,6 +67,10 @@ class Page extends Component {
     this.getAllAuthors()
   }
 
+  componentDidUpdate(){
+    this.getAllBooks()
+  }
+
   getAllBooks(){
     fetch("http://localhost:8000/book/")
       .then(res => res.json())
