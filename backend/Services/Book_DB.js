@@ -7,7 +7,8 @@ async function GetAllBooks(){
     attributes: ['book_id', 'title', 'publisher', 'year_publication', 'isbn']
   })
 
-  return books
+  if(books) return books
+  return null
 }
 
 async function GetBookByID(book_id){
@@ -63,24 +64,25 @@ async function GetBookAuthorID(book_id){
 }
 
 async function AddBookAuthor(book_id, author_id){
-  await db.book_author.create({
+  let result = await db.book_author.create({
     book_id: book_id,
     author_id: author_id
   })
+
+  return result
 }
 
 async function DeleteBookAuthors(book_id){
-  await db.book_author.destroy({
+  let result = await db.book_author.destroy({
     where: {
       book_id: book_id
     }
   })
-  .then(console.log("Book authors has been deleted!"))
-  .catch(err => console.log(err))
+  return result
 }
 
 async function UpdateBook(book_id, title, publisher, year_publication, isbn){
-  await db.book.update({
+  let result = await db.book.update({
     title: title,
     publisher: publisher,
     year_publication: year_publication,
@@ -90,18 +92,18 @@ async function UpdateBook(book_id, title, publisher, year_publication, isbn){
       book_id: book_id
     }
   })
-  .then(console.log("Book Updated successfully!"))
-  .catch(err => console.log(err))
+
+  return result
 }
 
 async function DeleteBookByID(book_id){
-  db.book.destroy({
+  const result = db.book.destroy({
     where: {
       book_id: book_id
     }
   })
-  .then(console.log('Book ' + book_id + ' has been deleted'))
-  .catch(err => console.log(err))
+  
+  return result
 }
 
 async function GetAllBookInstance(){
@@ -115,7 +117,7 @@ async function GetAllBookInstance(){
 }
 
 async function GetBookInstanceByID(bookinstance_id){
-  let bookInstance = await db.book_instance.findAll({
+  let bookInstance = await db.book_instance.findOne({
     raw: true,
     where: {
       bookinstance_id: bookinstance_id
@@ -152,36 +154,35 @@ async function AddBookInstance(book_id){
 }
 
 async function UpdateBookInstance(bookinstance_id, status){
-  await db.book_instance.update({
+  let result = await db.book_instance.update({
     status: status
   }, {
     where: {
       bookinstance_id: bookinstance_id
     }
   })
-  .then(console.log("Book Instance " + bookinstance_id + " has been updated!"))
-  .catch(err => console.log(err))
+  return result
 }
 
 
 async function DeleteBookInstanceByID(bookinstance_id){
-  db.book_instance.destroy({
+  let result = db.book_instance.destroy({
     where: {
       bookinstance_id: bookinstance_id
     }
   })
-  .then(console.log('Book Instance ' + bookinstance_id + ' has been deleted'))
-  .catch(err => console.log(err))
+
+  return result
 }
 
 async function DeleteBookInstanceByBookID(book_id){
-  db.book_instance.destroy({
+  let result = db.book_instance.destroy({
     where: {
       book_id: book_id
     }
   })
-  .then(console.log('Book Instances of Book ' + book_id + ' has been deleted'))
-  .catch(err => console.log(err))
+
+  return result
 }
 
 

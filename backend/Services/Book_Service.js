@@ -94,21 +94,31 @@ async function ValidateUpdateBook(book_id, title, publisher, year_publication, i
     payload: ''
   }
 
-  await UpdateBook(book_id, title, publisher, year_publication, isbn)
-  await DeleteBookAuthors(book_id)
-  let updatedBook = await GetBookByID(book_id)
-  if(!updatedBook){
+  let updateBookResult = await UpdateBook(book_id, title, publisher, year_publication, isbn)
+  if(updateBookResult == 1){
+    let deleteBookAuthorResult = await DeleteBookAuthors(book_id)
+    if(deleteBookAuthorResult > 0){
+      let updatedBook = await GetBookByID(book_id)
+      if(!updatedBook){
+        response.status="ERROR"
+        response.payload = "There was an error updating the book, please try again..."
+      } else{
+        var id
+        for(id of author_ids){
+          await AddBookAuthor(book_id, id)
+        }
+        response.status = "OK"
+        response.payload = "Book has been updated!"
+      }
+    } else {
+      response.status="ERROR"
+      response.payload = "There might be an error updating the book, please try again..."
+    }
+  } else {
     response.status="ERROR"
     response.payload = "There was an error updating the book, please try again..."
-  } else{
-    var id
-    for(id of author_ids){
-      await AddBookAuthor(book_id, id)
-    }
-    response.status = "OK"
-    response.payload = "Book has been updated!"
-
   }
+  
 
   return response
 }
@@ -123,31 +133,50 @@ async function ValidateDeleteBookByID(book_id){
   let books = await GetBookInstancesByBookID(book_id)
 
   if(books === undefined || books.length == 0){
-    await DeleteBookByID(book_id)
-    response.status = 'OK'
-    response.payload = "Book " + book_id + " has been deleted!"
+    const result = await DeleteBookByID(book_id)
+    if(result > 0){
+      response.status = 'OK'
+      response.payload = "Book " + book_id + " has been deleted!"
+    }else{
+      response.status = 'ERROR'
+      response.payload = 'An error has occurred in deleting the book, please try again..'
+    }
   } else if(books){
 
-    var status = books.forEach(element => {
-        if(element.status == 0){
-          return 'reserved'
-        }
-      })
+    var bookStatus 
+    var book
+    for(book of books){
+      if(book.status == '0'){
+        bookStatus = 'reserved'
+      }
+    }
 
-    if(status == 'reserved'){
+    if(bookStatus == 'reserved'){
       response.status = 'ERROR'
       response.payload = "Cannot delete book because someone an instance of it is still reserved.."
     } else{
-      await DeleteBookByID(book_id)
-      await DeleteBookInstanceByBookID(book_id)
-      response.status = 'OK'
-      response.payload = "Book " + book_id + " has been deleted!"
+      let instanceResult = await DeleteBookInstanceByBookID(book_id)
 
+      if(instanceResult > 0){
+        let bookResult = await DeleteBookByID(book_id)
+
+        if(bookResult > 0){
+          response.status = 'OK'
+          response.payload = "Book " + book_id + " has been deleted!"
+        }else{
+          response.status = 'ERROR'
+          response.payload = 'An error has occurred in deleting the book, please try again..'
+        }
+
+      }else{
+        response.status = 'ERROR'
+        response.payload = 'An error has occurred in deleting the book, please try again..'
+      }
     }
 
   } else{
     response.status = 'ERROR'
-    response.payload = 'An error has occurred, please try again..'
+    response.payload = 'An error has occurred in deleting the book, please try again..'
   }
 
   return response
@@ -218,15 +247,55 @@ async function ValidateAddBookInstance(book_id){
 }
 
 async function ValidateUpdateBookInstance(bookinstance_id, status){
-  await UpdateBookInstance(bookinstance_id, status)
+  let response = {
+    status: '',
+    payload: ''
+  }
+  const instance_status = {
+    AVAILABLE: '1',
+    RESERVED: '0'
+  }
+  let statusUpdate
+  let result
+  if(status == 1){
+    result = await UpdateBookInstance(bookinstance_id, instance_status.AVAILABLE)
+    statusUpdate = "AVAILABLE"
+  }else if(status == 0){
+    result = await UpdateBookInstance(bookinstance_id, instance_status.RESERVED)
+    statusUpdate = "RESERVED"
+  }
+
+  if(result > 0){
+    response.status = 'OK',
+    response.payload = "Book instance was changed to " + statusUpdate
+  } else {
+    response.status = "ERROR"
+    response.payload = "There was an error in updating book instance, please try again..."
+  }
+  
+  return response
 }
 
 async function ValidateBorrowBookInstance(bookinstance_id){
+  let response = {
+    status: '',
+    payload: ''
+  }
   const status = {
     AVAILABLE: '1',
     RESERVED: '0'
   }
-  await UpdateBookInstance(bookinstance_id, status.RESERVED)
+  let result = await UpdateBookInstance(bookinstance_id, status.RESERVED)
+
+  if(result > 0){
+    response.status = 'OK',
+    response.payload = "Student borrowed book!"
+  }else {
+    response.status = "ERROR"
+    response.payload = "There was an error, please try again..."
+  }
+
+  return response
 }
 
 async function ValidateDeleteBookInstanceByID(bookinstance_id){
@@ -235,13 +304,18 @@ async function ValidateDeleteBookInstanceByID(bookinstance_id){
     payload: ''
   }
   let bookInstance = await GetBookInstanceByID(bookinstance_id)
-  if(bookInstance.status == 0){
+  if(bookInstance.status == '0'){
     response.status = 'ERROR'
     response.payload = "This book instance is being reserved by someone..."
   } else{
-    await DeleteBookInstanceByID(bookinstance_id)
-    response.status = "OK"
-    response.payload = "Book instance has been deleted!"
+    let result = await DeleteBookInstanceByID(bookinstance_id)
+    if(result > 0){
+      response.status = "OK"
+      response.payload = "Book instance has been deleted!"
+    }else {
+      response.status = "ERROR"
+      response.payload = "There was an error in deleting the book instance, please try again..."
+    }
   }
 
   return response

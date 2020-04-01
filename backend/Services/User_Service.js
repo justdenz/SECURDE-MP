@@ -23,9 +23,10 @@ async function ValidateGetAllUsers(){
         response.status = "OK"
         response.payload = users
     }
-    else
+    else{
         response.status = "ERROR"
         response.payload = "There was an error getting all the users, please try again..."
+    }
 
     return response
 }
@@ -85,8 +86,6 @@ async function ValidateCreateUser(user_id, first_name, last_name, username, pass
     let checkUsernameResult = await CheckExistingUsername(username)
     let checkEmailResult = await CheckExistingEmail(email)
 
-    console.log(checkUsernameResult)
-    console.log(checkEmailResult)
 
     if(checkUsernameResult === 1 && checkEmailResult === 1){
         response.status = "ERROR"
@@ -114,11 +113,39 @@ async function ValidateCreateUser(user_id, first_name, last_name, username, pass
 }
 
 async function ValidateChangePassword(user_id, new_password){
-    await ChangePassword(user_id, password)
+    let response = {
+        status: '',
+        payload: ''
+    }
+    let result = await ChangePassword(user_id, new_password)
+
+    if(result == 1){
+        response.status = "OK"
+        response.payload = "User has changed password successfully!"
+    } else {
+        response.status = "ERROR"
+        response.payload = "There was an error changing the password, please try again..."
+    }
+
+    return response
 }
 
 async function ValidateDeleteUser(user_id){
-    await DeleteUser(user_id)
+    let response = {
+        status: '',
+        payload: ''
+    }
+    let result = await DeleteUser(user_id)
+
+    if(result == 1){
+        response.status = "OK"
+        response.payload = "User has been deleted successfully"
+    } else {
+        response.status = "ERROR"
+        response.payload = "There was an error deleting the user, please try again..."
+    }
+
+    return response
 }
 
 module.exports = {
@@ -126,5 +153,6 @@ module.exports = {
     ValidateCreateUser,
     ValidateChangePassword,
     ValidateGetAllUsers,
-    ValidateGetUserByRole
+    ValidateGetUserByRole,
+    ValidateDeleteUser
 }

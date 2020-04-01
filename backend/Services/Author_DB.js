@@ -17,7 +17,8 @@ async function GetAllAuthors(){
     attributes:['author_id', 'first_name', 'last_name']
   })
 
-  return authors
+  if(authors) return authors
+  return null
 }
 
 async function GetAuthorByID(author_id){
@@ -49,12 +50,14 @@ async function CheckExistingAuthor(first_name, last_name){
 }
 
 async function DeleteAuthor(author_id){
-  await db.author.destroy({
+  const result = await db.author.destroy({
     where:{
       author_id: author_id
     }
-  }).then(console.log('Author ' + author_id + ' has been deleted!'))
-  .catch(err => console.log(err))
+  })
+  // .then(console.log('Author ' + author_id + ' has been deleted!'))
+  // .catch(err => console.log(err))
+  return result //returns 1 if deleted successfully ; 0 if error
 }
 
 async function CreateAuthor(first_name, last_name){
@@ -68,7 +71,7 @@ async function CreateAuthor(first_name, last_name){
 }
 
 async function ChangeDetails(author_id, new_first_name, new_last_name){
-  await db.author.update({
+  const result = await db.author.update({
     first_name: new_first_name,
     last_name: new_last_name
   },{
@@ -76,8 +79,8 @@ async function ChangeDetails(author_id, new_first_name, new_last_name){
       author_id: author_id
     }
   })
-  .then(console.log(author_id + " has successfully changed details!"))
-  .catch(err => console.log(err))
+  
+  return result
 }
 
 module.exports = {

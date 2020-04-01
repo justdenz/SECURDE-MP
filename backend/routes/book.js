@@ -73,6 +73,7 @@ router.post('/update_book', async (req, res) => {
   let isbn = req.body.isbn
   let authors = req.body.authors
 
+
   const result = await ValidateUpdateBook(book_id, title, publisher, year_publication, isbn, authors)
 
   res.send({
@@ -83,7 +84,6 @@ router.post('/update_book', async (req, res) => {
 
 router.post('/delete_book', async (req, res) => {
   const result = await ValidateDeleteBookByID(req.body.book_id)
-
   res.send({
     status: result.status,
     payload: result.payload
@@ -127,55 +127,19 @@ router.post('/add_bookinstance', async (req, res) => {
 })
 
 router.post('/update_bookinstance', async (req, res) =>{
-    const status = {
-      AVAILABLE: '1',
-      RESERVED: '0'
-    }
-    if(req.body.status == 0){
-      await ValidateUpdateBookInstance(req.body.bookinstance_id, status.RESERVED)
-      .then(res.send({
-        status: "OK",
-        payload: "Changed book status back to reserved!"
-      }))
-      .catch(err => {
-        res.send({
-          status: "ERROR",
-          payload: err
-        })
-      })
-      
-    } else if(req.body.status == 1){
-      await ValidateUpdateBookInstance(req.body.bookinstance_id, status.AVAILABLE)
-      .then(res.send({
-        status: "OK",
-        payload: "Changed book status back to available!"
-      }))
-      .catch(err => {
-        res.send({
-          status: "ERROR",
-          payload: err
-        })
-      })
-    }
-  
+  let result = await ValidateUpdateBookInstance(req.body.bookinstance_id, req.body.status)
+  res.send({
+    status: result.status,
+    payload: result.payload
+  })
 })
 
 router.post("/delete_bookinstance", async (req, res) => {
-  await ValidateDeleteBookInstanceByID(req.body.bookinstance_id)
-  .then(result => {
-    res.send({
-      status: result.status,
-      payload: result.payload
-    })
+  let result = await ValidateDeleteBookInstanceByID(req.body.bookinstance_id)
+  res.send({
+    status: result.status,
+    payload: result.payload
   })
-  .catch(err => {
-    res.send({
-      status: "ERROR",
-      payload: err
-    })
-  })
-
-  
 })
 module.exports = router
 

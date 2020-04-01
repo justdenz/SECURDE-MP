@@ -5,6 +5,8 @@ const router = express.Router()
 
 const {
     ValidateCreateUser,
+    ValidateDeleteUser,
+    ValidateChangePassword,
     ValidateGetUserByRole
 } = require('../Services/User_Service')
 
@@ -42,6 +44,22 @@ router.post("/create_manager", async (req, res) => {
 
     const result = await ValidateCreateUser(user_id, first_name, last_name, username, password, email, role_name)
 
+    res.send({
+        status: result.status,
+        payload: result.payload
+    })
+})
+
+router.post('/change_password', async(req, res) => {
+    let result = ValidateChangePassword(req.body.user_id, req.body.new_password)
+    res.send({
+        status: result.status,
+        payload: result.payload
+    })
+})
+
+router.post('/delete_account', async(req, res) => {
+    let result = ValidateDeleteUser(req.body.user_id)
     res.send({
         status: result.status,
         payload: result.payload

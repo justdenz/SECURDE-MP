@@ -31,16 +31,10 @@ router.post("/edit_author", async (req, res) => {
   let author_id = req.body.author_id
   let first_name = req.body.first_name
   let last_name = req.body.last_name
-  await ValidateChangeDetails(author_id, first_name, last_name)
-  .then(res.send({
-    status: "OK",
-    payload: "Author has been updated!"
-  }))
-  .catch(err => {
-    res.send({
-      status: "ERROR",
-      payload: err
-    })
+  let result = await ValidateChangeDetails(author_id, first_name, last_name)
+  res.send({
+    status: result.status,
+    payload: result.payload
   })
 })
 
@@ -53,16 +47,10 @@ router.post("/get_author_byid", async (req, res) => {
 })
 
 router.post("/delete_author", async (req, res) => {
-  await ValidateDeleteAuthor(req.body.author_id)
-  .then(res.send({
-    status: "OK",
-    payload: "Author has been deleted!"
-  }))
-  .catch(err => {
-    res.send({
-      status: "ERROR",
-      payload: err
-    })
+  let result = await ValidateDeleteAuthor(req.body.author_id)
+  res.send({
+    status: result.status,
+    payload: result.payload
   })
 })
 module.exports = router

@@ -65,12 +65,13 @@ async function CheckExistingUsername(username){
 }
 
 async function DeleteUser(user_id){
-    await db.user.destroy({
+    let result = await db.user.destroy({
         where:{
             user_id: user_id
         }
-    }).then(console.log('User' + user_id + 'has been deleted!'))
-    .catch(err => console.log(err))
+    })
+
+    return result
 }
 
 async function CreateUser(user_id, first_name, last_name, username, password, email, role_name){
@@ -89,15 +90,15 @@ async function CreateUser(user_id, first_name, last_name, username, password, em
 }
 
 async function ChangePassword(user_id, new_password){
-    await db.user.update({
+    let result = await db.user.update({
         password: new_password
     }, {
         where: {
             user_id: user_id
         }
     })
-    .then(console.log(user_id + "has changed password successfully!"))
-    .catch(err => console.log(err))
+    
+    return result
 }
 
 module.exports = {
