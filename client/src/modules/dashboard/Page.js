@@ -76,6 +76,9 @@ class Page extends Component {
       case "Authors":
         nextPage = <Authors/>
         break;
+      case "ChangePass":
+        nextPage = <ChangePass/>
+        break;
       default:
         break
     }
