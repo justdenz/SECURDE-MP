@@ -16,6 +16,8 @@ const {
   GetBookAuthorID
 } = require("./Book_DB.js")
 
+const {BorrowBook, EditBookInstance, DeleteBookInstance, AddBookAction, EditBook, DeleteBook} = require("./UserAction_DB.js")
+
 async function ValidateGetAllBooks(){
   let books = await GetAllBooks()
 
@@ -66,7 +68,7 @@ async function ValidateGetBookByID(book_id){
   return response
 }
 
-async function ValidateCreateBooks(title, publisher, year_publication, isbn, author_ids){
+async function ValidateCreateBooks(user_id, title, publisher, year_publication, isbn, author_ids){
   let response = {
     status: '',
     payload: ''
@@ -83,12 +85,17 @@ async function ValidateCreateBooks(title, publisher, year_publication, isbn, aut
     });
     response.status = "OK"
     response.payload = "Book has been created!"
+
+    /*User Action*/
+    await AddBookAction(user_id, book.book_id)
+    .then(console.log("Action logged as Add Book!"))
+    .catch(err => console.log(err))
   }
 
   return response
 }
 
-async function ValidateUpdateBook(book_id, title, publisher, year_publication, isbn, author_ids){
+async function ValidateUpdateBook(user_id, book_id, title, publisher, year_publication, isbn, author_ids){
   let response = {
     status: '',
     payload: ''
@@ -109,6 +116,11 @@ async function ValidateUpdateBook(book_id, title, publisher, year_publication, i
         }
         response.status = "OK"
         response.payload = "Book has been updated!"
+
+         /*User Action*/
+        await EditBook(user_id, book_id)
+        .then(console.log("Action logged as Edit Book!"))
+        .catch(err => console.log(err))
       }
     } else {
       response.status="ERROR"
@@ -118,7 +130,6 @@ async function ValidateUpdateBook(book_id, title, publisher, year_publication, i
     response.status="ERROR"
     response.payload = "There was an error updating the book, please try again..."
   }
-  
 
   return response
 }

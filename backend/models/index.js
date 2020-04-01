@@ -128,5 +128,41 @@ db.action.hasMany(db.user_action,{
 
 
 
+/*Initialize Action DB*/
+db.action.create({action_id: 1, description: "Register"})
+.then(console.log("Action Register Initialized"))
+.catch(err => console.log("Register is already initialized"))
+db.action.create({action_id: 2, description: "Login"})
+.then(console.log("Action Login Initialized"))
+.catch(err => console.log("Login is already initialized"))
+db.action.create({action_id: 3, description: "Logout"})
+.then(console.log("Action Logout Initialized"))
+.catch(err => console.log("Logout is already initialized"))
+db.action.create({action_id: 4, description: "Borrow Book"})
+.then(console.log("Action Borrow Book Initialized"))
+.catch(err => console.log("Borrow Book is already initialized"))
+db.action.create({action_id: 5, description: "Edit Book Instance"})
+.then(console.log("Action Edit Book Instance Initialized"))
+.catch(err => console.log("Edit Book Instance is already initialized"))
+db.action.create({action_id: 6, description: 'Delete Book Instance'})
+.then(console.log("Action Delete Book Instance Initialized"))
+.catch(err => console.log("Delete Book Instance is already initialized"))
+db.action.create({action_id: 7, description: 'Add Book'})
+.then(console.log("Action Add Book Initialized"))
+.catch(err => console.log("Add Book is already initialized"))
+db.action.create({action_id: 8, description: 'Edit Book'})
+.then(console.log("Action Edit Book Initialized"))
+.catch(err => console.log("Edit Book is already initialized"))
+db.action.create({action_id: 9, description: "Delete Book"})
+.then(console.log("Action Delete Book Initialized"))
+.catch(err => console.log("Delete Book is already initialized"))
+db.action.create({action_id: 10,description: "Review Book"})
+.then(console.log("Action Review Book Initialized"))
+.catch(err => console.log("Review Book is already initialized"))
+db.action.create({action_id: 11,description: 'Add Book Instance'})
+.then(console.log("Action Add Book Instance Initialized"))
+.catch(err => console.log("Add Book Instance is already initialized"))
+
+
 
 module.exports = db;
