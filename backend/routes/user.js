@@ -39,6 +39,8 @@ router.post("/validate_signup", async (req, res) => {
     var email = req.body.email
     var role_name = req.body.role_name
 
+   
+
     const result = await ValidateCreateUser(user_id, first_name, last_name, username, password, email, role_name)
 
     res.send({
@@ -59,7 +61,7 @@ router.post('/change_password', async(req, res) => {
 router.post('/borrow_bookinstance', async (req, res) => {
     //Put condition to check whether education or manager
     //Only education can access this route
-    let result = await ValidateBorrowBookInstance(req.body.bookinstance_id)
+    let result = await ValidateBorrowBookInstance(req.body.bookinstance_id, req.session.user.user_id)
     res.send({
         status: result.status,
         payload: result.payload

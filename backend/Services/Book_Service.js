@@ -13,7 +13,11 @@ const {
   AddBookAuthor,
   GetAllBookInstance,
   DeleteBookAuthors,
-  GetBookAuthorID
+  GetBookAuthorID,
+  AddInstanceTracker,
+  GetCurrentBorrowedBooks,
+  GetPreviousBorrowedBooks,
+  DeleteInstanceTracker
 } = require("./Book_DB.js")
 
 async function ValidateGetAllBooks(){
@@ -276,7 +280,7 @@ async function ValidateUpdateBookInstance(bookinstance_id, status){
   return response
 }
 
-async function ValidateBorrowBookInstance(bookinstance_id){
+async function ValidateBorrowBookInstance(bookinstance_id, user_id){
   let response = {
     status: '',
     payload: ''
@@ -288,6 +292,7 @@ async function ValidateBorrowBookInstance(bookinstance_id){
   let result = await UpdateBookInstance(bookinstance_id, status.RESERVED)
 
   if(result > 0){
+    await AddInstanceTracker(bookinstance_id, user_id)
     response.status = 'OK',
     response.payload = "Student borrowed book!"
   }else {
@@ -343,6 +348,7 @@ async function ValidateGetAllBookInstance(){
   }
   return response
 }
+
 
 
 module.exports = {

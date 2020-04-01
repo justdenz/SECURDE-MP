@@ -1,4 +1,6 @@
 const db = require('../models')
+var Sequelize = require('sequelize');
+var Op = Sequelize.Op;
 
 async function GetAllBooks(){
   let books = await db.book.findAll({
@@ -97,7 +99,7 @@ async function UpdateBook(book_id, title, publisher, year_publication, isbn){
 }
 
 async function DeleteBookByID(book_id){
-  const result = db.book.destroy({
+  const result = await db.book.destroy({
     where: {
       book_id: book_id
     }
@@ -166,7 +168,7 @@ async function UpdateBookInstance(bookinstance_id, status){
 
 
 async function DeleteBookInstanceByID(bookinstance_id){
-  let result = db.book_instance.destroy({
+  let result = await db.book_instance.destroy({
     where: {
       bookinstance_id: bookinstance_id
     }
@@ -176,7 +178,7 @@ async function DeleteBookInstanceByID(bookinstance_id){
 }
 
 async function DeleteBookInstanceByBookID(book_id){
-  let result = db.book_instance.destroy({
+  let result = await db.book_instance.destroy({
     where: {
       book_id: book_id
     }
@@ -185,7 +187,88 @@ async function DeleteBookInstanceByBookID(book_id){
   return result
 }
 
+async function AddInstanceTracker(bookinstance_id, user_id){
+  let result = await db.instance_tracker.create({
+    bookinstance_id: bookinstance_id,
+    user_id: user_id
+  })
 
+  if(result) return result
+  return null
+}
+
+async function DeleteInstanceTracker(bookinstance_id, user_id){
+  let result = await db.instance_tracker.destroy({
+    where: {
+      user_id: user_id,
+      bookinstance_id: bookinstance_id
+    }
+  })
+
+  return result
+}
+
+async function GetCurrentBorrowedBooks(user_id){
+  let bookinstance_ids = await db.instance_tracker.findAll({
+    raw: true,
+    where:{
+      user_id: user_id
+    },
+    attributes: ['bookinstance_id']
+  })
+
+  var ids = []
+  var id
+  for(id of bookinstance_ids){
+    ids.push(id.bookinstance_id+'')
+  }
+
+  let books = await db.book.findAll({
+    raw: true,
+    where: {
+      book_id: {
+        [Op.in]: ids
+      }
+    },
+    attributes: ['book_id', 'title']
+  })
+  
+  if(books) return books
+  return null
+}
+
+async function GetPreviousBorrowedBooks(user_id){
+  let bookinstance_ids = await db.instance_tracker.findAll({
+    raw: true,
+    where:{
+      user_id: user_id,
+      deleted_at: {
+        [Op.not]: null
+      }
+    },
+    paranoid: false,
+    attributes: ['bookinstance_id']
+  })
+
+  var ids = []
+  var id
+  for(id of bookinstance_ids){
+    ids.push(id.bookinstance_id+'')
+  }
+
+  let books = await db.book.findAll({
+    raw: true,
+    where: {
+      book_id: {
+        [Op.in]: ids
+      }
+    },
+    attributes: ['book_id', 'title']
+  })
+  
+  if(books) return books
+  return null
+}
 
 module.exports = {
   GetAllBooks,
@@ -202,5 +285,9 @@ module.exports = {
   AddBookAuthor,
   GetAllBookInstance,
   DeleteBookAuthors,
-  GetBookAuthorID
+  GetBookAuthorID,
+  AddInstanceTracker,
+  GetCurrentBorrowedBooks,
+  GetPreviousBorrowedBooks,
+  DeleteInstanceTracker
 }

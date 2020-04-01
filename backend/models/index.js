@@ -49,6 +49,7 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.instance_tracker.removeAttribute('id')
 db.book_author.removeAttribute('id')
 
 //Associations
@@ -94,7 +95,6 @@ db.book.hasMany(db.review, {
 })
 
 db.book.hasMany(db.book_instance, {
-  onDelete: 'cascade',
   foreignKey: {
     name: 'book_id',
     type: DataType.INTEGER(11),
@@ -126,7 +126,22 @@ db.action.hasMany(db.user_action,{
   }
 })
 
+db.book_instance.hasMany(db.instance_tracker, {
+  foreignKey: {
+    name: 'bookinstance_id',
+    type: DataType.INTEGER(11),
+    primaryKey: true,
+    allowNull: false
+  }
+})
 
-
+db.user.hasMany(db.instance_tracker, {
+  foreignKey: {
+    name: 'user_id',
+    type: DataType.INTEGER(11),
+    primaryKey: true,
+    allowNull: false
+  }
+})
 
 module.exports = db;
