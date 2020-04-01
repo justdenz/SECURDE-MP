@@ -250,7 +250,7 @@ async function ValidateAddBookInstance(book_id){
   return response
 }
 
-async function ValidateUpdateBookInstance(bookinstance_id, status){
+async function ValidateUpdateBookInstance(bookinstance_id, status, user_id){
   let response = {
     status: '',
     payload: ''
@@ -263,6 +263,7 @@ async function ValidateUpdateBookInstance(bookinstance_id, status){
   let result
   if(status == 1){
     result = await UpdateBookInstance(bookinstance_id, instance_status.AVAILABLE)
+    await DeleteInstanceTracker(bookinstance_id)
     statusUpdate = "AVAILABLE"
   }else if(status == 0){
     result = await UpdateBookInstance(bookinstance_id, instance_status.RESERVED)
@@ -349,6 +350,51 @@ async function ValidateGetAllBookInstance(){
   return response
 }
 
+async function ValidateGetCurrentBorrowedBooks(user_id){
+  let result = await GetCurrentBorrowedBooks(user_id)
+
+  let response = {
+    status: '',
+    payload: ''
+  }
+
+  if(result === undefined || result.length == 0) {
+      response.status = "ERROR"
+      response.payload = "You have not borrowed any books at this moment..."
+  }
+  else if(result){
+      response.status = "OK"
+      response.payload = result
+  }
+  else{
+      response.status = "ERROR"
+      response.payload = "There was an error getting your books, please try again..."
+  }
+  return response
+}
+
+async function ValidateGetPreviousBorrowedBooks(user_id){
+  let result = await GetPreviousBorrowedBooks(user_id)
+
+  let response = {
+    status: '',
+    payload: ''
+  }
+
+  if(result === undefined || result.length == 0) {
+      response.status = "ERROR"
+      response.payload = "You have not borrowed any books before..."
+  }
+  else if(result){
+      response.status = "OK"
+      response.payload = result
+  }
+  else{
+      response.status = "ERROR"
+      response.payload = "There was an error getting your previous books, please try again..."
+  }
+  return response
+}
 
 
 module.exports = {
@@ -363,5 +409,7 @@ module.exports = {
   ValidateDeleteBookInstanceByID,
   ValidateGetAllBookInstance,
   ValidateGetBookInstancesByBookID,
-  ValidateBorrowBookInstance
+  ValidateBorrowBookInstance,
+  ValidateGetCurrentBorrowedBooks,
+  ValidateGetPreviousBorrowedBooks
 }

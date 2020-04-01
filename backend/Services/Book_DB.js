@@ -197,10 +197,9 @@ async function AddInstanceTracker(bookinstance_id, user_id){
   return null
 }
 
-async function DeleteInstanceTracker(bookinstance_id, user_id){
+async function DeleteInstanceTracker(bookinstance_id){
   let result = await db.instance_tracker.destroy({
     where: {
-      user_id: user_id,
       bookinstance_id: bookinstance_id
     }
   })
