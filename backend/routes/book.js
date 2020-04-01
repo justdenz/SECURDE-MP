@@ -50,6 +50,7 @@ router.post('/create_book', async(req, res) => {
   let year_publication = req.body.year_publication
   let isbn = req.body.isbn
   let authors = req.body.authors
+  let user_id = req.session.user_id
 
   // let title = 'Title Test'
   // let publisher = 'Publisher Test'
@@ -57,7 +58,7 @@ router.post('/create_book', async(req, res) => {
   // let isbn = '123456'
   // let authors = [1, 2]
 
-  const result = await ValidateCreateBooks(title, publisher, year_publication, isbn, authors)
+  const result = await ValidateCreateBooks(user_id, title, publisher, year_publication, isbn, authors)
 
   res.send({
     status: result.status,
@@ -72,9 +73,9 @@ router.post('/update_book', async (req, res) => {
   let year_publication = req.body.year_publication
   let isbn = req.body.isbn
   let authors = req.body.authors
+  let user_id = req.session.user_id
 
-
-  const result = await ValidateUpdateBook(book_id, title, publisher, year_publication, isbn, authors)
+  const result = await ValidateUpdateBook(user_id, book_id, title, publisher, year_publication, isbn, authors)
 
   res.send({
     status: result.status,
