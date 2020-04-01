@@ -4,6 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 
 import AddBookComponents from "./components/bookDrawer"
 class Page extends Component {
+  _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -32,7 +33,7 @@ class Page extends Component {
         {
           title: 'Year of Publication',
           dataIndex: 'year_publication',
-          key: 'publication',
+          key: 'year_publication',
         },
         {
           title: 'ISBN',
@@ -63,19 +64,26 @@ class Page extends Component {
   }
 
   componentDidMount(){
-    this.getAllBooks()
-    this.getAllAuthors()
+    this._isMounted = true;
+    if(this._isMounted){
+      this.getAllBooks()
+      this.getAllAuthors()
+    }
   }
 
   componentDidUpdate(){
     this.getAllBooks()
   }
 
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
+
   getAllBooks(){
     fetch("http://localhost:8000/book/")
       .then(res => res.json())
       .then(res => {
-        if(res.status !== "ERROR"){
+        if(res.status !== "ERROR" && this._isMounted){
           let books = res.payload.map(book => {
             return({
               key: book.book_id,

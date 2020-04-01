@@ -6,6 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 const { Option } = Select;
 
 class Page extends Component {
+  _isMounted = false;
   state = {
     selectedBookInstance: {},
     books: [],
@@ -61,19 +62,26 @@ class Page extends Component {
   }
 
   componentDidMount(){
-    this.getAllBooks()
-    this.getAllBookInstances()
+    this._isMounted = true;
+    if(this._isMounted){
+      this.getAllBooks()
+      this.getAllBookInstances()  
+    }
   }
 
   componentDidUpdate(){
     this.getAllBookInstances()
   }
 
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
+
   getAllBooks(){
     fetch("http://localhost:8000/book/")
       .then(res => res.json())
       .then(res => {
-        if(res.status !== "ERROR"){
+        if(res.status !== "ERROR" && this._isMounted){
           let books = res.payload.map(book => {
             return({
               key: book.book_id,
@@ -89,7 +97,7 @@ class Page extends Component {
     fetch("http://localhost:8000/book/get_all_bookinstances")
       .then(res => res.json())
       .then(res => {
-        if(res.status !== "ERROR"){
+        if(res.status !== "ERROR" && this._isMounted){
           let instances = res.payload.map(instance => {
             return({
               key: instance.bookinstance_id,

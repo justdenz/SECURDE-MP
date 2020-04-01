@@ -4,6 +4,7 @@ import { Form, Row, Input, Table, Button, Modal, message, Popconfirm} from "antd
 import { PlusOutlined } from '@ant-design/icons';
 
 class Page extends Component {
+  _isMounted = false;
   state = {
     selectedAuthor: {},
     authors: [],
@@ -47,18 +48,25 @@ class Page extends Component {
   }
 
   componentDidMount(){
-    this.getAllAuthors()
+    this._isMounted = true
+    if(this._isMounted){
+      this.getAllAuthors()
+    }
   }
 
   componentDidUpdate(){
     this.getAllAuthors()
   }
 
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
+
   getAllAuthors(){
     fetch("http://localhost:8000/author/")
       .then(res => res.json())
       .then(res => {
-        if(res.status !== "ERROR"){
+        if(res.status !== "ERROR" && this._isMounted){
           let authors = res.payload.map(author => {
             return ({
                 key: author.author_id,
