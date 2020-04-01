@@ -33,7 +33,7 @@ class Page extends Component {
         {
           title: 'Year of Publication',
           dataIndex: 'year_publication',
-          key: 'publication',
+          key: 'year_publication',
         },
         {
           title: 'ISBN',
