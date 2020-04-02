@@ -24,7 +24,11 @@ class Page extends Component {
           key: 'title',
           width: '15%',
           sorter: {
-            compare: (a, b) => a.title - b.title,
+            compare: (a, b) => {
+              if(a.title.toLowerCase() < b.title.toLowerCase()) { return -1; }
+              if(a.title.toLowerCase() > b.title.toLowerCase()) { return 1; }
+              return 0;
+            },
             multiple: 1,
           },
           render: text => <a>{text}</a>,
@@ -35,7 +39,11 @@ class Page extends Component {
           dataIndex: 'authors',
           key: 'authors',
           sorter: {
-            compare: (a, b) => a.authors - b.authors,
+            compare: (a, b) => {
+              if(a.authors.toLowerCase() < b.authors.toLowerCase()) { return -1; }
+              if(a.authors.toLowerCase() > b.authors.toLowerCase()) { return 1; }
+              return 0;
+            },
             multiple: 2,
           },
           ...this.getColumnSearchProps('authors'),
@@ -46,7 +54,11 @@ class Page extends Component {
           dataIndex: 'publisher',
           key: 'publisher',
           sorter: {
-            compare: (a, b) => a.publisher - b.publisher,
+            compare: (a, b) => {
+              if(a.publisher.toLowerCase() < b.publisher.toLowerCase()) { return -1; }
+              if(a.publisher.toLowerCase() > b.publisher.toLowerCase()) { return 1; }
+              return 0;
+            },
             multiple: 3,
           },
           ...this.getColumnSearchProps('publisher'),
@@ -68,7 +80,7 @@ class Page extends Component {
           width: '20%',
           sorter: {
             compare: (a, b) => a.isbn - b.isbn,
-            multiple: 1,
+            multiple: 5,
           },
           ...this.getColumnSearchProps('isbn'),
         },
