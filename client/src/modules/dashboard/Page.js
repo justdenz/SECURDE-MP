@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom"
 import 'antd/dist/antd.css';
-import './index.css';
+//import './index.css';
 import { Layout, Menu, Row } from 'antd';
 import { UserOutlined, BookOutlined, ToolOutlined, BarcodeOutlined} from '@ant-design/icons';
 
@@ -17,7 +17,7 @@ class Page extends Component {
     this.state = { 
       width: 0, 
       height: 0, 
-      collapsed: false,
+      collapsed: true,
       currPage: this.props.userType === "MANAGER" ? <ManagerBooks/> : <Library/>, 
     };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -91,7 +91,7 @@ class Page extends Component {
       <div style={{width: this.state.width, height: this.state.height, marginTop: "-100px"}}>
         <Layout style={{ minHeight: '100vh'}}>
           <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
-            <div className="logo" />
+            <div className="logo"></div>
             { (userType === "EDUCATION" || userType === "GUEST")  &&
               <Menu theme="dark" defaultSelectedKeys={['Library']} mode="inline" onClick={this.handleEducationMenu}>
                 <Menu.Item key="Library">
@@ -127,11 +127,10 @@ class Page extends Component {
           </Sider>
           <Layout className="site-layout">
             <Content style={{ margin: '0 16px' }}>
-              <div className="site-layout-background" style={{ padding: 30, minHeight: 650, marginTop: 16 }}>
+              <div className="site-layout-background" style={{ padding: 30, minHeight: 710, marginTop: 16 }}>
                 {this.state.currPage}
               </div>
             </Content>
-            <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
           </Layout>
         </Layout>
       </div>

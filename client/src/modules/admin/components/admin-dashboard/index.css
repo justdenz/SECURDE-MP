@@ -1,11 +1,5 @@
-.logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
-}
-
 .site-layout .site-layout-background {
-  background: #fff;
+  background: url(../../../../commons/library.jpg);
 }
   [data-theme="dark"] .site-layout .site-layout-background {
     background: #141414;

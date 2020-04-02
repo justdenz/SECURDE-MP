@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Tag, Row, Col, Input, Drawer, Button, Form, Divider, Card, Popconfirm, message} from 'antd';
+import { Table, Tag, Row, Col, Input, Drawer, Button, Form, Divider, Card, Popconfirm, message, PageHeader} from 'antd';
 import 'antd/dist/antd.css';
 import '../../index.css'
 class Page extends Component {
@@ -33,7 +33,7 @@ class Page extends Component {
           key: 'publisher',
         },
         {
-          title: 'Year of Publication',
+          title: 'Year',
           dataIndex: 'year_publication',
           key: 'year_publication',
         },
@@ -41,13 +41,14 @@ class Page extends Component {
           title: 'ISBN',
           dataIndex: 'isbn',
           key: 'isbn',
+          width: '20%',
         },
         {
           title: 'Actions',
           key: 'action',
           render: (text, record) => (
             <span>
-              <a style={{ marginRight: 16 }} onClick={() => this.setState({selectedBook: record, reviewVisible: true})}>View Reviews</a>
+              <a style={{ marginRight: 16 }} onClick={() => this.setState({selectedBook: record, reviewVisible: true})}>Reviews</a>
               <a onClick={() => {
                 this.setState({selectedBook: record, borrowVisible: true}, () => this.getAllInstanceofBook())
               }}>Borrow</a>
@@ -136,9 +137,16 @@ class Page extends Component {
 
   render() {
     const { columns, books, instances, selectedBook } = this.state
+    const { user } = this.props
     return (
       <div>
-        <h1>Library Page</h1>
+        <PageHeader
+          className="site-page-header"
+          title="Library Page"
+          subTitle={"Welcome to Xavier’s Library for Gifted Youngsters, " + user.first_name + "!"}
+          backIcon={false}
+          style={{marginBottom: "20px"}}
+        />
         <Table columns={columns} dataSource={books} />
         <Drawer
           title="Reviews"
