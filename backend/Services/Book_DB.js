@@ -246,26 +246,39 @@ async function GetPreviousBorrowedBooks(user_id){
       }
     },
     paranoid: false,
-    attributes: ['bookinstance_id']
+    attributes: ['bookinstance_id', 'created_at', 'deleted_at']
   })
 
-  var ids = []
+  var previousBooks = []
   var id
   for(id of bookinstance_ids){
-    ids.push(id.bookinstance_id+'')
+
+    let book_id = await db.book_instance.findOne({
+      raw: true,
+      where: {
+        bookinstance_id: id.bookinstance_id
+      },
+      attributes: ['book_id']
+    })
+
+    let book_title = await db.book.findOne({
+      raw: true,
+      where: {
+        book_id: book_id.book_id
+      },
+      attributes: ['title']
+    })
+    var bookHistory = {
+      bookinstance_id: id.bookinstance_id,
+      title: book_title,
+      borrowed_date: id.created_at,
+      return_date: id.deleted_at
+    }
+    previousBooks.push(bookHistory)
   }
 
-  let books = await db.book.findAll({
-    raw: true,
-    where: {
-      book_id: {
-        [Op.in]: ids
-      }
-    },
-    attributes: ['book_id', 'title']
-  })
   
-  if(books) return books
+  if(previousBooks) return previousBooks
   return null
 }
 
