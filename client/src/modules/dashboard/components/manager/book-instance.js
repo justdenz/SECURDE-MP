@@ -198,7 +198,7 @@ class Page extends Component {
             </Form.Item>
           </Row>
         </Form>
-        <Table style={{marginTop: 50}} columns={this.state.columns} dataSource={this.state.instances}/>
+        <Table style={{marginTop: 50}} columns={this.state.columns} dataSource={this.state.instances} pagination={{defaultPageSize: 8}}/>
         <Modal
           title="Edit Book Instance"
           visible={this.state.modalVisible}

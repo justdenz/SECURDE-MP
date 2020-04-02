@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Table, Tag, Row, Col, Input, Drawer, Button, Form, Divider, Card, Popconfirm, message, PageHeader} from 'antd';
 import 'antd/dist/antd.css';
+import { SearchOutlined } from '@ant-design/icons';
 import '../../index.css'
 class Page extends Component {
   _isMounted = false;
@@ -14,34 +15,62 @@ class Page extends Component {
       selectedBookInstanceID: null,
       reviewVisible: false,
       borrowVisible: false,
+      searchText: '',
+      searchedColumn: '',
       columns: [
         {
           title: 'Title',
           dataIndex: 'title',
           key: 'title',
+          width: '15%',
+          sorter: {
+            compare: (a, b) => a.title - b.title,
+            multiple: 1,
+          },
           render: text => <a>{text}</a>,
+          ...this.getColumnSearchProps('title'),
         },
         {
           title: 'Authors',
           dataIndex: 'authors',
           key: 'authors',
+          sorter: {
+            compare: (a, b) => a.authors - b.authors,
+            multiple: 2,
+          },
+          ...this.getColumnSearchProps('authors'),
           render: authors => authors.length > 1 ? (authors[0] + " et al.") : (authors[0])
         },
         {
           title: 'Publisher',
           dataIndex: 'publisher',
           key: 'publisher',
+          sorter: {
+            compare: (a, b) => a.publisher - b.publisher,
+            multiple: 3,
+          },
+          ...this.getColumnSearchProps('publisher'),
         },
         {
           title: 'Year',
           dataIndex: 'year_publication',
           key: 'year_publication',
+          sorter: {
+            compare: (a, b) => a.year_publication - b.year_publication,
+            multiple: 4,
+          },
+          ...this.getColumnSearchProps('year_publication'),
         },
         {
           title: 'ISBN',
           dataIndex: 'isbn',
           key: 'isbn',
           width: '20%',
+          sorter: {
+            compare: (a, b) => a.isbn - b.isbn,
+            multiple: 1,
+          },
+          ...this.getColumnSearchProps('isbn'),
         },
         {
           title: 'Actions',
@@ -135,6 +164,60 @@ class Page extends Component {
     this.setState({borrowVisible})
   }
 
+  getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          icon={<SearchOutlined />}
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+          Reset
+        </Button>
+      </div>
+    ),
+    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilter: (value, record) =>
+      record[dataIndex]
+        .toString()
+        .toLowerCase()
+        .includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select());
+      }
+    },
+    render: text => text
+  });
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  };
+
   render() {
     const { columns, books, instances, selectedBook } = this.state
     const { user } = this.props
@@ -147,13 +230,14 @@ class Page extends Component {
           backIcon={false}
           style={{marginBottom: "20px"}}
         />
-        <Table columns={columns} dataSource={books} />
+        <Table columns={columns} dataSource={books} pagination={{defaultPageSize: 8}}/>
         <Drawer
           title="Reviews"
           width={720}
           onClose={() => this.toggleReviewDrawer(false)}
           visible={this.state.reviewVisible}
           bodyStyle={{ paddingBottom: 80 }}
+          destroyOnClose
           footer={
             <div
               style={{
@@ -201,6 +285,7 @@ class Page extends Component {
           onClose={() => this.toggleBorrowDrawer(false)}
           visible={this.state.borrowVisible}
           bodyStyle={{ paddingBottom: 80 }}
+          destroyOnClose
           footer={null}
         >
           {instances.length ? instances.map(instance => {

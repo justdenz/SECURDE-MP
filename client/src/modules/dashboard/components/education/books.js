@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table } from 'antd';
+import { Table, PageHeader } from 'antd';
 
 class Page extends Component {
   _isMounted = false;
@@ -61,8 +61,14 @@ class Page extends Component {
     const { columns } = this.state
     return (
       <div>
-        <h1>Current Books Page</h1>
-        <Table columns={columns} dataSource={[]}/>
+        <PageHeader
+          className="site-page-header"
+          title="Books Page"
+          subTitle="Browse through your currently borrowed books"
+          backIcon={false}
+          style={{marginBottom: "20px"}}
+        />
+        <Table columns={columns} dataSource={[]} pagination={{defaultPageSize: 8}}/>
       </div>
     );
   }

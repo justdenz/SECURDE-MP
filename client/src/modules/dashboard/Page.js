@@ -99,7 +99,7 @@ class Page extends Component {
                 </Menu.Item>
                 
                 { userType === "EDUCATION" && 
-                <SubMenu key="sub1" title={<Row justify="left"><span><UserOutlined /><span>User</span></span></Row>}>
+                <SubMenu key="sub1" title={<Row justify="left"><span><UserOutlined /><span>Profile</span></span></Row>}>
                   <Menu.Item key="History"><Row justify="left">History</Row></Menu.Item>
                   <Menu.Item key="Books"><Row justify="left">Books</Row></Menu.Item>
                   <Menu.Item key="Reviews"><Row justify="left">Reviews</Row></Menu.Item>

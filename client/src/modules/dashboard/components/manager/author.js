@@ -171,7 +171,7 @@ class Page extends Component {
             </Form.Item>
           </Row>
         </Form>
-        <Table style={{marginTop: 50}} columns={this.state.columns} dataSource={this.state.authors}/>
+        <Table style={{marginTop: 50}} columns={this.state.columns} dataSource={this.state.authors} pagination={{defaultPageSize: 8}}/>
         <Modal
           title="Edit Author"
           visible={this.state.modalVisible}

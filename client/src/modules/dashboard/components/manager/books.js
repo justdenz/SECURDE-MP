@@ -196,13 +196,14 @@ class Page extends Component {
         <Button type="primary" style={{marginTop: 20, marginBottom: 20}} onClick={() => this.toggleAddDrawer(true)}>
           <PlusOutlined /> Add book
         </Button>
-        <Table columns={this.state.columns} dataSource={this.state.books} />
+        <Table columns={this.state.columns} dataSource={this.state.books} pagination={{defaultPageSize: 8}}/>
         <Drawer
           title="Create a new book"
           width={720}
           onClose={() => this.toggleAddDrawer(false)}
           visible={this.state.AddDrawerVisible}
           bodyStyle={{ paddingBottom: 80 }}
+          destroyOnClose
         >
           <Form layout="vertical" hideRequiredMark onFinish={this.handleAddBookSubmit}>
             <AddBookComponents options={authors}/>
@@ -219,6 +220,7 @@ class Page extends Component {
           onClose={() => this.toggleEditDrawer(false)}
           visible={this.state.EditDrawerVisible}
           bodyStyle={{ paddingBottom: 80 }}
+          destroyOnClose
         >
           <Form layout="vertical" hideRequiredMark onFinish={this.handleUpdateBookSubmit} 
             initialValues={{

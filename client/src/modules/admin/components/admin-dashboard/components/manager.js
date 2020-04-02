@@ -127,7 +127,7 @@ class Page extends Component {
         <Button type="primary" style={{marginTop: 20, marginBottom: 20}} onClick={() => this.toggleAddModal(true)}>
           <PlusOutlined /> Add manager
         </Button>
-        <Table columns={columns} dataSource={managers}></Table>
+        <Table columns={columns} dataSource={managers} pagination={{defaultPageSize: 8}}></Table>
 
         <Modal
           title="Add Manager"
