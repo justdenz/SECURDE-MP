@@ -278,6 +278,7 @@ async function ValidateUpdateBookInstance(bookinstance_id, status, user_id){
     statusUpdate = "AVAILABLE"
   }else if(status == 0){
     result = await UpdateBookInstance(bookinstance_id, instance_status.RESERVED)
+    await AddInstanceTracker(bookinstance_id, user_id)
     statusUpdate = "RESERVED"
   }
 

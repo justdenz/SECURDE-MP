@@ -127,7 +127,7 @@ router.post('/add_bookinstance', async (req, res) => {
 })
 
 router.post('/update_bookinstance', async (req, res) =>{
-  let result = await ValidateUpdateBookInstance(req.body.bookinstance_id, req.body.status)
+  let result = await ValidateUpdateBookInstance(req.body.bookinstance_id, req.body.status, req.body.user_id)
   res.send({
     status: result.status,
     payload: result.payload

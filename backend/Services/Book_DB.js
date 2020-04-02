@@ -211,28 +211,43 @@ async function GetCurrentBorrowedBooks(user_id){
   let bookinstance_ids = await db.instance_tracker.findAll({
     raw: true,
     where:{
-      user_id: user_id
-    },
-    attributes: ['bookinstance_id']
-  })
-
-  var ids = []
-  var id
-  for(id of bookinstance_ids){
-    ids.push(id.bookinstance_id+'')
-  }
-
-  let books = await db.book.findAll({
-    raw: true,
-    where: {
-      book_id: {
-        [Op.in]: ids
+      user_id: user_id,
+      deleted_at: {
+        [Op.not]: null
       }
     },
-    attributes: ['book_id', 'title']
+    attributes: ['bookinstance_id', 'created_at']
   })
+
+  var currentBooks = []
+  var id
+  for(id of bookinstance_ids){
+
+    let book_id = await db.book_instance.findOne({
+      raw: true,
+      where: {
+        bookinstance_id: id.bookinstance_id
+      },
+      attributes: ['book_id']
+    })
+
+    let book_title = await db.book.findOne({
+      raw: true,
+      where: {
+        book_id: book_id.book_id
+      },
+      attributes: ['title']
+    })
+    var bookHistory = {
+      bookinstance_id: id.bookinstance_id,
+      title: book_title,
+      borrowed_date: id.created_at,
+    }
+    currentBooks.push(bookHistory)
+  }
+
   
-  if(books) return books
+  if(currentBooks) return currentBooks
   return null
 }
 
