@@ -63,10 +63,8 @@ class Page extends Component {
 
   componentDidMount(){
     this._isMounted = true;
-    if(this._isMounted){
-      this.getAllBooks()
-      this.getAllBookInstances()  
-    }
+    this.getAllBooks()
+    this.getAllBookInstances()  
   }
 
   componentDidUpdate(){

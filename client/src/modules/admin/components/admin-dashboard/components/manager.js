@@ -24,6 +24,7 @@ const formItemLayout = {
   },
 };
 class Page extends Component {
+  _isMounted = false;
   state = {
     managers: [],
     modalVisible: false,
@@ -57,14 +58,23 @@ class Page extends Component {
   }
 
   componentDidMount(){
+    this._isMounted = true
     this.getAllManagers()
+  }
+
+  componentDidUpdate(){
+    this.getAllManagers()
+  }
+  
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   getAllManagers(){
     fetch("http://localhost:8000/admin/get_all_manager")
       .then(res => res.json())
       .then(res => {
-        if(res.status !== "ERROR"){
+        if(res.status !== "ERROR" && this._isMounted){
           let managers = res.payload.map(manager => {
             return({
               key: manager.user_id,
