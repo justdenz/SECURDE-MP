@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Table, Tag, Row, Col, Input, Drawer, Button, Form, Divider, Card, Popconfirm, message} from 'antd';
 import 'antd/dist/antd.css';
 import '../../index.css'
@@ -109,7 +110,7 @@ class Page extends Component {
     const reqOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ bookinstance_id: this.state.selectedBookInstanceID })
+      body: JSON.stringify({ bookinstance_id: this.state.selectedBookInstanceID, user_id: this.props.user.user_id })
     }
     fetch("http://localhost:8000/user/borrow_bookinstance", reqOptions)
       .then(res => res.json())
@@ -194,7 +195,7 @@ class Page extends Component {
           bodyStyle={{ paddingBottom: 80 }}
           footer={null}
         >
-          {instances.map(instance => {
+          {instances.length ? instances.map(instance => {
             return(
               <Card key={instance.bookinstance_id} title={selectedBook.title} style={{ width: 300 }} extra={
               <Popconfirm
@@ -216,11 +217,18 @@ class Page extends Component {
                   </p>
                 </Row>
               </Card>)
-          })}
+          }) : <p>No Instances of this Book Found</p>}
         </Drawer>
       </div>
     );
   }
 }
 
-export default Page;
+const mapDispatchToProps = dispatch => ({})
+
+const mapStateToProps = state => ({
+  user: state.simpleReducer.user,
+  userType: state.simpleReducer.userType
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Page);

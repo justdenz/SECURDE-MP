@@ -66,7 +66,7 @@ router.post('/change_password', async(req, res) => {
 router.post('/borrow_bookinstance', async (req, res) => {
     //Put condition to check whether education or manager
     //Only education can access this route
-    let result = await ValidateBorrowBookInstance(req.body.bookinstance_id, req.session.user.user_id)
+    let result = await ValidateBorrowBookInstance(req.body.bookinstance_id, req.body.user_id)
     res.send({
         status: result.status,
         payload: result.payload
@@ -74,7 +74,7 @@ router.post('/borrow_bookinstance', async (req, res) => {
 })
 
 router.post('/get_current_books', async (req, res)=> {
-    let result = await ValidateGetCurrentBorrowedBooks(req.session.user.user_id)
+    let result = await ValidateGetCurrentBorrowedBooks(req.body.user_id)
     res.send({
         status: result.status,
         payload: result.payload
@@ -82,7 +82,7 @@ router.post('/get_current_books', async (req, res)=> {
 })
 
 router.post('/get_previous_books', async (req, res)=> {
-    let result = await ValidateGetPreviousBorrowedBooks(req.session.user.user_id)
+    let result = await ValidateGetPreviousBorrowedBooks(req.body.user_id)
     res.send({
         status: result.status,
         payload: result.payload
