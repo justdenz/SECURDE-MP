@@ -50,7 +50,7 @@ router.post('/create_book', async(req, res) => {
   let year_publication = req.body.year_publication
   let isbn = req.body.isbn
   let authors = req.body.authors
-  let user_id = req.session.user_id
+  let user_id = req.body.user_id
 
   // let title = 'Title Test'
   // let publisher = 'Publisher Test'

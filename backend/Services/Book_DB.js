@@ -212,9 +212,6 @@ async function GetCurrentBorrowedBooks(user_id){
     raw: true,
     where:{
       user_id: user_id,
-      deleted_at: {
-        [Op.not]: null
-      }
     },
     attributes: ['bookinstance_id', 'created_at']
   })
@@ -246,7 +243,6 @@ async function GetCurrentBorrowedBooks(user_id){
     currentBooks.push(bookHistory)
   }
 
-  
   if(currentBooks) return currentBooks
   return null
 }
