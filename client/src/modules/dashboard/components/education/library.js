@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Tag, Row, Col, Input, Drawer, Button, Form, Divider, Card, Popconfirm, message, PageHeader} from 'antd';
+import { Table, Tag, Row, Col, Input, Drawer, Button, Form, Divider, Card, Popconfirm, message, PageHeader, Modal} from 'antd';
+import { Link } from 'react-router-dom'
 import 'antd/dist/antd.css';
 import { SearchOutlined } from '@ant-design/icons';
 import '../../index.css'
@@ -15,6 +16,7 @@ class Page extends Component {
       selectedBookInstanceID: null,
       reviewVisible: false,
       borrowVisible: false,
+      modalVisible: false,
       searchText: '',
       searchedColumn: '',
       columns: [
@@ -91,6 +93,7 @@ class Page extends Component {
             <span>
               <a style={{ marginRight: 16 }} onClick={() => this.setState({selectedBook: record, reviewVisible: true})}>Reviews</a>
               <a onClick={() => {
+                this.props.userType === "GUEST" ? this.toggleModal(true) :
                 this.setState({selectedBook: record, borrowVisible: true}, () => this.getAllInstanceofBook())
               }}>Borrow</a>
             </span>
@@ -176,6 +179,10 @@ class Page extends Component {
     this.setState({borrowVisible})
   }
 
+  toggleModal(modalVisible){
+    this.setState({modalVisible})
+  }
+
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
@@ -230,15 +237,24 @@ class Page extends Component {
     this.setState({ searchText: '' });
   };
 
+  handleReviewSubmit = values => {
+    if(this.props.userType === "GUEST"){
+      this.toggleModal(true)
+    } else {
+      console.log("Values: ", values);
+    }
+  }
+
   render() {
     const { columns, books, instances, selectedBook } = this.state
-    const { user } = this.props
+    const { user, userType } = this.props
+    const name = user.first_name ? user.first_name : "Guest"
     return (
       <div>
         <PageHeader
           className="site-page-header"
           title="Library Page"
-          subTitle={"Welcome to Xavier’s Library for Gifted Youngsters, " + user.first_name + "!"}
+          subTitle={"Welcome to Xavier’s Library for Gifted Youngsters, " + name + "!"}
           backIcon={false}
           style={{marginBottom: "20px"}}
         />
@@ -250,27 +266,11 @@ class Page extends Component {
           visible={this.state.reviewVisible}
           bodyStyle={{ paddingBottom: 80 }}
           destroyOnClose
-          footer={
-            <div
-              style={{
-                textAlign: 'right',
-              }}
-            >
-              <Button
-                onClick={() => this.toggleDrawer(false)}
-                style={{ marginRight: 8 }}
-              >
-                Back
-              </Button>
-              <Button onClick={() => this.toggleDrawer(false)} type="primary">
-                Submit
-              </Button>
-            </div>
-          }
+          footer={null}
         >
         {/* ADD BOOK REVIEWS HERE */}
-          <Divider/>
-          <Form layout="vertical" hideRequiredMark>
+        <Divider/>
+          <Form layout="vertical" hideRequiredMark onFinish={this.handleReviewSubmit}>
             <Row gutter={16}>
               <Col span={24}>
                 <Form.Item
@@ -287,6 +287,10 @@ class Page extends Component {
                 </Form.Item>
               </Col>
             </Row>
+            <div style={{ textAlign: 'right'}}>
+              <Button onClick={() => this.toggleReviewDrawer(false)} style={{ marginRight: 8 }}>Cancel</Button>
+              <Button type="primary" htmlType="submit">Submit</Button>
+            </div>
           </Form>
         </Drawer>
 
@@ -324,6 +328,19 @@ class Page extends Component {
               </Card>)
           }) : <p>No Instances of this Book Found</p>}
         </Drawer>
+        <Modal
+          title="Create an Account"
+          visible={this.state.modalVisible}
+          footer={null}
+          onCancel={() => this.toggleModal(false)}
+          destroyOnClose
+        >
+          <p>Join our Community! Register now to borrow endless books and submit your very own book reviews!</p>
+          <Row style={{width: "100%", marginTop: 20}} justify="end">
+            <Button onClick={() => this.toggleModal(false)} style={{ marginRight: 8 }}>Cancel</Button>
+            <Button type="primary" htmlType="submit"><Link to="/register">Register</Link></Button>
+          </Row>  
+        </Modal>
       </div>
     );
   }
