@@ -5,6 +5,7 @@ import { Table, PageHeader } from 'antd';
 class Page extends Component {
   _isMounted = false;
   state = {
+    history: [],
     columns: [
       {
         title: 'Book Instance ID',
@@ -19,13 +20,13 @@ class Page extends Component {
       },
       {
         title: 'Date Borrowed',
-        dataIndex: 'date_borrowed',
-        key: 'date_borrowed',
+        dataIndex: 'borrowed_date',
+        key: 'borrowed_date',
       },
       {
         title: 'Date Returned',
-        dataIndex: 'date_returned',
-        key: 'date_returned',
+        dataIndex: 'return_date',
+        key: 'return_date',
       },
     ],
   }
@@ -52,10 +53,18 @@ class Page extends Component {
     fetch("http://localhost:8000/user/get_previous_books", reqOptions)
       .then(res => res.json())
       .then(res => {
-        if(res.status === "ERROR" && this._isMounted)
-          console.log("Cause of Error: ", res.payload);
-        else
-          console.log("Previous Books: ", res.payload);
+        if(res.status !== "ERROR" && this._isMounted){
+          let history = res.payload.map(record => {
+            return({
+              key: record.bookinstance_id,
+              bookinstance_id: record.bookinstance_id,
+              title: record.title.title,
+              borrowed_date: record.borrowed_date.split('T', 1)[0],
+              return_date: record.return_date.split('T', 1)[0],
+            })
+          })
+          this.setState({history})
+        }
       })
       .catch((error) => {
         console.error(error);
@@ -63,7 +72,7 @@ class Page extends Component {
   }
 
   render() {
-    const { columns } = this.state
+    const { columns, history } = this.state
     return (
       <div>
         <PageHeader
@@ -73,7 +82,7 @@ class Page extends Component {
           backIcon={false}
           style={{marginBottom: "20px"}}
         />
-        <Table columns={columns} dataSource={[]} pagination={{defaultPageSize: 8}}/>
+        <Table columns={columns} dataSource={history} pagination={{defaultPageSize: 8}}/>
       </div>
     );
   }

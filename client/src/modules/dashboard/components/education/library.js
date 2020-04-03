@@ -40,8 +40,8 @@ class Page extends Component {
           key: 'authors',
           sorter: {
             compare: (a, b) => {
-              if(a.authors.toLowerCase() < b.authors.toLowerCase()) { return -1; }
-              if(a.authors.toLowerCase() > b.authors.toLowerCase()) { return 1; }
+              if(a.authors.toString().toLowerCase() < b.authors.toString().toLowerCase()) { return -1; }
+              if(a.authors.toString().toLowerCase() > b.authors.toString().toLowerCase()) { return 1; }
               return 0;
             },
             multiple: 2,
