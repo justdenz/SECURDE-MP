@@ -12,7 +12,10 @@ export default (props) => {
           <Form.Item
             name="title"
             label="Title"
-            rules={[{ required: true, message: 'Please enter book title' }]}
+            rules={[
+              { required: true, message: 'Please enter book title' }, 
+              { max: 20, message: "Maximum of 20 characters"},
+            ]}
           >
             <Input autoComplete="off" placeholder="Please enter book title"/>
           </Form.Item>
@@ -34,7 +37,10 @@ export default (props) => {
           <Form.Item
             name="publisher"
             label="Publisher"
-            rules={[{ required: true, message: 'Please enter book publisher' }]}
+            rules={[
+              { required: true, message: 'Please enter book publisher' },
+              { max: 25, message: "Maximum of 25 characters"},
+            ]}
           >
             <Input autoComplete="off" placeholder="Please enter book publisher"/>
           </Form.Item>
@@ -45,6 +51,8 @@ export default (props) => {
             label="Year of Publication"
             rules={[
               { required: true, message: 'Please enter year of publication' },
+              { pattern: /^(19|20)\d{2}$/, message: "Please enter a year between 1900-2099"},
+
             ]}
           >
             <Input type="number" placeholder="Enter year of publication"/>
@@ -58,8 +66,8 @@ export default (props) => {
             label="ISBN"
             rules={[
               { required: true, message: 'Please enter book ISBN' },
-              // {  min: 13, message: 'Please input a valid ISBN number!'},
-              // {  max: 13, message: 'Please input a valid ISBN number!'},
+              { min: 10, message: 'Please input a valid ISBN number!'},
+              { max: 13, message: 'Please input a valid ISBN number!'},
             ]}
           >
             <Input type="number" autoComplete="off" placeholder="Please enter book ISBN"/>

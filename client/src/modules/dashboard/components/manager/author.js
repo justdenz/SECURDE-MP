@@ -153,14 +153,20 @@ class Page extends Component {
             <Form.Item
               name="firstname"
               label="First Name"
-              rules={[{ required: true, message: 'Please input author first name!'},]}
+              rules={[
+                { required: true, message: 'Please input author first name!'},
+                { max: 10, message: "Maximum of 10 characters"},
+              ]}
             >
               <Input autoComplete="off"/>
             </Form.Item>
             <Form.Item
               name="lastname"
               label="Last Name"
-              rules={[{ required: true, message: 'Please input author last name!'},]}
+              rules={[
+                { required: true, message: 'Please input author last name!'},
+                { max: 10, message: "Maximum of 10 characters"},
+            ]}
             >
               <Input autoComplete="off"/>
             </Form.Item>
