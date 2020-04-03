@@ -14,6 +14,26 @@ export default () => {
             required: true,
             message: 'Please input your password!',
           },
+          // {
+          //   min: 8,
+          //   message: 'Minimum of 8 characters'
+          // },
+          // {
+          //   pattern: /^[@#]/,
+          //   message: "Password must start with '@' or '#'"
+          // },
+          // {
+          //   pattern: /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
+          //   message: "Password must be alphanumeric"
+          // },
+          // {
+          //   pattern: /(?=.*[A-Z])/,
+          //   message: "Password must contain an upper case letter"
+          // },
+          // {
+          //   pattern: /(?=.*[a-z])/,
+          //   message: "Password must contain a lower case letter"
+          // },
         ]}
         hasFeedback
       >

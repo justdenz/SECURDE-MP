@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Form, Button, Alert, message, Input, Card, Row } from 'antd';
+import { Form, Button, PageHeader, message, Input, Card, Row } from 'antd';
 import 'antd/dist/antd.css';
 
 const formItemLayout = {
@@ -53,10 +53,16 @@ class Page extends Component {
     const { user } = this.props
     return (
       <div>
-        <h1>Change Password Page</h1>
+        <PageHeader
+          className="site-page-header"
+          title="Password Page"
+          subTitle="Change the password of your library account"
+          backIcon={false}
+          style={{marginBottom: "20px"}}
+        />
         <Row justify="center">
           <Form {...formItemLayout} name="changePassword" onFinish={this.onSubmit} initialValues={{old: "", new_password: "", confirm: ""}} scrollToFirstError>
-            <Card style={{width: "600px", marginTop: 100}}>
+            <Card style={{width: "600px", marginTop: 80}}>
               <Form.Item
                 name="old"
                 label="Old Password"
@@ -88,6 +94,26 @@ class Page extends Component {
                     required: true,
                     message: 'Please input your new password!',
                   },
+                  // {
+                  //   min: 8,
+                  //   message: 'Minimum of 8 characters'
+                  // },
+                  // {
+                  //   pattern: /^[@#]/,
+                  //   message: "Password must start with '@' or '#'"
+                  // },
+                  // {
+                  //   pattern: /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
+                  //   message: "Password must be alphanumeric"
+                  // },
+                  // {
+                  //   pattern: /(?=.*[A-Z])/,
+                  //   message: "Password must contain an upper case letter"
+                  // },
+                  // {
+                  //   pattern: /(?=.*[a-z])/,
+                  //   message: "Password must contain a lower case letter"
+                  // },
                 ]}
                 hasFeedback
               >
