@@ -15,6 +15,13 @@ const {
     ValidateGetPreviousBorrowedBooks
 } = require('../Services/Book_Service')
 
+const {
+    CreateReview,
+    DeleteReview,
+    GetAllReviewsByUser,
+    GetAllReviewsByBook
+} = require('../Services/Review_Service')
+
 router.get('/', (req, res) => {
 })
 

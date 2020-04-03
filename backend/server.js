@@ -52,8 +52,6 @@ app.use('/book', require('./routes/book.js'));
 app.use('/author', require('./routes/author.js'));
 
 app.get("/", async (req, res) => {
-    await CreateAuthors()
-    await CreateBooks()
 })
 
 
