@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Form, Button, Alert, Divider, Card, message } from 'antd';
+import { Form, Button, Alert, Divider, Card, message, Modal } from 'antd';
 import { Link, Redirect } from 'react-router-dom'
 import 'antd/dist/antd.css';
 import './index.css';
@@ -15,9 +15,31 @@ class Page extends Component {
     super(props);
     this.state = {
       showAlert: false,
-      alertMsg: "",
       isAuthenticated: false,
+      attempts: 4,
     }
+  }
+
+  countDown() {
+    let secondsToGo = 60;
+    const modal = Modal.error({
+      title: 'Temporarily locked out for too many failed login attempts',
+      content: `Try again after ${secondsToGo} seconds.`,
+      okButtonProps: {disabled: true},
+      keyboard: false,
+      width: 520,
+    });
+    const timer = setInterval(() => {
+      secondsToGo -= 1;
+      modal.update({
+        content: `Try again after ${secondsToGo} seconds.`,
+      });
+    }, 1000);
+    setTimeout(() => {
+      clearInterval(timer);
+      modal.destroy();
+      this.setState({attempts: 4, showAlert: false})
+    }, secondsToGo * 1000);
   }
 
   onContinueAsGuest = () => {
@@ -33,8 +55,10 @@ class Page extends Component {
     fetch("http://localhost:8000/user/validate_login", reqOptions)
       .then(res => res.json())
       .then(res => {
-        if(res.status === "ERROR")
-          this.setState({showAlert: true, alertMsg: res.payload})
+        if(res.status === "ERROR"){
+          this.setState({showAlert: true, attempts: this.state.attempts - 1})
+          message.error(res.payload)
+        }
         else{
           message.success("Successfully logged in!")
           this.props.loginAsUser(res.payload)
@@ -57,7 +81,7 @@ class Page extends Component {
             <UserNameInput/>
             <PasswordInput/>
 
-            {this.state.showAlert ? <Alert message={this.state.alertMsg} type="error" showIcon /> : null}
+            {this.state.showAlert ? <Alert message={"Attempts remaining: " + this.state.attempts} type="warning" showIcon /> : null}
 
             <Form.Item>
               <Link to="/forgot">Forgot password</Link>
@@ -73,6 +97,7 @@ class Page extends Component {
             </Form.Item>
           </Form>
         </Card>}
+        {this.state.attempts === 0 && this.countDown()}
       </div>
     );
   }
