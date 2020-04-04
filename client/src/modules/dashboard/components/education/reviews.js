@@ -23,8 +23,11 @@ class Page extends Component {
       },
       {
         title: 'Date Reviewed',
-        dataIndex: 'date_reviewed',
-        key: 'date_reviewed',
+        dataIndex: 'created_at',
+        key: 'created_at',
+        render: (created_at) => {
+          return created_at.split('T', 1)[0]
+        }
       },
     ],
   }

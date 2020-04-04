@@ -313,7 +313,7 @@ class Page extends Component {
             author={<a>Johnny Appleseed</a>}
             avatar={<Avatar style={{ backgroundColor: 'rgb(64, 145, 247)' }} icon={<UserOutlined />} />}
             content={<Row justify="left"><p>{review.comment}</p></Row>}
-            datetime={<span>2020-4-4</span>}
+        datetime={<span>{review.created_at.split('T', 1)[0]}</span>}
           />
         ) : <p>No Reviews for this Book</p>}
         <Divider/>
