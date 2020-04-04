@@ -33,8 +33,8 @@ router.post("/delete_review", async (req, res) => {
   })
 })
 
-router.get('/get_all_review_book', async (req, res) => {
-  const result = await ValidateGetAllReviewsByBook(1)
+router.post('/get_all_review_book', async (req, res) => {
+  const result = await ValidateGetAllReviewsByBook(req.body.book_id)
 
   res.send({
     status: result.status,
