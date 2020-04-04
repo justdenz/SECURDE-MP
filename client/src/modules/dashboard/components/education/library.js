@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Tag, Row, Col, Input, Drawer, Button, Form, Divider, Card, Popconfirm, message, PageHeader, Modal} from 'antd';
+import { Table, Tag, Row, Col, Input, Drawer, Button, Form, Divider, Card, Popconfirm, message, PageHeader, Modal, Comment, Avatar } from 'antd';
 import { Link } from 'react-router-dom'
 import 'antd/dist/antd.css';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, UserOutlined } from '@ant-design/icons';
 import '../../index.css'
 class Page extends Component {
   _isMounted = false;
@@ -13,6 +13,7 @@ class Page extends Component {
       books: [],
       instances: [],
       selectedBook: {},
+      bookReviews: [],
       selectedBookInstanceID: null,
       reviewVisible: false,
       borrowVisible: false,
@@ -91,7 +92,10 @@ class Page extends Component {
           key: 'action',
           render: (text, record) => (
             <span>
-              <a style={{ marginRight: 16 }} onClick={() => this.setState({selectedBook: record, reviewVisible: true})}>Reviews</a>
+              <a style={{ marginRight: 16 }} onClick={() => {
+                this.setState({selectedBook: record, reviewVisible: true}, () => this.getReviewsOfBook())
+              }}>Reviews</a>
+
               <a onClick={() => {
                 this.props.userType === "GUEST" ? this.toggleModal(true) :
                 this.setState({selectedBook: record, borrowVisible: true}, () => this.getAllInstanceofBook())
@@ -145,6 +149,25 @@ class Page extends Component {
           console.log("Cause of Error: ", res.payload);
         else
           this.setState({instances: res.payload})
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  getReviewsOfBook(){
+    const reqOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ book_id: this.state.selectedBook.book_id })
+    }
+    fetch("http://localhost:8000/review/get_all_review_book", reqOptions)
+      .then(res => res.json())
+      .then(res => {
+        if(res.status === "ERROR")
+          console.log("Cause of Error: ", res.payload);
+        else
+          this.setState({bookReviews: res.payload})
       })
       .catch((error) => {
         console.error(error);
@@ -241,12 +264,28 @@ class Page extends Component {
     if(this.props.userType === "GUEST"){
       this.toggleModal(true)
     } else {
-      console.log("Values: ", values);
+      const reqOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ book_id: this.state.selectedBook.book_id , user_id: this.props.user.user_id, comment: values.review })
+      }
+      fetch("http://localhost:8000/review/add_review", reqOptions)
+        .then(res => res.json())
+        .then(res => {
+          if(res.status === "ERROR")
+            console.log("Cause of Error: ", res.payload);
+          else
+            message.success("Successfully Reviewed Book!")
+            this.toggleReviewDrawer(false)
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }
 
   render() {
-    const { columns, books, instances, selectedBook } = this.state
+    const { columns, books, instances, selectedBook, bookReviews } = this.state
     const { user, userType } = this.props
     const name = user.first_name ? user.first_name : "Guest"
     return (
@@ -268,14 +307,22 @@ class Page extends Component {
           destroyOnClose
           footer={null}
         >
-        {/* ADD BOOK REVIEWS HERE */}
+        { bookReviews.length ? bookReviews.map(review => 
+          <Comment
+            key={review.review_id}
+            author={<a>Johnny Appleseed</a>}
+            avatar={<Avatar style={{ backgroundColor: 'rgb(64, 145, 247)' }} icon={<UserOutlined />} />}
+            content={<Row justify="left"><p>{review.comment}</p></Row>}
+        datetime={<span>{review.created_at.split('T', 1)[0]}</span>}
+          />
+        ) : <p>No Reviews for this Book</p>}
         <Divider/>
           <Form layout="vertical" hideRequiredMark onFinish={this.handleReviewSubmit}>
             <Row gutter={16}>
               <Col span={24}>
                 <Form.Item
                   name="review"
-                  label="Write a Review for this Book"
+                  label="Write your review here"
                   rules={[
                     {
                       required: true,
@@ -283,7 +330,7 @@ class Page extends Component {
                     },
                   ]}
                 >
-                  <Input.TextArea rows={4} placeholder="Write your review for this book here" />
+                  <Input.TextArea rows={4} style={{resize: 'none'}} placeholder="Leave a review for this book" />
                 </Form.Item>
               </Col>
             </Row>

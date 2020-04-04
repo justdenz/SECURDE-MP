@@ -40,7 +40,7 @@ async function CreateReview(book_id, user_id, comment){
 }
 
 async function DeleteReview(review_id){
-  awaitdb.review.destroy({
+  await db.review.destroy({
     where:{
       review_id: review_id
     }

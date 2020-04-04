@@ -5,7 +5,10 @@ import { Link, Redirect } from 'react-router-dom'
 import 'antd/dist/antd.css';
 import './index.css';
 
-import { loginAsUser, loginAsGuest } from '../../redux/actions'
+import { loginAsUser, loginAsGuest, logout } from '../../redux/actions'
+
+import { persistStore } from 'redux-persist'
+import { store } from '../../redux/store';
 
 import UserNameInput from "./components/username"
 import PasswordInput from "./components/password"
@@ -18,6 +21,11 @@ class Page extends Component {
       isAuthenticated: false,
       attempts: 4,
     }
+  }
+
+  componentDidMount(){
+    this.props.logout()
+    persistStore(store).purge()
   }
 
   countDown() {
@@ -106,6 +114,7 @@ class Page extends Component {
 const mapDispatchToProps = dispatch => ({
   loginAsGuest: () => dispatch(loginAsGuest()),
   loginAsUser: (data) => dispatch(loginAsUser(data)),
+  logout: () => dispatch(logout()),
 })
 
 const mapStateToProps = state => ({

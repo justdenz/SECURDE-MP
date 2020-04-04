@@ -50,6 +50,7 @@ app.use('/user', require('./routes/user.js'));
 app.use('/admin', require('./routes/admin.js'));
 app.use('/book', require('./routes/book.js'));
 app.use('/author', require('./routes/author.js'));
+app.use('/review', require('./routes/review.js'));
 
 app.get("/", async (req, res) => {
 })

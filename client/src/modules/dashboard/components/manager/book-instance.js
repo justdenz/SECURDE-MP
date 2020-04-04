@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import "antd/dist/antd.css";
 import { Form, Row, Select, Table, Button, Modal, Tag, message, Radio, Popconfirm } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
@@ -153,7 +154,7 @@ class Page extends Component {
     const reqOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({bookinstance_id: this.state.selectedBookInstance.bookinstance_id, status: value.status})
+      body: JSON.stringify({bookinstance_id: this.state.selectedBookInstance.bookinstance_id, status: value.status, user_id: this.props.user.user_id})
     }
     fetch("http://localhost:8000/book/update_bookinstance", reqOptions)
       .then(res => res.json())
@@ -162,7 +163,6 @@ class Page extends Component {
           console.log("Cause of Error: ", res.payload);
         else{
           message.success("Book Instance Updated!")
-          console.log(res.payload);
           this.getAllBookInstances()
           this.toggleModal(false)
         }
@@ -231,4 +231,11 @@ class Page extends Component {
   }
 }
 
-export default Page;
+const mapDispatchToProps = dispatch => ({})
+
+const mapStateToProps = state => ({
+  user: state.simpleReducer.user,
+  userType: state.simpleReducer.userType
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Page);

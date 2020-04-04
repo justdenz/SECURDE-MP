@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom"
 import 'antd/dist/antd.css';
+import { logout } from '../../redux/actions'
+
 //import './index.css';
 import { Layout, Menu, Row } from 'antd';
 import { UserOutlined, BookOutlined, ToolOutlined, BarcodeOutlined} from '@ant-design/icons';

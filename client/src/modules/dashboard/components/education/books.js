@@ -5,6 +5,7 @@ import { Table, PageHeader } from 'antd';
 class Page extends Component {
   _isMounted = false;
   state = {
+    books: [],
     columns: [
       {
         title: 'Book Instance ID',
@@ -19,8 +20,8 @@ class Page extends Component {
       },
       {
         title: 'Date Borrowed',
-        dataIndex: 'date_borrowed',
-        key: 'date_borrowed',
+        dataIndex: 'borrowed_date',
+        key: 'borrowed_date',
       },
     ],
   }
@@ -47,10 +48,17 @@ class Page extends Component {
     fetch("http://localhost:8000/user/get_current_books", reqOptions)
       .then(res => res.json())
       .then(res => {
-        if(res.status === "ERROR" && this._isMounted)
-          console.log("Cause of Error: ", res.payload);
-        else
-          console.log("Current Books: ", res.payload);
+        if(res.status !== "ERROR" && this._isMounted){
+          let books = res.payload.map(record => {
+            return({
+              key: record.bookinstance_id,
+              bookinstance_id: record.bookinstance_id,
+              title: record.title.title,
+              borrowed_date: record.borrowed_date.split('T', 1)[0],
+            })
+          })
+          this.setState({books})
+        }
       })
       .catch((error) => {
         console.error(error);
@@ -68,7 +76,7 @@ class Page extends Component {
           backIcon={false}
           style={{marginBottom: "20px"}}
         />
-        <Table columns={columns} dataSource={[]} pagination={{defaultPageSize: 8}}/>
+        <Table columns={columns} dataSource={this.state.books} pagination={{defaultPageSize: 8}}/>
       </div>
     );
   }
