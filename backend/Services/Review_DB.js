@@ -7,7 +7,7 @@ async function GetAllReviewsByUser(user_id){
       user_id: user_id
     },
     paranoid: true,
-    attributes:['review_id', 'comment', 'user_id', 'book_id', 'created_at']
+    attributes:['review_id', 'comment', 'user_id', 'book_id']
   })
 
   if(reviews) return reviews
@@ -21,7 +21,7 @@ async function GetAllReviewsByBook(book_id){
       book_id: book_id
     },
     paranoid: true,
-    attributes:['review_id', 'comment', 'user_id', 'book_id', 'created_at']
+    attributes:['review_id', 'comment', 'user_id', 'book_id']
   })
 
   if(reviews) return reviews
