@@ -69,10 +69,6 @@ class Page extends Component {
     this.getAllAuthors()
   }
 
-  componentDidUpdate(){
-    this.getAllBooks()
-  }
-
   componentWillUnmount(){
     this._isMounted = false;
   }
