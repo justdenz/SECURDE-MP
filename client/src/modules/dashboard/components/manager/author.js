@@ -82,7 +82,7 @@ class Page extends Component {
       .then(res => res.json())
       .then(res => {
         if(res.status === "ERROR")
-          console.log("Cause of Error: ", res.payload);
+          message.error(res.payload)
         else
           message.success("Author Successfully Added!")
           this.getAllAuthors()
@@ -173,7 +173,7 @@ class Page extends Component {
             </Form.Item>
           </Row>
         </Form>
-        <Table style={{marginTop: 50}} columns={this.state.columns} dataSource={this.state.authors} pagination={{defaultPageSize: 8}}/>
+        <Table style={{marginTop: 50}} columns={this.state.columns} dataSource={this.state.authors} pagination={{defaultPageSize: 7}}/>
         <Modal
           title="Edit Author"
           visible={this.state.modalVisible}

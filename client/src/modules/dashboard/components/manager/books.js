@@ -122,7 +122,7 @@ class Page extends Component {
       .then(res => res.json())
       .then(res => {
         if(res.status === "ERROR")
-          console.log("Cause of Error: ", res.payload);
+          message.error(res.payload)
         else{
           message.success("Book Successfully Added!")
           this.getAllBooks()
@@ -192,7 +192,7 @@ class Page extends Component {
         <Button type="primary" style={{marginTop: 20, marginBottom: 20}} onClick={() => this.toggleAddDrawer(true)}>
           <PlusOutlined /> Add book
         </Button>
-        <Table columns={this.state.columns} dataSource={this.state.books} pagination={{defaultPageSize: 8}}/>
+        <Table columns={this.state.columns} dataSource={this.state.books} pagination={{defaultPageSize: 7}}/>
         <Drawer
           title="Create a new book"
           width={720}

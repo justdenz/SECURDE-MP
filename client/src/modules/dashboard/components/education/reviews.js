@@ -10,6 +10,7 @@ class Page extends Component {
         title: 'Book Title',
         dataIndex: 'book_title',
         key: 'book_title',
+        render: text => <a>{text}</a>,
       },
       {
         title: 'Your Review',
