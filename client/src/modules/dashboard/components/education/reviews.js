@@ -80,7 +80,8 @@ class Page extends Component {
   }
 
   render() {
-    const { columns } = this.state
+    const { columns, reviews } = this.state
+    console.log("reviews: ", reviews);
     return (
       <div>
         <PageHeader
@@ -90,7 +91,7 @@ class Page extends Component {
           backIcon={false}
           style={{marginBottom: "20px"}}
         />
-        <Table columns={columns} dataSource={this.state.reviews} pagination={{defaultPageSize: 8}}/>
+        <Table columns={columns} dataSource={reviews} pagination={{defaultPageSize: 8}}/>
       </div>
     );
   }
