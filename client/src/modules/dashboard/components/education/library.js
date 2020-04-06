@@ -282,7 +282,7 @@ class Page extends Component {
 
   render() {
     const { columns, books, instances, selectedBook, bookReviews } = this.state
-    const { user, userType } = this.props
+    const { user } = this.props
     const name = user.first_name ? user.first_name : "Guest"
     return (
       <div>

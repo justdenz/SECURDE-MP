@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import "antd/dist/antd.css";
 import { Form, Row, Input, Table, Button, Modal, message, Popconfirm} from "antd";
 import { PlusOutlined } from '@ant-design/icons';
@@ -76,7 +77,7 @@ class Page extends Component {
     const reqOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ first_name: values.firstname, last_name: values.lastname})
+      body: JSON.stringify({ first_name: values.firstname, last_name: values.lastname, user_id: this.props.user.user_id})
     }
     fetch("http://localhost:8000/author/add_author", reqOptions)
       .then(res => res.json())
@@ -96,7 +97,7 @@ class Page extends Component {
     const reqOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ author_id: this.state.selectedAuthor.author_id, first_name: values.firstname, last_name: values.lastname})
+      body: JSON.stringify({ author_id: this.state.selectedAuthor.author_id, first_name: values.firstname, last_name: values.lastname, user_id: this.props.user.user_id})
     }
     fetch("http://localhost:8000/author/edit_author", reqOptions)
       .then(res => res.json())
@@ -118,7 +119,7 @@ class Page extends Component {
     const reqOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({author_id: this.state.selectedAuthor.author_id})
+      body: JSON.stringify({author_id: this.state.selectedAuthor.author_id, user_id: this.props.user.user_id})
     }
     fetch("http://localhost:8000/author/delete_author", reqOptions)
       .then(res => res.json())
@@ -210,4 +211,11 @@ class Page extends Component {
   }
 }
 
-export default Page;
+const mapDispatchToProps = dispatch => ({})
+
+const mapStateToProps = state => ({
+  user: state.simpleReducer.user,
+  userType: state.simpleReducer.userType
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Page);

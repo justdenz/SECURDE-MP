@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Table, Drawer, Button, Form, message, Popconfirm} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
@@ -116,6 +117,7 @@ class Page extends Component {
         year_publication: values.publication,
         isbn: values.isbn,
         authors: values.authors,
+        user_id: this.props.user.user_id,
       })
     }
     fetch("http://localhost:8000/book/create_book", reqOptions)
@@ -167,7 +169,7 @@ class Page extends Component {
     const reqOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({book_id: this.state.selectedBook.book_id})
+      body: JSON.stringify({book_id: this.state.selectedBook.book_id, user_id: this.props.user.user_id,})
     }
     fetch("http://localhost:8000/book/delete_book", reqOptions)
       .then(res => res.json())
@@ -238,4 +240,11 @@ class Page extends Component {
   }
 }
 
-export default Page;
+const mapDispatchToProps = dispatch => ({})
+
+const mapStateToProps = state => ({
+  user: state.simpleReducer.user,
+  userType: state.simpleReducer.userType
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Page);

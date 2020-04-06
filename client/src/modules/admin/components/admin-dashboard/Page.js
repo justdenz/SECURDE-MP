@@ -65,7 +65,6 @@ class Page extends Component {
                 <Menu.Item key="System"><Row justify="left"><span><HistoryOutlined/></span><span>System Logs</span></Row></Menu.Item>
                 
                 <SubMenu key="sub2"title={<Row justify="left"><span><ToolOutlined /><span>Settings</span></span></Row>}>
-                  <Menu.Item key="ChangePass"><Row justify="left">Change Password</Row></Menu.Item>
                   <Menu.Item key="logout"><Link to="/login"><Row justify="left">Logout</Row></Link></Menu.Item>
                 </SubMenu>   
               </Menu>
