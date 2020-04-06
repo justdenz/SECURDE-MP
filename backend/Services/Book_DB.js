@@ -115,6 +115,18 @@ async function GetAllBookInstance(){
     attributes: ['bookinstance_id', 'status', 'book_id']
   })
 
+  let bookInstance
+  for(bookInstance of bookInstances){
+    let book = await db.book.findOne({
+      raw: true,
+      where: {
+        book_id: bookInstance.book_id
+      },
+      attributes: ['title']
+    })
+    bookInstance.title = book.title
+  }
+
   return bookInstances
 }
 

@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         isbn: {
-            type: DataTypes.INTEGER(13).UNSIGNED,
+            type: DataTypes.BIGINT,
             required: true,
             allowNull: false,
         }
