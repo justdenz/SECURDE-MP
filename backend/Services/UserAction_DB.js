@@ -27,11 +27,11 @@ async function Logout(user_id){
   })
 }
 
-async function BorrowBook(user_id, book_id, bookinstance_id){
+async function BorrowBook(user_id, bookinstance_id){
   await db.user_action.create({
     action_id: 4,
     user_id: user_id,
-    book_id: book_id,
+    book_id: null,
     bookinstance_id: bookinstance_id
   })
 }

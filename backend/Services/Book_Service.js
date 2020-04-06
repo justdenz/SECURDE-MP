@@ -154,7 +154,7 @@ async function ValidateDeleteBookByID(user_id, book_id){
       response.payload = "Book " + book_id + " has been deleted!"
 
       /*User Action*/
-      await AddBookAction(user_id, book_id)
+      await DeleteBook(user_id, book_id)
       .then(console.log("Action logged as Delete Book!"))
       .catch(err => console.log(err))
     }else{
@@ -251,13 +251,13 @@ async function ValidateGetBookInstancesByBookID(book_id){
   return response
 }
 
-async function ValidateAddBookInstance(book_id, bookinstance_id){
+async function ValidateAddBookInstance(user_id, book_id){
   let response = {
     status: '',
     payload: ''
   }
 
-  let newBookInstance = await AddBookInstance()
+  let newBookInstance = await AddBookInstance(book_id)
 
   if(!newBookInstance){
     response.status = 'ERROR',
@@ -267,7 +267,7 @@ async function ValidateAddBookInstance(book_id, bookinstance_id){
     response.payload = "Book instance has been added successfully!"
 
     /*User Action*/
-    await AddBookInstanceAction(user_id, newBookInstance.book_id, newBookInstance.bookinstance_id)
+    await AddBookInstanceAction(user_id, book_id, newBookInstance.bookinstance_id)
     .then(console.log("Action logged as Add Book Instance!"))
     .catch(err => console.log(err))
   }
@@ -329,7 +329,7 @@ async function ValidateBorrowBookInstance(bookinstance_id, user_id){
     response.payload = "Student borrowed book!"
 
     /*User Action*/
-    await BorrowBook(user_id, book_id)
+    await BorrowBook(user_id, bookinstance_id)
     .then(console.log("Action logged as Borrow Book!"))
     .catch(err => console.log(err))
   }else {
@@ -357,7 +357,7 @@ async function ValidateDeleteBookInstanceByID(bookinstance_id, user_id, book_id)
 
       /*User Action*/
       await DeleteBookInstance(user_id, book_id, bookinstance_id)
-      .then(console.log("Action logged as Add Book!"))
+      .then(console.log("Action logged as Delete Book Instance!"))
       .catch(err => console.log(err))
 
     }else {
