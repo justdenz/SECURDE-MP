@@ -1,6 +1,5 @@
 //ACTION CREATORS
 import { actionTypes } from "./reducers/simpleReducer"
-import { persistor } from "./store"
 
 export const loginAsUser = (data) => dispatch => {
   dispatch({

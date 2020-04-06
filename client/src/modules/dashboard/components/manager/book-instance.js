@@ -24,8 +24,7 @@ class Page extends Component {
         dataIndex: 'book_id',
         key: 'book_id',
         render: (book_id) => {
-          const book = this.state.books.filter(book => book.book_id === book_id)
-          return book[0].title
+          return book_id
         }
       },
       {
@@ -66,10 +65,6 @@ class Page extends Component {
     this._isMounted = true;
     this.getAllBooks()
     this.getAllBookInstances()  
-  }
-
-  componentDidUpdate(){
-    this.getAllBookInstances()
   }
 
   componentWillUnmount(){

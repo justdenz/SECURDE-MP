@@ -112,15 +112,11 @@ class Page extends Component {
     this.getAllBooks()
   }
 
-  componentDidUpdate(){
-    this.getAllBooks()
-  }
-
   componentWillUnmount(){
     this._isMounted = false;
   }
 
-  getAllBooks(){
+  getAllBooks = () => {
     fetch("http://localhost:8000/book/")
       .then(res => res.json())
       .then(res => {
