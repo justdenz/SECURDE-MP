@@ -31,10 +31,6 @@ class Page extends Component {
     this.getAllCurrentBooks()
   }
 
-  componentDidUpdate(){
-    this.getAllCurrentBooks()
-  }
-
   componentWillUnmount(){
     this._isMounted = false;
   }
