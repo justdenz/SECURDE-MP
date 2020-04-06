@@ -20,7 +20,7 @@ const {
   DeleteInstanceTracker
 } = require("./Book_DB.js")
 
-const {BorrowBook, EditBookInstance, DeleteBookInstance, AddBookAction, EditBook, DeleteBook} = require("./UserAction_DB.js")
+const {BorrowBook, EditBookInstance, DeleteBookInstance, AddBookAction, EditBook, DeleteBook, AddBookInstanceAction} = require("./UserAction_DB.js")
 
 async function ValidateGetAllBooks(){
   let books = await GetAllBooks()
@@ -139,7 +139,7 @@ async function ValidateUpdateBook(user_id, book_id, title, publisher, year_publi
 }
 
 //when de
-async function ValidateDeleteBookByID(book_id){
+async function ValidateDeleteBookByID(user_id, book_id){
 
   let response = {
     status: '',
@@ -152,6 +152,11 @@ async function ValidateDeleteBookByID(book_id){
     if(result > 0){
       response.status = 'OK'
       response.payload = "Book " + book_id + " has been deleted!"
+
+      /*User Action*/
+      await AddBookAction(user_id, book_id)
+      .then(console.log("Action logged as Delete Book!"))
+      .catch(err => console.log(err))
     }else{
       response.status = 'ERROR'
       response.payload = 'An error has occurred in deleting the book, please try again..'
@@ -178,6 +183,11 @@ async function ValidateDeleteBookByID(book_id){
         if(bookResult > 0){
           response.status = 'OK'
           response.payload = "Book " + book_id + " has been deleted!"
+
+          /*User Action*/
+          await DeleteBook(user_id, book_id)
+          .then(console.log("Action logged as Delete Book!"))
+          .catch(err => console.log(err))
         }else{
           response.status = 'ERROR'
           response.payload = 'An error has occurred in deleting the book, please try again..'
@@ -241,13 +251,13 @@ async function ValidateGetBookInstancesByBookID(book_id){
   return response
 }
 
-async function ValidateAddBookInstance(book_id){
+async function ValidateAddBookInstance(book_id, bookinstance_id){
   let response = {
     status: '',
     payload: ''
   }
 
-  let newBookInstance = await AddBookInstance(book_id)
+  let newBookInstance = await AddBookInstance()
 
   if(!newBookInstance){
     response.status = 'ERROR',
@@ -256,12 +266,16 @@ async function ValidateAddBookInstance(book_id){
     response.status = "OK",
     response.payload = "Book instance has been added successfully!"
 
+    /*User Action*/
+    await AddBookInstanceAction(user_id, newBookInstance.book_id, newBookInstance.bookinstance_id)
+    .then(console.log("Action logged as Add Book Instance!"))
+    .catch(err => console.log(err))
   }
 
   return response
 }
 
-async function ValidateUpdateBookInstance(bookinstance_id, status, user_id){
+async function ValidateUpdateBookInstance(bookinstance_id, status, user_id, book_id){
   let response = {
     status: '',
     payload: ''
@@ -285,6 +299,11 @@ async function ValidateUpdateBookInstance(bookinstance_id, status, user_id){
   if(result > 0){
     response.status = 'OK',
     response.payload = "Book instance was changed to " + statusUpdate
+
+    /* User Action */
+    await EditBookInstance(user_id, book_id, bookinstance_id)
+    .then(console.log("Action logged as Edit Book Instance!"))
+    .catch(err => console.log(err))
   } else {
     response.status = "ERROR"
     response.payload = "There was an error in updating book instance, please try again..."
@@ -308,6 +327,11 @@ async function ValidateBorrowBookInstance(bookinstance_id, user_id){
     await AddInstanceTracker(bookinstance_id, user_id)
     response.status = 'OK',
     response.payload = "Student borrowed book!"
+
+    /*User Action*/
+    await BorrowBook(user_id, book_id)
+    .then(console.log("Action logged as Borrow Book!"))
+    .catch(err => console.log(err))
   }else {
     response.status = "ERROR"
     response.payload = "There was an error, please try again..."
@@ -316,7 +340,7 @@ async function ValidateBorrowBookInstance(bookinstance_id, user_id){
   return response
 }
 
-async function ValidateDeleteBookInstanceByID(bookinstance_id){
+async function ValidateDeleteBookInstanceByID(bookinstance_id, user_id, book_id){
   let response = {
     status: '',
     payload: ''
@@ -330,6 +354,12 @@ async function ValidateDeleteBookInstanceByID(bookinstance_id){
     if(result > 0){
       response.status = "OK"
       response.payload = "Book instance has been deleted!"
+
+      /*User Action*/
+      await DeleteBookInstance(user_id, book_id, bookinstance_id)
+      .then(console.log("Action logged as Add Book!"))
+      .catch(err => console.log(err))
+
     }else {
       response.status = "ERROR"
       response.payload = "There was an error in deleting the book instance, please try again..."

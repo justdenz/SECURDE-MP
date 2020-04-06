@@ -84,7 +84,7 @@ router.post('/update_book', async (req, res) => {
 })
 
 router.post('/delete_book', async (req, res) => {
-  const result = await ValidateDeleteBookByID(req.body.book_id)
+  const result = await ValidateDeleteBookByID(req.body.user_id, req.body.book_id)
   res.send({
     status: result.status,
     payload: result.payload
@@ -119,7 +119,7 @@ router.post('/get_bookinstance_bybookid', async (req, res) => {
 })
 
 router.post('/add_bookinstance', async (req, res) => {
-  const result = await ValidateAddBookInstance(req.body.book_id)
+  const result = await ValidateAddBookInstance(req.body.user_id)
   res.send({
     status: result.status,
     payload: result.payload
@@ -127,7 +127,7 @@ router.post('/add_bookinstance', async (req, res) => {
 })
 
 router.post('/update_bookinstance', async (req, res) =>{
-  let result = await ValidateUpdateBookInstance(req.body.bookinstance_id, req.body.status, req.body.user_id)
+  let result = await ValidateUpdateBookInstance(req.body.bookinstance_id, req.body.status, req.body.user_id, req.body.book_id)
   res.send({
     status: result.status,
     payload: result.payload
@@ -135,7 +135,7 @@ router.post('/update_bookinstance', async (req, res) =>{
 })
 
 router.post("/delete_bookinstance", async (req, res) => {
-  let result = await ValidateDeleteBookInstanceByID(req.body.bookinstance_id)
+  let result = await ValidateDeleteBookInstanceByID(req.body.bookinstance_id, req.body.user_id, req.body.book_id)
   res.send({
     status: result.status,
     payload: result.payload
