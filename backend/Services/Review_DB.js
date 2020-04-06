@@ -10,6 +10,18 @@ async function GetAllReviewsByUser(user_id){
     attributes:['review_id', 'comment', 'user_id', 'book_id', 'created_at']
   })
 
+  var review
+  for(review of reviews){
+    let book = await db.book.findOne({
+      raw: true,
+      where: {
+        book_id: review.book_id
+      },
+      attributes: ['title']
+    })
+    review.book_title = book.title
+  }
+
   if(reviews) return reviews
   return null
 }

@@ -4,17 +4,12 @@ import { Table, PageHeader } from 'antd';
 class Page extends Component {
   _isMounted = false;
   state = {
-    books: [],
     reviews: [],
     columns: [
       {
         title: 'Book Title',
-        dataIndex: 'book_id',
-        key: 'book_id',
-        render: (book_id) => {
-          const book = this.state.books.filter(book => book.book_id === book_id)
-          return book[0] ? book[0].title : "Undefined"
-        }
+        dataIndex: 'book_title',
+        key: 'book_title',
       },
       {
         title: 'Your Review',
@@ -34,28 +29,11 @@ class Page extends Component {
 
   componentDidMount(){
     this._isMounted = true;
-    this.getAllBooks()
     this.getAllReviewsOfUser()
   }
 
   componentWillUnmount(){
     this._isMounted = false;
-  }
-
-  getAllBooks(){
-    fetch("http://localhost:8000/book/")
-      .then(res => res.json())
-      .then(res => {
-        if(res.status !== "ERROR" && this._isMounted){
-          let books = res.payload.map(book => {
-            return({
-              key: book.book_id,
-              ...book,
-            })
-          })
-          this.setState({books})
-        }
-      })
   }
 
   getAllReviewsOfUser(){
@@ -81,7 +59,6 @@ class Page extends Component {
 
   render() {
     const { columns, reviews } = this.state
-    console.log("reviews: ", reviews);
     return (
       <div>
         <PageHeader
