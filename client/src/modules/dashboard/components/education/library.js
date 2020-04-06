@@ -306,10 +306,10 @@ class Page extends Component {
         { bookReviews.length ? bookReviews.map(review => 
           <Comment
             key={review.review_id}
-            author={<a>Johnny Appleseed</a>}
+            author={<a>{review.first_name + " " + review.last_name}</a>}
             avatar={<Avatar style={{ backgroundColor: 'rgb(64, 145, 247)' }} icon={<UserOutlined />} />}
             content={<Row justify="left"><p>{review.comment}</p></Row>}
-        datetime={<span>{review.created_at.split('T', 1)[0]}</span>}
+            datetime={<span>{review.created_at.split('T', 1)[0]}</span>}
           />
         ) : <p>No Reviews for this Book</p>}
         <Divider/>

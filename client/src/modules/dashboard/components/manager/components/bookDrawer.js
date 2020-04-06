@@ -66,8 +66,8 @@ export default (props) => {
             label="ISBN"
             rules={[
               { required: true, message: 'Please enter book ISBN' },
-              // { min: 10, message: 'Please input a valid ISBN number!'},
-              // { max: 13, message: 'Please input a valid ISBN number!'},
+              { min: 10, message: 'Please input a valid ISBN number!'},
+              { max: 13, message: 'Please input a valid ISBN number!'},
             ]}
           >
             <Input type="number" autoComplete="off" placeholder="Please enter book ISBN"/>

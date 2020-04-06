@@ -61,10 +61,6 @@ class Page extends Component {
     this._isMounted = true
     this.getAllManagers()
   }
-
-  componentDidUpdate(){
-    this.getAllManagers()
-  }
   
   componentWillUnmount(){
     this._isMounted = false;
@@ -112,6 +108,7 @@ class Page extends Component {
         else{
           this.toggleAddModal(false);
           message.success("Successfuly created manager!")
+          this.getAllManagers();
         }
       })
       .catch((error) => {
