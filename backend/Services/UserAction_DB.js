@@ -95,6 +95,75 @@ async function AddBookInstanceAction(user_id, book_id, bookinstance_id){
   })
 }
 
+async function GetAllUserActionByUser(user_id){
+  const action = await db.user_action.findAll({
+    raw: true,
+    where: {
+      user_id: user_id
+    },
+    paranoid: true,
+    attributes:['user_action_id', 'user_id', 'createdAt', 'book_id', 'bookinstance_id', 'action_id']
+  })
+
+  var actions 
+  for(actions of action){
+    let user = await db.user.findOne({
+      raw: true,
+      where:{
+        user_id: actions.user_id
+      },
+      attributes: ['first_name', 'last_name', 'username']
+    })
+    let each_action = await db.action.findOne({
+      raw: true,
+      where:{
+        action_id: actions.action_id
+      },
+      attributes: ['description']
+    })
+    actions.first_name = user.first_name
+    actions.last_name = user.last_name
+    actions.username = user.username
+    actions.description = each_action.description
+  }
+
+  if(action) return action
+  return null
+}
+
+async function GetAllUserActions(){
+  const action = await db.user_action.findAll({
+    raw: true,
+    paranoid: true,
+    attributes:['user_action_id', 'user_id', 'createdAt', 'book_id', 'bookinstance_id', 'action_id']
+  })
+
+  var actions 
+  for(actions of action){
+    let user = await db.user.findOne({
+      raw: true,
+      where:{
+        user_id: actions.user_id
+      },
+      attributes: ['first_name', 'last_name', 'username']
+    })
+    let each_action = await db.action.findOne({
+      raw: true,
+      where:{
+        action_id: actions.action_id
+      },
+      attributes: ['description']
+    })
+    actions.first_name = user.first_name
+    actions.last_name = user.last_name
+    actions.username = user.username
+    actions.description = each_action.description
+  }
+
+  if(action) return action
+  return null
+}
+
 module.exports={
   Register,
   Login,
@@ -106,5 +175,7 @@ module.exports={
   EditBook,
   DeleteBook,
   ReviewBook,
-  AddBookInstanceAction
+  AddBookInstanceAction,
+  GetAllUserActionByUser,
+  GetAllUserActions
 }

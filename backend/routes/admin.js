@@ -10,6 +10,11 @@ const {
     ValidateGetUserByRole
 } = require('../Services/User_Service')
 
+const{
+    ValidateGetAllUserActions,
+    ValidateGetAllUserActionsByUser
+  } = require('../Services/UserAction_Service.js')
+
 // router.use(function timeLog (req, res, next) {
 //     if(req.session.role_name == "ADMIN"){
 //         next()
@@ -65,6 +70,24 @@ router.post('/delete_account', async(req, res) => {
         payload: result.payload
     })
 })
+
+
+router.post("/all_user_actions", async(req, res) => {
+    let result = await ValidateGetAllUserActions()
+    res.send({
+      status: result.status,
+      payload: result.payload
+    })
+  })
+  
+  router.post("/user_actions", async(req, res) => {
+    let result = await ValidateGetAllUserActionsByUser(req.body.user_id)
+    res.send({
+      status: result.status,
+      payload: result.payload
+    })
+  })
+  
 
 module.exports = router
 
