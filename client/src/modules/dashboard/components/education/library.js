@@ -180,7 +180,7 @@ class Page extends Component {
       .then(res => res.json())
       .then(res => {
         if(res.status === "ERROR")
-          console.log("Cause of Error: ", res.payload);
+          message.error(res.payload);
         else
           message.success("Successfully Borrowed Book!")
           this.toggleBorrowDrawer(false)
@@ -269,7 +269,7 @@ class Page extends Component {
         .then(res => res.json())
         .then(res => {
           if(res.status === "ERROR")
-            console.log("Cause of Error: ", res.payload);
+            message.error(res.payload);
           else
             message.success("Successfully Reviewed Book!")
             this.toggleReviewDrawer(false)
