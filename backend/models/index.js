@@ -178,6 +178,15 @@ db.action.create({action_id: 10,description: "Review Book"})
 db.action.create({action_id: 11,description: 'Add Book Instance'})
 .then()
 .catch(err => console.log)
+db.action.create({action_id: 12,description: "Add Author"})
+.then()
+.catch(err => console.log)
+db.action.create({action_id: 13,description: "Delete Author"})
+.then()
+.catch(err=>console.log)
+db.action.create({action_id: 14,description:"Edit Author"})
+.then()
+.catch(err => console.log)
 
 
 

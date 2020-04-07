@@ -164,6 +164,33 @@ async function GetAllUserActions(){
   return null
 }
 
+async function AddAuthor(user_id){
+  await db.user_action.create({
+    action_id: 12,
+    user_id: user_id,
+    book_id: null,
+    bookinstance_id: null
+  })
+}
+
+async function DeleteAuthorAction(user_id){
+  await db.user_action.create({
+    action_id: 13,
+    user_id: user_id,
+    book_id: null,
+    bookinstance_id: null
+  })
+}
+
+async function EditAuthorAction(user_id){
+  await db.user_action.create({
+    action_id: 14,
+    user_id: user_id,
+    book_id: null,
+    bookinstance_id: null
+  })
+}
+
 module.exports={
   Register,
   Login,
@@ -177,5 +204,8 @@ module.exports={
   ReviewBook,
   AddBookInstanceAction,
   GetAllUserActionByUser,
-  GetAllUserActions
+  GetAllUserActions,
+  AddAuthor,
+  DeleteAuthorAction,
+  EditAuthorAction
 }
