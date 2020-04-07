@@ -22,9 +22,9 @@ class Page extends Component {
         },
         {
           title: 'Authors',
-          dataIndex: 'authors',
-          key: 'authors',
-          render: authors => authors.length > 1 ? (authors[0].last_name + ", " + authors[0].first_name + " et al.") : (authors[0].last_name + ", " + authors[0].first_name)
+          dataIndex: 'authorNames',
+          key: 'authorNames',
+          render: authors => authors.length > 1 ? (authors[0] + " et al.") : (authors[0])
         },
         {
           title: 'Publisher',
@@ -86,6 +86,7 @@ class Page extends Component {
             })
           })
           this.setState({books})
+          console.log(books);
         }
       })
   }
@@ -223,7 +224,7 @@ class Page extends Component {
           <Form layout="vertical" hideRequiredMark onFinish={this.handleUpdateBookSubmit} 
             initialValues={{
               title: selectedBook.title,
-              authors: selectedBook.authors,
+              authors: selectedBook.authorID,
               publisher: selectedBook.publisher,
               publication: selectedBook.year_publication,
               isbn: selectedBook.isbn,
