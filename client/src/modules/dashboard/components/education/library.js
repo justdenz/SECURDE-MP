@@ -39,17 +39,17 @@ class Page extends Component {
         },
         {
           title: 'Authors',
-          dataIndex: 'authors',
-          key: 'authors',
+          dataIndex: 'authorNames',
+          key: 'authorNames',
           sorter: {
             compare: (a, b) => {
-              if(a.authors.toString().toLowerCase() < b.authors.toString().toLowerCase()) { return -1; }
-              if(a.authors.toString().toLowerCase() > b.authors.toString().toLowerCase()) { return 1; }
+              if(a.authorNames.toString().toLowerCase() < b.authorNames.toString().toLowerCase()) { return -1; }
+              if(a.authorNames.toString().toLowerCase() > b.authorNames.toString().toLowerCase()) { return 1; }
               return 0;
             },
             multiple: 2,
           },
-          ...this.getColumnSearchProps('authors'),
+          ...this.getColumnSearchProps('authorNames'),
           render: authors => authors.length > 1 ? (authors[0] + " et al.") : (authors[0])
         },
         {
