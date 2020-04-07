@@ -37,10 +37,16 @@ async function ValidateGetAllBooks(){
   else if(books){
     var book
     for(book of books){
-      book.authorID = await GetBookAuthorID(book.book_id)
-      let author = await ValidateGetAuthorByID(book.authorID)
-      book.authorFirstName = author.first_name
-      book.authorLastName = author.last_name
+      authors = await GetBookAuthorID(book.book_id)
+      let ids = []
+      let names = []
+      var author
+      for(author of authors){
+        ids.push(author.author_id)
+        names.push(author.last_name + ", " + author.first_name)
+      }
+      book.authorID = ids
+      book.authorNames = names
     }
     response.status = "OK"
     response.payload = books
