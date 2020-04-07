@@ -24,7 +24,7 @@ class Page extends Component {
           title: 'Authors',
           dataIndex: 'authors',
           key: 'authors',
-          render: authors => authors.length > 1 ? (authors[0] + " et al.") : (authors[0])
+          render: authors => authors.length > 1 ? (authors[0].last_name + ", " + authors[0].first_name + " et al.") : (authors[0].last_name + ", " + authors[0].first_name)
         },
         {
           title: 'Publisher',

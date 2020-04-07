@@ -52,6 +52,11 @@ async function GetBookAuthorID(book_id){
   var id
 
   for(id of author_ids){
+    let authorObject = {
+      author_id: null,
+      first_name: '',
+      last_name: ''
+    }
     let tempAuthor = await db.author.findOne({
       raw: true,
       where: {
@@ -60,7 +65,10 @@ async function GetBookAuthorID(book_id){
       paranoid: false,
       attributes: ['first_name', 'last_name']
     })
-    authors.push(tempAuthor.last_name + ", " + tempAuthor.first_name)
+    authorObject.author_id = id.author_id
+    authorObject.first_name = tempAuthor.first_name
+    authorObject.last_name = tempAuthor.last_name
+    authors.push(authorObject)
   }
   return authors
 }
