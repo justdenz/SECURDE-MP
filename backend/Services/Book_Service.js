@@ -19,7 +19,7 @@ const {
   GetPreviousBorrowedBooks,
   DeleteInstanceTracker
 } = require("./Book_DB.js")
-
+const {ValidateGetAuthorByID} = require('./Author_Service')
 const {BorrowBook, EditBookInstance, DeleteBookInstance, AddBookAction, EditBook, DeleteBook, AddBookInstanceAction} = require("./UserAction_DB.js")
 
 async function ValidateGetAllBooks(){
@@ -37,7 +37,10 @@ async function ValidateGetAllBooks(){
   else if(books){
     var book
     for(book of books){
-      book.authors = await GetBookAuthorID(book.book_id)
+      book.authorID = await GetBookAuthorID(book.book_id)
+      let author = await ValidateGetAuthorByID(book.authorID)
+      book.authorFirstName = author.first_name
+      book.authorLastName = author.last_name
     }
     response.status = "OK"
     response.payload = books
