@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Tag, Row, Col, Input, Drawer, Button, Form, Divider, Card, Popconfirm, message, PageHeader, Modal, Comment, Avatar } from 'antd';
+import { Table, Tag, Row, Col, Input, Drawer, Button, Form, Divider, Card, Popconfirm, message, PageHeader, Modal, Comment, Avatar, Popover } from 'antd';
 import { Link } from 'react-router-dom'
 import 'antd/dist/antd.css';
 import { SearchOutlined, UserOutlined } from '@ant-design/icons';
@@ -50,7 +50,19 @@ class Page extends Component {
             multiple: 2,
           },
           ...this.getColumnSearchProps('authorNames'),
-          render: authors => authors.length > 1 ? (authors[0] + " et al.") : (authors[0])
+          render: authors => {
+            if(authors.length > 1){
+            const content = authors.map(author => <p>{author} <br/></p>)
+              return(
+                <div>
+                  {authors[0] + " "}
+                  <Popover content={content} title="Authors" placement="right">
+                    <a>et al.</a>
+                  </Popover>
+                </div>)
+            }
+            else
+              return(authors[0])}
         },
         {
           title: 'Publisher',
