@@ -49,7 +49,6 @@ class Page extends Component {
       .then(res => res.json())
       .then(res => {
         if(res.status !== "ERROR" && this._isMounted){
-          console.log(res.payload);
           let log = res.payload.map(action => {
             return({
               key: action.user_action_id,

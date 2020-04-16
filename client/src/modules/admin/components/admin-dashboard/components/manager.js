@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import "antd/dist/antd.css";
-import { Form, Row, Select, Table, Button, Modal, Tag, message, Radio, Col } from "antd";
+import { Form, Row, Table, Button, Modal, message, Col } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 
-import { Firstname, Lastname, Username, Password, Email, IdNum } from "../../../../signup/components/index"
+import { Firstname, Lastname, Username, Password, Email, IdNum, Security } from "../../../../signup/components/index"
 
 const formItemLayout = {
   labelCol: {
@@ -97,7 +97,9 @@ class Page extends Component {
         username: values.username,
         password: values.password,
         email: values.email,
-        role_name: "MANAGER"
+        role_name: "MANAGER",
+        question: values.security[0],
+        answer: values.answer,
       })
     }
     fetch("http://localhost:8000/user/validate_signup", reqOptions)
@@ -141,6 +143,7 @@ class Page extends Component {
               <Password/>
               <Email/>
               <IdNum/>
+              <Security/>
             </Col>
             <Row style={{width: "100%", marginTop: 20}} justify="end">
               <Button onClick={() => this.toggleAddModal(false)} style={{ marginRight: 8 }}>Cancel</Button>
