@@ -28,6 +28,7 @@ class Page extends Component {
   state = {successSignUp: false};
 
   onSubmit = values => {
+    console.log(values.security[0]);
     const reqOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -38,7 +39,9 @@ class Page extends Component {
         username: values.username,
         password: values.password,
         email: values.email,
-        role_name: "EDUCATION"
+        role_name: "EDUCATION",
+        question: values.security[0],
+        answer: values.answer,
       })
     }
     fetch("http://localhost:8000/user/validate_signup", reqOptions)

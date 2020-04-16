@@ -5,23 +5,23 @@ import { Form, Input, Cascader } from "antd";
 
 const questions = [
   {
-    value: "1",
+    value: 1,
     label: "In what city did you have your first ever birthday party?",
   },
   {
-    value: "2",
+    value: 2,
     label: "What is the last name of your Science class teacher in high school?",
   },
   {
-    value: "3",
+    value: 3,
     label: "Which company manufactured your first mobile phone?",
   },
   {
-    value: "4",
+    value: 4,
     label: "Who was your childhood hero?",
   },
   {
-    value: "5",
+    value: 5,
     label: "Where was your best family vacation?",
   },
 ]
@@ -34,7 +34,6 @@ export default () => {
         label="Security Question"
         rules={[
           {
-            type: 'array',
             required: true,
             message: 'Please select a security question!',
           },

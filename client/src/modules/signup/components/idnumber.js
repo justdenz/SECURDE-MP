@@ -19,7 +19,7 @@ export default () => {
         },
       ]}
     >
-      <Input autoComplete="off"/>
+      <Input type="number" autoComplete="off"/>
     </Form.Item>
   );
 };
