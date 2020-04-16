@@ -4,7 +4,7 @@ import { Link, Redirect } from 'react-router-dom'
 import 'antd/dist/antd.css';
 import './index.css'
 
-import { Firstname, Lastname, Username, Password, Email, IdNum } from "./components/index"
+import { Firstname, Lastname, Username, Password, Email, IdNum, Security } from "./components/index"
 
 const formItemLayout = {
   labelCol: {
@@ -69,6 +69,7 @@ class Page extends Component {
             <Password/>
             <Email/>
             <IdNum/>
+            <Security/>
         
             <Button type="primary" htmlType="submit">
                 Register

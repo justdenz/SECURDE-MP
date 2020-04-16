@@ -4,6 +4,7 @@ import Username from "./username"
 import Password from "./password"
 import Email from "./email"
 import IdNum from "./idnumber"
+import Security from "./security"
 
 export {
   Firstname,
@@ -12,4 +13,5 @@ export {
   Password,
   Email,
   IdNum,
+  Security
 }
