@@ -13,7 +13,7 @@ const {
 const{
     ValidateGetAllUserActions,
     ValidateGetAllUserActionsByUser
-  } = require('../Services/UserAction_Service.js')
+} = require('../Services/UserAction_Service.js')
 
 // router.use(function timeLog (req, res, next) {
 //     if(req.session.role_name == "ADMIN"){
@@ -27,7 +27,7 @@ const{
 // })
 
 router.get('/', (req, res) => {
-    res.send("API(ADMIN) is wokring properly")
+    res.send("API(ADMIN) is working properly")
 })
 
 router.get('/get_all_manager', async (req, res) => {
