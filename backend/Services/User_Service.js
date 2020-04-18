@@ -1,3 +1,5 @@
+const bcrypt = require('../bcrypt')
+
 const {GetUserByUsername, 
     GetAllUsers, 
     CreateUser, 
@@ -42,8 +44,7 @@ async function ValidateLogin(username, password){
     if(!user){
         response.status= "ERROR"
         response.payload= "User does not exists!"
-        
-    } else if(user.password != password){
+    } else if(!bcrypt.compare(password, user.password)){
         response.status= "ERROR"
         response.payload= "Incorrect password"
     } else {

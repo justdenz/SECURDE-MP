@@ -1,4 +1,5 @@
 const express = require('express')
+const bcrypt = require('../bcrypt')
 const router = express.Router()
 
 const {
@@ -48,7 +49,7 @@ router.post("/validate_signup", async (req, res) => {
     let first_name = req.body.first_name
     let last_name = req.body.last_name
     let username = req.body.username
-    let password = req.body.password
+    let password = bcrypt.hash(req.body.password)
     let email = req.body.email
     let role_name = req.body.role_name
     let question = req.body.question
