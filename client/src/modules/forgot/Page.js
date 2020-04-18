@@ -28,7 +28,7 @@ class Page extends Component {
   state = {
     usernameValidated: false,
     questionValidated: false,
-    question: "How are you?",
+    changeValidated: false,
     user: {}
   }
 
@@ -36,73 +36,67 @@ class Page extends Component {
     const { usernameValidated, questionValidated, user } = this.state
 
     if(!usernameValidated){
-      // const reqOptions = {
-      //   method: 'POST',
-      //   headers: {'Content-Type': 'application/json'},
-      //   body: JSON.stringify({username: values.username})
-      // }
-      // fetch("http://localhost:8000/", reqOptions)
-      //   .then(res => res.json())
-      //   .then(res => {
-      //     if(res.status === "ERROR")
-      //       message.error(res.payload)
-      //     else{
-      //       message.success("Username successfully validated!")
-      //       this.setState({usernameValidated: true, question: res.payload.question, user: res.payload.user})
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
+      const reqOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username: values.username})
+      }
+      fetch("http://localhost:8000/user/validate_username", reqOptions)
+        .then(res => res.json())
+        .then(res => {
+          if(res.status === "ERROR")
+            message.error(res.payload)
+          else{
+            message.success("Username successfully validated!")
+            this.setState({usernameValidated: true, user: res.payload})
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     } else if(usernameValidated && !questionValidated){
-      // const reqOptions = {
-      //   method: 'POST',
-      //   headers: {'Content-Type': 'application/json'},
-      //   body: JSON.stringify({username: values.answer})
-      // }
-      // fetch("http://localhost:8000/", reqOptions)
-      //   .then(res => res.json())
-      //   .then(res => {
-      //     if(res.status === "ERROR")
-      //       message.error(res.payload)
-      //     else{
-      //       message.success("Security answer validated!")
-      //       this.setState({questionValidated: true})
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
+      if(values.answer !== user.answer)
+        message.error("Incorrect answer!")
+      else{
+        message.success("Security answer validated!")
+        this.setState({questionValidated: true})
+      }
     } else {
-      // const reqOptions = {
-      //   method: 'POST',
-      //   headers: {'Content-Type': 'application/json'},
-      //   body: JSON.stringify({
-      //     user_id: user.user_id, 
-      //     new_password: values.password,
-      //   })
-      // }
-      // fetch("http://localhost:8000/user/change_password", reqOptions)
-      //   .then(res => res.json())
-      //   .then(res => {
-      //     if(res.status === "ERROR")
-      //       message.error(res.payload)
-      //     else{
-      //       message.success("Successfuly changed password")
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
+      const reqOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          user_id: user.user_id, 
+          new_password: values.password,
+        })
+      }
+      fetch("http://localhost:8000/user/change_password", reqOptions)
+        .then(res => res.json())
+        .then(res => {
+          if(res.status === "ERROR")
+            message.error(res.payload)
+          else{
+            message.success("Successfuly changed password")
+            this.setState({changeValidated: true})
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }
 
+  onCancel = () => {
+    this.setState({user: {}, changeValidated: true})
+  }
+
   render() {
-    const {usernameValidated, questionValidated, question } = this.state
+    const {usernameValidated, questionValidated, changeValidated, user } = this.state
     return (
       <div style={{width: 500, marginBottom: "100px", marginTop: "50px"}}>
+        {changeValidated ? <Redirect to="/login" /> :
         <Card>
-          <h1>Forgot Password Page</h1>
+          <h1 style={{marginBottom: 30}}>Forgot Password Page</h1>
           <Form {...formItemLayout} name="register" onFinish={this.onSubmit} scrollToFirstError>
             
             {!usernameValidated && 
@@ -113,7 +107,7 @@ class Page extends Component {
 
             {usernameValidated && !questionValidated ? 
               <div>
-                <p style={{marginBottom: 10}}>Security Question: <br/> {question}</p>
+                <p style={{marginBottom: 10}}>Security Question: <br/> {user.question}</p>
                 <Answer/> 
               </div>
             : null}
@@ -125,7 +119,7 @@ class Page extends Component {
               </div>
             : null}
             
-            <div style={{marginTop: 20}}>
+            <div style={{marginTop: 60}}>
               <Button type="primary" htmlType="submit">
                   Submit
               </Button>
@@ -137,7 +131,7 @@ class Page extends Component {
             </div>
 
           </Form>
-        </Card>
+        </Card>}
       </div>
     );
   }

@@ -60,6 +60,25 @@ async function ValidateLogin(username, password){
     return response
 }
 
+async function ValidateUsername(username){
+    let user = await GetUserByUsername(username)
+
+    let response = {
+        status: '',
+        payload: ''
+    }
+
+    if(!user){
+        response.status= "ERROR"
+        response.payload= "User does not exists!"
+    } else {
+        response.status= "OK",
+        response.payload= user
+    }
+
+    return response
+}
+
 async function ValidateGetUserByRole(role){
     let user = await GetUserByRole(role)
 
@@ -166,5 +185,6 @@ module.exports = {
     ValidateChangePassword,
     ValidateGetAllUsers,
     ValidateGetUserByRole,
-    ValidateDeleteUser
+    ValidateDeleteUser,
+    ValidateUsername,
 }

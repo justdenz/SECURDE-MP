@@ -17,7 +17,7 @@ async function GetUserByUsername(username){
             username: username,
         },
         paranoid: true,
-        attributes: ['user_id', 'first_name', 'last_name', 'username', 'password', 'email', 'role_name'],
+        attributes: ['user_id', 'first_name', 'last_name', 'username', 'password', 'email', 'role_name', 'question', 'answer'],
     })
 
     if(user) return user

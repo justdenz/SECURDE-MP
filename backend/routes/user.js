@@ -5,6 +5,7 @@ const {
     ValidateLogin,
     ValidateCreateUser,
     ValidateChangePassword,
+    ValidateUsername,
     ValidateDeleteUser,
     ValidateGetAllUsers
 } = require('../Services/User_Service.js')
@@ -54,6 +55,16 @@ router.post("/validate_signup", async (req, res) => {
     let answer = req.body.answer
 
     const result = await ValidateCreateUser(user_id, first_name, last_name, username, password, email, role_name, question, answer)
+
+    res.send({
+        status: result.status,
+        payload: result.payload
+    })
+})
+
+router.post("/validate_username", async (req, res) => {
+    const username = req.body.username
+    const result = await ValidateUsername(username)
 
     res.send({
         status: result.status,
