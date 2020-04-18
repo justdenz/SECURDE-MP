@@ -14,9 +14,8 @@ async function GetAdminByUsername(username){
   return null
 }
 
-async function CreateAdmin(admin_id, username, password){
+async function CreateAdmin(username, password){
     const newAdmin = await db.admin.create({
-        admin_id: admin_id,
         username: username,
         password: password,
     })

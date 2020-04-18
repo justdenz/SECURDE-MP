@@ -12,13 +12,25 @@ class Page extends Component {
   }
 
   onSubmit = values => {
-    if (values.username === "admin" && values.password === "password"){
-      message.success("Successfully logged in!")
-      this.props.toggleIsAuthorized(true)
-    } else {
-      message.error("Invalid username or password!")
+    const reqOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({username: values.username, password: values.password})
     }
-    //Add Fetch Query HERE to check Admin in DB
+    fetch("http://localhost:8000/admin/validate_login", reqOptions)
+      .then(res => res.json())
+      .then(res => {
+        if(res.status === "ERROR"){
+          message.error(res.payload)
+        }
+        else{
+          message.success("Successfully logged in!")
+          this.props.toggleIsAuthorized(true)
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   render() {

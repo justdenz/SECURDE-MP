@@ -25,22 +25,18 @@ async function ValidateAdminLogin(username, password){
     } else {
         response.status= "OK",
         response.payload= admin
-
-        /*User Action*/
-        await Login(admin.admin_id)
-        .catch(err => console.log(err))
     }
 
     return response
 }
 
-async function ValidateCreateAdmin(admin_id, username, password){
+async function ValidateCreateAdmin(username, password){
     let response = {
         status: '',
         payload: ''
     }
 
-    let admin = await CreateAdmin(admin_id, username, password)
+    let admin = await CreateAdmin(username, bcrypt.hash(password))
     .catch(err => console.log("Error Creating Admin: ", err))
     if(!admin){
         response.status="ERROR"

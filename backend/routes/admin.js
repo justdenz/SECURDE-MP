@@ -6,9 +6,13 @@ const router = express.Router()
 const {
     ValidateCreateUser,
     ValidateDeleteUser,
-    ValidateChangePassword,
     ValidateGetUserByRole
 } = require('../Services/User_Service')
+
+const {
+    ValidateAdminLogin,
+    ValidateChangePassword
+} = require('../Services/Admin_Service')
 
 const{
     ValidateGetAllUserActions,
@@ -28,6 +32,22 @@ const{
 
 router.get('/', (req, res) => {
     res.send("API(ADMIN) is working properly")
+})
+
+router.post("/validate_login", async (req, res) => {
+    const username = req.body.username
+    const password = req.body.password
+
+    const result = await ValidateAdminLogin(username, password)
+    
+    if (result.status == "OK"){
+        req.session.user = result.payload
+    }
+
+    res.send({
+        status: result.status,
+        payload: result.payload
+    })
 })
 
 router.get('/get_all_manager', async (req, res) => {
@@ -58,7 +78,7 @@ router.post("/create_manager", async (req, res) => {
 })
 
 router.post('/change_password', async(req, res) => {
-    let result = ValidateChangePassword(req.body.user_id, req.body.new_password)
+    let result = ValidateChangePassword(req.body.admin_id, req.body.new_password)
     res.send({
         status: result.status,
         payload: result.payload

@@ -24,6 +24,7 @@ db.sequelize.sync()
 //Functions
 const {CreateAuthors} = require('./TestData/TestAuthor')
 const {CreateBooks} = require('./TestData/TestBooks')
+const {CreateAdmin} = require('./TestData/InitializeAdmin')
 
 //Initializes session in a cookie
 app.use(session({
@@ -57,5 +58,6 @@ app.get("/", async (req, res) => {
 
 
 app.listen(PORT, function () {
+    //CreateAdmin()
     console.log('port ' + PORT + ' is live');
 })
