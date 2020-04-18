@@ -40,6 +40,16 @@ module.exports = (sequelize, DataTypes)=>{
         type:DataTypes.STRING,
         required: true,
         allowNull: false,
+    },
+    question: {
+        type:DataTypes.STRING,
+        required: true,
+        allowNull: false,
+    },
+    answer: {
+        type:DataTypes.STRING,
+        required: true,
+        allowNull: false,
     }
     }, {
         underscored: true,

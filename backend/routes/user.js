@@ -43,17 +43,17 @@ router.post("/validate_login", async (req, res) => {
 })
 
 router.post("/validate_signup", async (req, res) => {
-    var user_id = req.body.id_number
-    var first_name = req.body.first_name
-    var last_name = req.body.last_name
-    var username = req.body.username
-    var password = req.body.password
-    var email = req.body.email
-    var role_name = req.body.role_name
+    let user_id = req.body.id_number
+    let first_name = req.body.first_name
+    let last_name = req.body.last_name
+    let username = req.body.username
+    let password = req.body.password
+    let email = req.body.email
+    let role_name = req.body.role_name
+    let question = req.body.question
+    let answer = req.body.answer
 
-   
-
-    const result = await ValidateCreateUser(user_id, first_name, last_name, username, password, email, role_name)
+    const result = await ValidateCreateUser(user_id, first_name, last_name, username, password, email, role_name, question, answer)
 
     res.send({
         status: result.status,

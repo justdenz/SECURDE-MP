@@ -74,7 +74,7 @@ async function DeleteUser(user_id){
     return result
 }
 
-async function CreateUser(user_id, first_name, last_name, username, password, email, role_name){
+async function CreateUser(user_id, first_name, last_name, username, password, email, role_name, question, answer){
     const newUser = await db.user.create({
         user_id: user_id,
         first_name: first_name,
@@ -82,7 +82,9 @@ async function CreateUser(user_id, first_name, last_name, username, password, em
         username: username,
         password: password,
         email: email,
-        role_name: role_name
+        role_name: role_name,
+        question: question,
+        answer: answer,
     })
 
     if(newUser) return newUser

@@ -5,23 +5,23 @@ import { Form, Input, Cascader } from "antd";
 
 const questions = [
   {
-    value: 1,
+    value: "In what city did you have your first ever birthday party?",
     label: "In what city did you have your first ever birthday party?",
   },
   {
-    value: 2,
+    value: "What is the last name of your Science class teacher in high school?",
     label: "What is the last name of your Science class teacher in high school?",
   },
   {
-    value: 3,
+    value: "Which company manufactured your first mobile phone?",
     label: "Which company manufactured your first mobile phone?",
   },
   {
-    value: 4,
+    value: "Who was your childhood hero?",
     label: "Who was your childhood hero?",
   },
   {
-    value: 5,
+    value: "Where was your best family vacation?",
     label: "Where was your best family vacation?",
   },
 ]

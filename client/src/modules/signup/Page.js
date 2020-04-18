@@ -28,7 +28,6 @@ class Page extends Component {
   state = {successSignUp: false};
 
   onSubmit = values => {
-    console.log(values.security[0]);
     const reqOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
