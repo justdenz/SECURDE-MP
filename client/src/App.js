@@ -18,9 +18,9 @@ class App extends Component {
         <div className="App">
           <Switch>
             <Route path="/" exact component={LoginForm}></Route>
-            <Route path="/login" component={LoginForm}></Route>
-            <Route path="/register" component={RegisterForm}></Route>
-            <Route path="/forgot" component={ForgotForm}></Route>
+            <Route path="/login" exact component={LoginForm}></Route>
+            <Route path="/register" exact component={RegisterForm}></Route>
+            <Route path="/forgot" exact component={ForgotForm}></Route>
             {this.props.userType === "" && <Redirect exact from="/dashboard" to="/" />}
             {this.props.userType === "" && <Redirect exact from="*" to="/" />}
             {this.props.userType !== "" && <Route path="/dashboard" exact component={Dashboard}></Route>}
