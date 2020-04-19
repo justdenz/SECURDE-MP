@@ -8,7 +8,7 @@ const {GetUserByUsername,
     ChangePassword,
     GetUserByRole} = require('./User_DB.js')
 
-const {Register, Login, LogChangePassword} = require("./UserAction_DB.js")
+const {Register, Login} = require("./UserAction_DB.js")
 //returns null if there is no users 
 async function ValidateGetAllUsers(){
     let users = await GetAllUsers()
@@ -154,10 +154,6 @@ async function ValidateChangePassword(user_id, new_password){
     if(result == 1){
         response.status = "OK"
         response.payload = "User has changed password successfully!"
-
-        await LogChangePassword(user_id)
-        .then()
-        .catch(err => console.log(err))
     } else {
         response.status = "ERROR"
         response.payload = "There was an error changing the password, please try again..."

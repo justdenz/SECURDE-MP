@@ -86,14 +86,6 @@ db.user.hasMany(db.user_action,{
   }
 })
 
-db.admin.hasMany(db.user_action,{
-  foreignKey: {
-    name: 'admin_id',
-    type: DataType.INTEGER(11),
-    allowNull: false
-  }
-})
-
 db.book.hasMany(db.review, {
   foreignKey: {
     name: 'book_id',
@@ -193,9 +185,6 @@ db.action.create({action_id: 13,description: "Delete Author"})
 .then()
 .catch(err=>console.log)
 db.action.create({action_id: 14,description:"Edit Author"})
-.then()
-.catch(err => console.log)
-db.action.create({action_id: 15,description:"Change Password"})
 .then()
 .catch(err => console.log)
 

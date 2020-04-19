@@ -191,15 +191,6 @@ async function EditAuthorAction(user_id){
   })
 }
 
-async function LogChangePassword(user_id){
-  await db.user_action.create({
-    action_id: 15,
-    user_id: user_id,
-    book_id: null,
-    bookinstance_id: null
-  })
-}
-
 module.exports={
   Register,
   Login,
@@ -216,6 +207,5 @@ module.exports={
   GetAllUserActions,
   AddAuthor,
   DeleteAuthorAction,
-  EditAuthorAction,
-  LogChangePassword
+  EditAuthorAction
 }
