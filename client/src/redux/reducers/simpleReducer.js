@@ -1,5 +1,6 @@
 //REDUCER
 export const actionTypes = {
+  LOGIN_AS_ADMIN: "LOGIN_AS_ADMIN",
   LOGIN_AS_USER: "LOGIN_AS_USER",
   LOGIN_AS_GUEST: "LOGIN_AS_GUEST",
   LOGOUT: "LOGOUT",
@@ -23,6 +24,11 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         userType: action.payload.role_name
       });
+    case actionTypes.LOGIN_AS_ADMIN:
+      console.log("ADMIN: ", action.payload);
+      return Object.assign({}, state, {
+        userType: action.payload.role_name,
+      })
     case actionTypes.LOGOUT:
       return Object.assign({}, state, {
         user: {},

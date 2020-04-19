@@ -2,14 +2,14 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom"
 import 'antd/dist/antd.css';
-import { logout } from '../../redux/actions'
 
 //import './index.css';
 import { Layout, Menu, Row } from 'antd';
-import { UserOutlined, BookOutlined, ToolOutlined, BarcodeOutlined} from '@ant-design/icons';
+import { UserOutlined, BookOutlined, ToolOutlined, BarcodeOutlined, HistoryOutlined} from '@ant-design/icons';
 
 import { Books, ChangePass, History, Reviews, Library} from "./components/education/"
-import { ManagerBooks, Authors, BookInstances } from "./components/manager"
+import { ManagerBooks, Authors, BookInstances } from "./components/manager/"
+import { Manager, SystemLogs } from "./components/admin/"
 
 const { Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -20,7 +20,7 @@ class Page extends Component {
       width: 0, 
       height: 0, 
       collapsed: true,
-      currPage: this.props.userType === "MANAGER" ? <ManagerBooks/> : <Library/>, 
+      currPage: this.props.userType === "MANAGER" ? <ManagerBooks/> : this.props.userType === "ADMIN" ? <Manager/> : <Library/>, 
     };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
@@ -87,6 +87,21 @@ class Page extends Component {
     this.setState({currPage: nextPage})
   };
 
+  handleAdminMenu = e => {
+    let nextPage = null
+    switch(e.key){
+      case "Manager":
+        nextPage = <Manager/>
+        break;
+      case "System":
+        nextPage = <SystemLogs/>
+        break;
+      default:
+        break
+    }
+    this.setState({currPage: nextPage})
+  }
+
   render() {
     const { userType } = this.props
     return (
@@ -113,7 +128,8 @@ class Page extends Component {
                   <Menu.Item key="logout"><Link to="/login"><Row justify="left">Logout</Row></Link></Menu.Item>
                 </SubMenu>} 
                 
-              </Menu>}
+              </Menu>
+            }
             { userType === "MANAGER" &&
               <Menu theme="dark" defaultSelectedKeys={['ManagerBooks']} mode="inline" onClick={this.handleManagerMenu}>
                 <Menu.Item key="ManagerBooks"><Row justify="left"><span><BookOutlined/><span>Books</span></span></Row></Menu.Item>
@@ -126,6 +142,17 @@ class Page extends Component {
                 </SubMenu>   
               </Menu>
             } 
+            { userType === "ADMIN" && 
+              <Menu theme="dark" defaultSelectedKeys={['Manager']} mode="inline" onClick={this.handleAdminMenu}>
+                <Menu.Item key="Manager"><Row justify="left"><span><UserOutlined/></span><span>Managers</span></Row></Menu.Item>
+                <Menu.Item key="System"><Row justify="left"><span><HistoryOutlined/></span><span>System Logs</span></Row></Menu.Item>
+                
+                <SubMenu key="sub2"title={<Row justify="left"><span><ToolOutlined /><span>Settings</span></span></Row>}>
+                  <Menu.Item key="ChangePass"><Row justify="left">Change Password</Row></Menu.Item>
+                  <Menu.Item key="logout"><Link to="/login"><Row justify="left">Logout</Row></Link></Menu.Item>
+                </SubMenu>   
+              </Menu>
+            }
           </Sider>
           <Layout className="site-layout">
             <Content style={{ margin: '0 16px' }}>

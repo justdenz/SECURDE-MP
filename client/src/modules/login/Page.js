@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom'
 import 'antd/dist/antd.css';
 import './index.css';
 
-import { loginAsUser, loginAsGuest, logout } from '../../redux/actions'
+import { loginAsUser, loginAsGuest, loginAsAdmin, logout } from '../../redux/actions'
 
 import { persistStore } from 'redux-persist'
 import { store } from '../../redux/store';
@@ -60,16 +60,31 @@ class Page extends Component {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({username: values.username, password: values.password})
     }
-    fetch("http://localhost:8000/user/validate_login", reqOptions)
+
+    fetch("http://localhost:8000/admin/validate_login", reqOptions)
       .then(res => res.json())
       .then(res => {
         if(res.status === "ERROR"){
-          this.setState({showAlert: true, attempts: this.state.attempts - 1})
-          message.error(res.payload)
+          fetch("http://localhost:8000/user/validate_login", reqOptions)
+            .then(res => res.json())
+            .then(res => {
+              if(res.status === "ERROR"){
+                this.setState({showAlert: true, attempts: this.state.attempts - 1})
+                message.error(res.payload)
+              }
+              else{
+                message.success("Successfully logged in!")
+                this.props.loginAsUser(res.payload)
+                this.setState({isAuthenticated: true})
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+            });
         }
         else{
           message.success("Successfully logged in!")
-          this.props.loginAsUser(res.payload)
+          this.props.loginAsAdmin()
           this.setState({isAuthenticated: true})
         }
       })
@@ -113,6 +128,7 @@ class Page extends Component {
 
 const mapDispatchToProps = dispatch => ({
   loginAsGuest: () => dispatch(loginAsGuest()),
+  loginAsAdmin: () => dispatch(loginAsAdmin()),
   loginAsUser: (data) => dispatch(loginAsUser(data)),
   logout: () => dispatch(logout()),
 })

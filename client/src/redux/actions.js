@@ -8,6 +8,13 @@ export const loginAsUser = (data) => dispatch => {
   })
 }
 
+export const loginAsAdmin = () => dispatch => {
+  dispatch({
+    type: actionTypes.LOGIN_AS_ADMIN,
+    payload: {role_name: "ADMIN"}
+  })
+}
+
 export const loginAsGuest = () => dispatch => {
   dispatch({
     type: actionTypes.LOGIN_AS_GUEST,
