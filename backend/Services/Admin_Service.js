@@ -62,7 +62,7 @@ async function ValidateChangePassword(admin_id, new_password){
         status: '',
         payload: ''
     }
-    let result = await ChangePassword(admin_id, new_password)
+    let result = await ChangePassword(admin_id, bcrypt.hash(new_password))
 
     if(result == 1){
         response.status = "OK"

@@ -27,6 +27,7 @@ export default (state = initialState, action) => {
     case actionTypes.LOGIN_AS_ADMIN:
       console.log("ADMIN: ", action.payload);
       return Object.assign({}, state, {
+        user: action.payload,
         userType: action.payload.role_name,
       })
     case actionTypes.LOGOUT:

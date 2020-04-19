@@ -8,10 +8,10 @@ export const loginAsUser = (data) => dispatch => {
   })
 }
 
-export const loginAsAdmin = () => dispatch => {
+export const loginAsAdmin = (data) => dispatch => {
   dispatch({
     type: actionTypes.LOGIN_AS_ADMIN,
-    payload: {role_name: "ADMIN"}
+    payload: {...data, role_name: "ADMIN"}
   })
 }
 

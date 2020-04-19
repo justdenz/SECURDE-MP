@@ -96,6 +96,9 @@ class Page extends Component {
       case "System":
         nextPage = <SystemLogs/>
         break;
+      case "ChangePass":
+        nextPage = <ChangePass/>
+        break;
       default:
         break
     }

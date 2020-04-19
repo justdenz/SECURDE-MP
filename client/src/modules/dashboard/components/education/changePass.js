@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Button, PageHeader, message, Input, Card, Row } from 'antd';
 import 'antd/dist/antd.css';
+import bcrypt from "../../../../bcrypt"
 
 const formItemLayout = {
   labelCol: {
@@ -27,36 +28,59 @@ class Page extends Component {
   }
 
   onSubmit = values => {
-    const reqOptions = {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        user_id: this.props.user.user_id, 
-        new_password: values.new_password,
-      })
+    if(this.props.userType === "ADMIN"){
+      const reqOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          admin_id: this.props.user.admin_id, 
+          new_password: values.new_password,
+        })
+      }
+      fetch("http://localhost:8000/admin/change_password", reqOptions)
+        .then(res => res.json())
+        .then(res => {
+          if(res.status === "ERROR")
+            message.error(res.payload)
+          else{
+            message.success("Successfuly changed password")
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      const reqOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          user_id: this.props.user.user_id, 
+          new_password: values.new_password,
+        })
+      }
+      fetch("http://localhost:8000/user/change_password", reqOptions)
+        .then(res => res.json())
+        .then(res => {
+          if(res.status === "ERROR")
+            message.error(res.payload)
+          else{
+            message.success("Successfuly changed password")
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
-    fetch("http://localhost:8000/user/change_password", reqOptions)
-      .then(res => res.json())
-      .then(res => {
-        if(res.status === "ERROR")
-          message.error(res.payload)
-        else{
-          message.success("Successfuly changed password")
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
   };
 
   render() {
-    const { user } = this.props
+    const { user, userType } = this.props
     return (
       <div>
         <PageHeader
           className="site-page-header"
           title="Password Page"
-          subTitle="Change the password of your library account"
+          subTitle="Change the password of your account"
           backIcon={false}
           style={{marginBottom: "20px"}}
         />
@@ -73,10 +97,9 @@ class Page extends Component {
                   },
                   () => ({
                     validator(rule, value) {
-                      if (!value || user.password === value) {
+                      if (!value || bcrypt.compare(value, user.password)) 
                         return Promise.resolve();
-                      }
-
+                      
                       return Promise.reject('Invalid Password!');
                     },
                   }),

@@ -84,7 +84,7 @@ class Page extends Component {
         }
         else{
           message.success("Successfully logged in!")
-          this.props.loginAsAdmin()
+          this.props.loginAsAdmin(res.payload)
           this.setState({isAuthenticated: true})
         }
       })
@@ -128,7 +128,7 @@ class Page extends Component {
 
 const mapDispatchToProps = dispatch => ({
   loginAsGuest: () => dispatch(loginAsGuest()),
-  loginAsAdmin: () => dispatch(loginAsAdmin()),
+  loginAsAdmin: (data) => dispatch(loginAsAdmin(data)),
   loginAsUser: (data) => dispatch(loginAsUser(data)),
   logout: () => dispatch(logout()),
 })
