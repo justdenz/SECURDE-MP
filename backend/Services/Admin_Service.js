@@ -7,7 +7,7 @@ const {
     CheckExistingUsername,
 } = require('./Admin_DB.js')
 
-const {Login} = require("./UserAction_DB.js")
+const {LoginAdmin, LogChangePasswordAdmin} = require("./UserAction_DB.js")
 
 async function ValidateAdminLogin(username, password){
     let admin = await GetAdminByUsername(username)
@@ -26,6 +26,8 @@ async function ValidateAdminLogin(username, password){
     } else {
         response.status= "OK",
         response.payload= admin
+        await LoginAdmin(admin.admin_id)
+        .catch(err => console.log(err))
     }
 
     return response
@@ -67,6 +69,7 @@ async function ValidateChangePassword(admin_id, new_password){
     if(result == 1){
         response.status = "OK"
         response.payload = "Admin has changed password successfully!"
+        await LogChangePasswordAdmin(admin_id)
     } else {
         response.status = "ERROR"
         response.payload = "There was an error changing the password, please try again..."

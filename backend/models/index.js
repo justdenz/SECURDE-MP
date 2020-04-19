@@ -82,7 +82,17 @@ db.user.hasMany(db.user_action,{
   foreignKey: {
     name: 'user_id',
     type: DataType.INTEGER(11),
-    allowNull: false
+    allowNull: true,
+    defaultValue: null
+  }
+})
+
+db.admin.hasMany(db.user_action,{
+  foreignKey: {
+    name: 'admin_id',
+    type: DataType.INTEGER(11),
+    allowNull: true,
+    defaultValue: null
   }
 })
 
@@ -147,46 +157,55 @@ db.user.hasMany(db.instance_tracker, {
 /*Initialize Action DB*/
 db.action.create({action_id: 1, description: "Register"})
 .then()
-.catch(err => console.log)
+.catch(err => console.log(err))
 db.action.create({action_id: 2, description: "Login"})
 .then()
-.catch(err => console.log)
+.catch(err => console.log(err))
 db.action.create({action_id: 3, description: "Logout"})
 .then()
-.catch(err => console.log)
+.catch(err => console.log(err))
 db.action.create({action_id: 4, description: "Borrow Book"})
 .then()
-.catch(err => console.log)
+.catch(err => console.log(err))
 db.action.create({action_id: 5, description: "Edit Book Instance"})
 .then()
-.catch(err => console.log)
+.catch(err => console.log(err))
 db.action.create({action_id: 6, description: 'Delete Book Instance'})
 .then()
-.catch(err => console.log)
+.catch(err => console.log(err))
 db.action.create({action_id: 7, description: 'Add Book'})
 .then()
-.catch(err => console.log)
+.catch(err => console.log(err))
 db.action.create({action_id: 8, description: 'Edit Book'})
 .then()
-.catch(err => console.log)
+.catch(err => console.log(err))
 db.action.create({action_id: 9, description: "Delete Book"})
 .then()
-.catch(err => console.log)
+.catch(err => console.log(err))
 db.action.create({action_id: 10,description: "Review Book"})
 .then()
-.catch(err => console.log)
+.catch(err => console.log(err))
 db.action.create({action_id: 11,description: 'Add Book Instance'})
 .then()
-.catch(err => console.log)
+.catch(err => console.log(err))
 db.action.create({action_id: 12,description: "Add Author"})
 .then()
-.catch(err => console.log)
+.catch(err => console.log(err))
 db.action.create({action_id: 13,description: "Delete Author"})
 .then()
 .catch(err=>console.log)
 db.action.create({action_id: 14,description:"Edit Author"})
 .then()
-.catch(err => console.log)
+.catch(err => console.log(err))
+db.action.create({action_id: 15,description:"User Change Password"})
+.then()
+.catch(err => console.log(err))
+db.action.create({action_id: 16,description:"Admin Change Password"})
+.then()
+.catch(err => console.log(err))
+db.action.create({action_id: 17,description:"Login as admin"})
+.then()
+.catch(err => console.log(err))
 
 
 

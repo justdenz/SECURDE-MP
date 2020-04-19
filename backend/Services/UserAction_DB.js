@@ -18,6 +18,15 @@ async function Login(user_id){
   })
 }
 
+async function LoginAdmin(admin_id){
+  await db.user_action.create({
+    action_id: 17,
+    admin_id: admin_id,
+    book_id: null,
+    bookinstance_id: null
+  })
+}
+
 async function Logout(user_id){
   await db.user_action.create({
     action_id: 3,
@@ -191,6 +200,24 @@ async function EditAuthorAction(user_id){
   })
 }
 
+async function LogChangePasswordUser(user_id){
+  await db.user_action.create({
+    action_id: 15,
+    user_id: user_id,
+    book_id: null,
+    bookinstance_id: null
+  })
+}
+
+async function LogChangePasswordAdmin(admin_id){
+  await db.user_action.create({
+    action_id: 16,
+    admin_id: admin_id,
+    book_id: null,
+    bookinstance_id: null
+  })
+}
+
 module.exports={
   Register,
   Login,
@@ -207,5 +234,8 @@ module.exports={
   GetAllUserActions,
   AddAuthor,
   DeleteAuthorAction,
-  EditAuthorAction
+  EditAuthorAction,
+  LogChangePasswordUser,
+  LogChangePasswordAdmin,
+  LoginAdmin
 }

@@ -54,10 +54,10 @@ app.use('/author', require('./routes/author.js'));
 app.use('/review', require('./routes/review.js'));
 
 app.get("/", async (req, res) => {
+    await CreateAdmin()
 })
 
 
 app.listen(PORT, function () {
-    CreateAdmin()
     console.log('port ' + PORT + ' is live');
 })
