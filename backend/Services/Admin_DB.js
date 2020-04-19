@@ -1,17 +1,30 @@
 const db = require('../models')
 
 async function GetAdminByUsername(username){
-  const admin = await db.admin.findOne({
-      raw: true,
-      where: {
-          username: username,
-      },
-      paranoid: true,
-      attributes: ['admin_id', 'username', 'password'],
-  })
+    const admin = await db.admin.findOne({
+        raw: true,
+        where: {
+            username: username,
+        },
+        paranoid: true,
+        attributes: ['admin_id', 'username', 'password'],
+    })
 
-  if(admin) return admin
-  return null
+    if(admin) return admin
+    return null
+}
+
+async function CheckExistingUsername(username){
+    const admin = await db.admin.findOne({
+        raw: true,
+        where: {
+            username: username
+        },
+        paranoid: true,
+    })
+
+    if(admin) return 1
+    return 0
 }
 
 async function CreateAdmin(username, password){
@@ -39,5 +52,6 @@ async function ChangePassword(admin_id, new_password){
 module.exports = {
     GetAdminByUsername,
     CreateAdmin,
+    CheckExistingUsername,
     ChangePassword,
 }

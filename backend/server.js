@@ -58,6 +58,6 @@ app.get("/", async (req, res) => {
 
 
 app.listen(PORT, function () {
-    //CreateAdmin()
+    CreateAdmin()
     console.log('port ' + PORT + ' is live');
 })

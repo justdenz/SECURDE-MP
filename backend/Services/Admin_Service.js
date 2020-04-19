@@ -4,6 +4,7 @@ const {
     GetAdminByUsername, 
     CreateAdmin,
     ChangePassword,
+    CheckExistingUsername,
 } = require('./Admin_DB.js')
 
 const {Login} = require("./UserAction_DB.js")
@@ -36,17 +37,24 @@ async function ValidateCreateAdmin(username, password){
         payload: ''
     }
 
-    let admin = await CreateAdmin(username, bcrypt.hash(password))
-    .catch(err => console.log("Error Creating Admin: ", err))
-    if(!admin){
-        response.status="ERROR"
-        response.payload = "There was an error creating the admin, please try again..."
-    } else{
-        response.status = "OK"
-        response.payload = admin
-    }
+    let checkUsernameResult = await CheckExistingUsername(username)
     
-    return response
+    if(checkUsernameResult){
+        return null
+    } else {
+        let admin = await CreateAdmin(username, bcrypt.hash(password))
+        .catch(err => console.log("Error Creating Admin: ", err))
+
+        if(!admin){
+            response.status="ERROR"
+            response.payload = "There was an error creating the admin, please try again..."
+        } else{
+            response.status = "OK"
+            response.payload = admin
+        }
+
+        return response
+    }
 }
 
 async function ValidateChangePassword(admin_id, new_password){
