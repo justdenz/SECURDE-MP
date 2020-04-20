@@ -19,18 +19,15 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.LOGIN_AS_USER:
-      console.log("USER: ", action.payload);
       return Object.assign({}, state, {
         user: action.payload,
         userType: action.payload.role_name,
       });
     case actionTypes.LOGIN_AS_GUEST:
-      console.log("GUEST: ", action.payload);
       return Object.assign({}, state, {
         userType: action.payload.role_name
       });
     case actionTypes.LOGIN_AS_ADMIN:
-      console.log("ADMIN: ", action.payload);
       return Object.assign({}, state, {
         user: action.payload,
         userType: action.payload.role_name,
@@ -45,7 +42,6 @@ export default (state = initialState, action) => {
         expireTime: action.payload.expireTime,
       });
     case actionTypes.DECREMENT_ATTEMPTS:
-      console.log("DECREMENTED");
       return Object.assign({}, state, {
         attempts: state.attempts - 1,
       });
