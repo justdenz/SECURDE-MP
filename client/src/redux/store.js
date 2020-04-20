@@ -12,12 +12,13 @@ const encryptor = createEncryptor({
     console.log("Error in Storage Encryption: ",  error);
   }
 })
+
 // configure middleware for 10 minute timeout
 const idleMonitorMiddleware = createIdleMonitorReduxMiddleware(10 * 60 * 1000, autoLogout);
 
-
 export function autoLogout() {
   alert("Idle time reached, you've been logged out!")
+  persistStore(store).purge()
   return {
       type: 'LOGOUT',
   };

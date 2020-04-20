@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom'
 import 'antd/dist/antd.css';
 import './index.css';
 
-import { loginAsUser, loginAsGuest, loginAsAdmin, logout } from '../../redux/actions'
+import { loginAsUser, loginAsGuest, loginAsAdmin, logout, startTimer, decrementAttempts, resetAttempts } from '../../redux/actions'
 
 import { persistStore } from 'redux-persist'
 import { store } from '../../redux/store';
@@ -19,35 +19,47 @@ class Page extends Component {
     this.state = {
       showAlert: false,
       isAuthenticated: false,
-      attempts: 4,
     }
   }
 
   componentDidMount(){
     this.props.logout()
     persistStore(store).purge()
+    this.props.resetAttempts()
+    if(Date.now() < this.props.expireTime)
+      this.displayCountdown()
   }
 
   countDown() {
-    let secondsToGo = 60;
-    const modal = Modal.error({
-      title: 'Temporarily locked out for too many failed login attempts',
-      content: `Try again after ${secondsToGo} seconds.`,
-      okButtonProps: {disabled: true},
-      keyboard: false,
-      width: 520,
-    });
-    const timer = setInterval(() => {
-      secondsToGo -= 1;
-      modal.update({
-        content: `Try again after ${secondsToGo} seconds.`,
-      });
-    }, 1000);
+    this.props.startTimer()
+    this.displayCountdown()
+  }
+
+  displayCountdown(){
     setTimeout(() => {
-      clearInterval(timer);
-      modal.destroy();
-      this.setState({attempts: 4, showAlert: false})
-    }, secondsToGo * 1000);
+      let millis = this.props.expireTime - Date.now()
+      let secondsToGo = Math.floor(millis/1000);
+      const modal = Modal.error({
+        title: 'Temporarily locked out for too many failed login attempts',
+        content: `Try again after ${secondsToGo + 1} seconds.`,
+        okButtonProps: {disabled: true},
+        keyboard: false,
+        width: 520,
+      });
+      const timer = setInterval(() => {
+        millis = this.props.expireTime - Date.now()
+        secondsToGo = Math.floor(millis/1000);
+        modal.update({
+          content: `Try again after ${secondsToGo + 1} seconds.`,
+        });
+        if(secondsToGo === -1){
+          clearInterval(timer);
+          modal.destroy();
+          this.setState({showAlert: false})
+          this.props.resetAttempts()
+        }
+      }, 1000);
+    }, 100)
   }
 
   onContinueAsGuest = () => {
@@ -69,12 +81,15 @@ class Page extends Component {
             .then(res => res.json())
             .then(res => {
               if(res.status === "ERROR"){
-                this.setState({showAlert: true, attempts: this.state.attempts - 1})
+                this.setState({showAlert: true})
+                this.props.decrementAttempts()
+                this.props.attempts === 0 && this.countDown()
                 message.error(res.payload)
               }
               else{
                 message.success("Successfully logged in!")
                 this.props.loginAsUser(res.payload)
+                this.props.resetAttempts()
                 this.setState({isAuthenticated: true})
               }
             })
@@ -85,6 +100,7 @@ class Page extends Component {
         else{
           message.success("Successfully logged in!")
           this.props.loginAsAdmin(res.payload)
+          this.props.resetAttempts()
           this.setState({isAuthenticated: true})
         }
       })
@@ -104,7 +120,7 @@ class Page extends Component {
             <UserNameInput/>
             <PasswordInput/>
 
-            {this.state.showAlert ? <Alert message={"Attempts remaining: " + this.state.attempts} type="warning" showIcon /> : null}
+            {this.state.showAlert ? <Alert message={"Attempts remaining: " + this.props.attempts} type="warning" showIcon /> : null}
 
             <Form.Item>
               <Link to="/forgot">Forgot password</Link>
@@ -120,7 +136,6 @@ class Page extends Component {
             </Form.Item>
           </Form>
         </Card>}
-        {this.state.attempts === 0 && this.countDown()}
       </div>
     );
   }
@@ -131,11 +146,16 @@ const mapDispatchToProps = dispatch => ({
   loginAsAdmin: (data) => dispatch(loginAsAdmin(data)),
   loginAsUser: (data) => dispatch(loginAsUser(data)),
   logout: () => dispatch(logout()),
+  startTimer: () => dispatch(startTimer()),
+  decrementAttempts: () => dispatch(decrementAttempts()),
+  resetAttempts: () => dispatch(resetAttempts()),
 })
 
 const mapStateToProps = state => ({
   user: state.simpleReducer.user,
-  userType: state.simpleReducer.userType
+  userType: state.simpleReducer.userType,
+  expireTime: state.simpleReducer.expireTime,
+  attempts: state.simpleReducer.attempts,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Page);
