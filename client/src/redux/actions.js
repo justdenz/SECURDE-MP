@@ -28,3 +28,22 @@ export const logout = () => dispatch => {
     payload: {},
   })
 }
+
+export const startTimer = () => dispatch => {
+  dispatch({
+    type: actionTypes.START_TIMER,
+    payload: {expireTime: Date.now() + 30000}
+  })
+}
+
+export const decrementAttempts = () => dispatch => {
+  dispatch({
+    type: actionTypes.DECREMENT_ATTEMPTS,
+  })
+}
+
+export const resetAttempts = () => dispatch => {
+  dispatch({
+    type: actionTypes.RESET_ATTEMPTS,
+  })
+}

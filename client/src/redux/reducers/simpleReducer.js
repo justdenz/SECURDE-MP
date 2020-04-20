@@ -4,9 +4,14 @@ export const actionTypes = {
   LOGIN_AS_USER: "LOGIN_AS_USER",
   LOGIN_AS_GUEST: "LOGIN_AS_GUEST",
   LOGOUT: "LOGOUT",
+  START_TIMER: "START_TIMER",
+  DECREMENT_ATTEMPTS: "DECREMENT_ATTEMPTS",
+  RESET_ATTEMPTS: "RESET_ATTEMPTS",
 }
 
 const initialState = {
+  expireTime: Date.now(),
+  attempts: 6,
   user: {},
   userType: ""
 }
@@ -34,6 +39,19 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         user: {},
         userType: "",
+      });
+    case actionTypes.START_TIMER:
+      return Object.assign({}, state, {
+        expireTime: action.payload.expireTime,
+      });
+    case actionTypes.DECREMENT_ATTEMPTS:
+      console.log("DECREMENTED");
+      return Object.assign({}, state, {
+        attempts: state.attempts - 1,
+      });
+    case actionTypes.RESET_ATTEMPTS:
+      return Object.assign({}, state, {
+        attempts: 6
       });
     default:
       return state
