@@ -42,6 +42,11 @@ class Page extends Component {
           key: 'isbn',
         },
         {
+          title: 'Call Number',
+          dataIndex: 'call_number',
+          key: 'call_number',
+        },
+        {
           title: 'Actions',
           key: 'action',
           render: (text, record) => {
@@ -86,6 +91,7 @@ class Page extends Component {
             })
           })
           this.setState({books})
+          console.log(books);
         }
       })
   }
@@ -118,6 +124,7 @@ class Page extends Component {
         isbn: values.isbn,
         authors: values.authors,
         user_id: this.props.user.user_id,
+        call_number: values.call_number,
       })
     }
     fetch("http://localhost:8000/book/create_book", reqOptions)
@@ -147,6 +154,8 @@ class Page extends Component {
         year_publication: values.publication,
         isbn: values.isbn,
         authors: values.authors,
+        user_id: this.props.user.user_id,
+        call_number: values.call_number,
       })
     }
     fetch("http://localhost:8000/book/update_book", reqOptions)
@@ -227,6 +236,7 @@ class Page extends Component {
               publisher: selectedBook.publisher,
               publication: selectedBook.year_publication,
               isbn: selectedBook.isbn,
+              call_number: selectedBook.call_number,
             }}>
             <AddBookComponents options={authors}/>
             <div style={{ textAlign: 'right'}}>

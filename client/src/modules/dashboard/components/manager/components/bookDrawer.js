@@ -33,7 +33,7 @@ export default (props) => {
         </Col>
       </Row>
       <Row gutter={16}>
-        <Col span={12}>
+        <Col span={24}>
           <Form.Item
             name="publisher"
             label="Publisher"
@@ -43,6 +43,20 @@ export default (props) => {
             ]}
           >
             <Input autoComplete="off" placeholder="Please enter book publisher"/>
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item
+            name="call_number"
+            label="Call Number"
+            rules={[
+              { required: true, message: 'Please enter 3-digit call number' },
+              { pattern: /^[0-9]{3}$/, message: "Please enter a call number between 000-999"},
+            ]}
+          >
+            <Input type="number" placeholder="Enter 3-digit call number"/>
           </Form.Item>
         </Col>
         <Col span={12}>

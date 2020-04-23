@@ -6,7 +6,7 @@ async function GetAllBooks(){
   let books = await db.book.findAll({
     raw: true,
     paranoid: true,
-    attributes: ['book_id', 'title', 'publisher', 'year_publication', 'isbn']
+    attributes: ['book_id', 'title', 'publisher', 'year_publication', 'isbn', 'call_number']
   })
 
   if(books) return books
