@@ -27,7 +27,12 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BIGINT,
             required: true,
             allowNull: false,
-        }
+        },
+        call_number: {
+            type: DataTypes.INTEGER,
+            required: true,
+            allowNull: false
+        },
     }, {
         underscored: true,
         paranoid: true
