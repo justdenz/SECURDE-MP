@@ -25,7 +25,6 @@ class Page extends Component {
   componentDidMount(){
     this.props.logout()
     persistStore(store).purge()
-    this.props.resetAttempts()
     if(Date.now() < this.props.expireTime)
       this.displayCountdown()
   }

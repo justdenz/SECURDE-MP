@@ -6,7 +6,7 @@ async function GetAllBooks(){
   let books = await db.book.findAll({
     raw: true,
     paranoid: true,
-    attributes: ['book_id', 'title', 'publisher', 'year_publication', 'isbn']
+    attributes: ['book_id', 'title', 'publisher', 'year_publication', 'isbn', 'call_number']
   })
 
   if(books) return books
@@ -20,19 +20,20 @@ async function GetBookByID(book_id){
       book_id: book_id
     },
     paranoid: true,
-    attributes: ['book_id', 'title', 'publisher', 'year_publication', 'isbn']
+    attributes: ['book_id', 'title', 'publisher', 'year_publication', 'isbn', 'call_number']
   })
 
   if (book) return book
   return null
 }
 
-async function AddBook(title, publisher, year_publication, isbn){
+async function AddBook(title, publisher, year_publication, isbn, call_number){
   let newBook = await db.book.create({
     title: title,
     publisher: publisher,
     year_publication: year_publication,
-    isbn: isbn
+    isbn: isbn,
+    call_number: call_number,
   })
 
   if (newBook) return newBook
@@ -91,12 +92,13 @@ async function DeleteBookAuthors(book_id){
   return result
 }
 
-async function UpdateBook(book_id, title, publisher, year_publication, isbn){
+async function UpdateBook(book_id, title, publisher, year_publication, isbn, call_number){
   let result = await db.book.update({
     title: title,
     publisher: publisher,
     year_publication: year_publication,
-    isbn: isbn
+    isbn: isbn,
+    call_number: call_number,
   }, {
     where: {
       book_id: book_id

@@ -89,13 +89,23 @@ class Page extends Component {
           ...this.getColumnSearchProps('year_publication'),
         },
         {
+          title: 'Call Number',
+          dataIndex: 'call_number',
+          key: 'call_number',
+          sorter: {
+            compare: (a, b) => a.call_number - b.call_number,
+            multiple: 5,
+          },
+          ...this.getColumnSearchProps('call_number'),
+        },
+        {
           title: 'ISBN',
           dataIndex: 'isbn',
           key: 'isbn',
           width: '20%',
           sorter: {
             compare: (a, b) => a.isbn - b.isbn,
-            multiple: 5,
+            multiple: 6,
           },
           ...this.getColumnSearchProps('isbn'),
         },

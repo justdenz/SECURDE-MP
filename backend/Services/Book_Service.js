@@ -81,13 +81,13 @@ async function ValidateGetBookByID(book_id){
   return response
 }
 
-async function ValidateCreateBooks(user_id, title, publisher, year_publication, isbn, author_ids){
+async function ValidateCreateBooks(user_id, title, publisher, year_publication, isbn, author_ids, call_number){
   let response = {
     status: '',
     payload: ''
   }
 
-  let book = await AddBook(title, publisher, year_publication, isbn, user_id)
+  let book = await AddBook(title, publisher, year_publication, isbn, call_number)
   
   if(!book){
     response.status="ERROR"
@@ -108,13 +108,13 @@ async function ValidateCreateBooks(user_id, title, publisher, year_publication, 
   return response
 }
 
-async function ValidateUpdateBook(user_id, book_id, title, publisher, year_publication, isbn, author_ids){
+async function ValidateUpdateBook(user_id, book_id, title, publisher, year_publication, isbn, author_ids, call_number){
   let response = {
     status: '',
     payload: ''
   }
 
-  let updateBookResult = await UpdateBook(book_id, title, publisher, year_publication, isbn)
+  let updateBookResult = await UpdateBook(book_id, title, publisher, year_publication, isbn, call_number)
   if(updateBookResult == 1){
     let deleteBookAuthorResult = await DeleteBookAuthors(book_id)
     if(deleteBookAuthorResult > 0){
@@ -130,7 +130,7 @@ async function ValidateUpdateBook(user_id, book_id, title, publisher, year_publi
         response.status = "OK"
         response.payload = "Book has been updated!"
 
-         /*User Action*/
+        /*User Action*/
         // await EditBook(user_id, book_id)
         // .then(console.log("Action logged as Edit Book!"))
         // .catch(err => console.log(err))
