@@ -87,7 +87,7 @@ async function ValidateCreateBooks(user_id, title, publisher, year_publication, 
     payload: ''
   }
 
-  let book = await AddBook(title, publisher, year_publication, isbn, user_id, call_number)
+  let book = await AddBook(title, publisher, year_publication, isbn, call_number)
   
   if(!book){
     response.status="ERROR"
