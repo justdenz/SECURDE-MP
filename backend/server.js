@@ -23,9 +23,9 @@ const {ValidateCreateAdmin} = require('./Services/Admin_Service')
 const config = require('./config/config')
 
 db.sequelize.sync()
-.then(() => {
+.then(async () => {
     console.log("DB has been initialized!")
-    ValidateCreateAdmin(config.admin.admin_username, config.admin.admin_password)
+    await ValidateCreateAdmin(config.admin.admin_username, config.admin.admin_password)
     /*Initialize Action DB*/
     db.action.create({action_id: 1, description: "Register"})
     .then()
