@@ -16,15 +16,74 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(cookieParser())
 
-db.sequelize.sync()
-.then(console.log("DB has been initialized!"))
-.catch(err => console.log(err))
-
-
 //Functions
 const {CreateAuthors} = require('./TestData/TestAuthor')
 const {CreateBooks} = require('./TestData/TestBooks')
-const {CreateAdmin} = require('./TestData/InitializeAdmin')
+const {ValidateCreateAdmin} = require('./Services/Admin_Service')
+const config = require('./config/config')
+
+db.sequelize.sync()
+.then(async () => {
+    console.log("DB has been initialized!")
+    await ValidateCreateAdmin(config.admin.admin_username, config.admin.admin_password)
+    /*Initialize Action DB*/
+    db.action.create({action_id: 1, description: "Register"})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 2, description: "Login"})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 3, description: "Logout"})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 4, description: "Borrow Book"})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 5, description: "Edit Book Instance"})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 6, description: 'Delete Book Instance'})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 7, description: 'Add Book'})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 8, description: 'Edit Book'})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 9, description: "Delete Book"})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 10,description: "Review Book"})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 11,description: 'Add Book Instance'})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 12,description: "Add Author"})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 13,description: "Delete Author"})
+    .then()
+    .catch(err=>console.log)
+    db.action.create({action_id: 14,description:"Edit Author"})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 15,description:"User Change Password"})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 16,description:"Admin Change Password"})
+    .then()
+    .catch(err => {})
+    db.action.create({action_id: 17,description:"Login as admin"})
+    .then()
+    .catch(err => {})
+
+})
+.catch(err => console.log(err))
+
+
+
 
 //Initializes session in a cookie
 app.use(session({
@@ -53,8 +112,7 @@ app.use('/book', require('./routes/book.js'));
 app.use('/author', require('./routes/author.js'));
 app.use('/review', require('./routes/review.js'));
 
-app.get("/", async (req, res) => {
-    await CreateAdmin()
+app.get("/", (req, res) => {
 })
 
 
