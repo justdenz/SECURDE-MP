@@ -78,6 +78,7 @@ db.sequelize.sync()
     db.action.create({action_id: 17,description:"Login as admin"})
     .then()
     .catch(err => {})
+    
 
 })
 .catch(err => console.log(err))
