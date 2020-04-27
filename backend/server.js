@@ -78,6 +78,16 @@ db.sequelize.sync()
     db.action.create({action_id: 17,description:"Login as admin"})
     .then()
     .catch(err => {})
+
+    db.author.create({author_id: 1, first_name: "Rick", last_name: "Riordan"})
+    .then()
+    .catch(err=>console.log)
+    db.author.create({author_id: 2, first_name: "Jennifer", last_name: "Niven"})
+    .then()
+    .catch(err=>console.log)
+    db.author.create({author_id: 3, first_name: "Jenny", last_name: "Han"})
+    .then()
+    .catch(err=>console.log)
     
 
 })
