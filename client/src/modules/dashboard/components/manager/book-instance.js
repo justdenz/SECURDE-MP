@@ -21,11 +21,8 @@ class Page extends Component {
       },
       {
         title: 'Book Title',
-        dataIndex: 'book_id',
-        key: 'book_id',
-        render: (book_id) => {
-          return book_id
-        }
+        dataIndex: 'title',
+        key: 'title',
       },
       {
         title: 'Status',
