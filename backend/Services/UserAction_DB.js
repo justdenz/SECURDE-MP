@@ -144,28 +144,29 @@ async function GetAllUserActions(){
   const actions = await db.user_action.findAll({
     raw: true,
     paranoid: true,
-    attributes:['user_action_id', 'user_id', 'createdAt', 'book_id', 'bookinstance_id', 'action_id']
+    attributes:['user_action_id', 'user_id', 'admin_id','createdAt', 'book_id', 'bookinstance_id', 'action_id']
   })
 
-  var action
+  let action
   for(action of actions){
-    let user = db.user.findOne({
-      raw: true,
-      where:{
-        user_id: action.user_id
-      },
-      attributes: ['first_name', 'last_name', 'username']
-    })
-    let each_action = db.action.findOne({
+    if(action.user_id==null){
+      action.username = "Admin"
+      action.user_id = action.admin_id
+    } else {
+      let user = await db.user.findOne({
+        raw: true,
+        where:{
+          user_id: action.user_id
+        }
+      })
+      action.username = user.username
+    }
+    let each_action = await db.action.findOne({
       raw: true,
       where:{
         action_id: action.action_id
-      },
-      attributes: ['description']
+      }
     })
-    action.first_name = user.first_name
-    action.last_name = user.last_name
-    action.username = user.username
     action.description = each_action.description
   }
 
