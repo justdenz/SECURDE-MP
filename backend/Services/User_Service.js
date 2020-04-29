@@ -124,7 +124,7 @@ async function ValidateCreateUser(user_id, first_name, last_name, username, pass
         response.status = "ERROR"
         response.payload = "The username already exists, please try another one..."
     } else{
-        let user = await CreateUser(user_id, first_name, last_name, username, password, email, role_name, question, answer)
+        let user = await CreateUser(user_id, first_name, last_name, username, bcrypt.hash(password), email, role_name, question, answer)
         .then(console.log("User created successfully!"))
         .catch(err => console.log("Error in creating user!"))
         if(!user){
