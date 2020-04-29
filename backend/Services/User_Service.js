@@ -6,7 +6,9 @@ const {GetUserByUsername,
     CheckExistingEmail, 
     CheckExistingUsername, 
     ChangePassword,
-    GetUserByRole} = require('./User_DB.js')
+    GetUserByRole,
+    CheckExistingID
+} = require('./User_DB.js')
 
 const {Register, Login, LogChangePasswordUser} = require("./UserAction_DB.js")
 //returns null if there is no users 
@@ -112,7 +114,7 @@ async function ValidateCreateUser(user_id, first_name, last_name, username, pass
     //Returns 1 if existing and returns 0 if doesn't exist yet
     let checkUsernameResult = await CheckExistingUsername(username)
     let checkEmailResult = await CheckExistingEmail(email)
-
+    let checkUserID = await CheckExistingID(user_id)
 
     if(checkUsernameResult === 1 && checkEmailResult === 1){
         response.status = "ERROR"
@@ -123,6 +125,9 @@ async function ValidateCreateUser(user_id, first_name, last_name, username, pass
     } else if(checkUsernameResult === 1 && checkEmailResult === 0){
         response.status = "ERROR"
         response.payload = "The username already exists, please try another one..."
+    } else if(checkUserID === 1){
+        response.status = "ERROR"
+        response.payload = "The user ID already exists, please try another one..."
     } else{
         let user = await CreateUser(user_id, first_name, last_name, username, bcrypt.hash(password), email, role_name, question, answer)
         .then(console.log("User created successfully!"))
@@ -136,8 +141,6 @@ async function ValidateCreateUser(user_id, first_name, last_name, username, pass
 
             /*User Action*/
             await Register(user_id)
-            .then(console.log("Action logged as Register!"))
-            .catch(err => console.log(err))
         }
     }
     
