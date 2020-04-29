@@ -5,8 +5,7 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const DataType = require('Sequelize')
 const basename = path.basename(__filename);
-// const env = process.env.NODE_ENV || 'development';
-// const config = require(__dirname + '/../config/config.json')[env];
+const config = require('../config/config')
 const db = {};
 
 // let sequelize;
@@ -16,9 +15,9 @@ const db = {};
 //   sequelize = new Sequelize(config.database, config.username, config.password, config);
 // }
 
-let sequelize = new Sequelize('library', 'root', 'password', {
-  host: 'localhost',
+const sequelize = new Sequelize(config.db.database, config.db.name, config.db.password, {
   dialect: 'mysql',
+  host: config.db.host,
   operatorAliases: false,
   logging: false,
 
@@ -154,59 +153,52 @@ db.user.hasMany(db.instance_tracker, {
   }
 })
 
-/*Initialize Action DB*/
-db.action.create({action_id: 1, description: "Register"})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 2, description: "Login"})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 3, description: "Logout"})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 4, description: "Borrow Book"})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 5, description: "Edit Book Instance"})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 6, description: 'Delete Book Instance'})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 7, description: 'Add Book'})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 8, description: 'Edit Book'})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 9, description: "Delete Book"})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 10,description: "Review Book"})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 11,description: 'Add Book Instance'})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 12,description: "Add Author"})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 13,description: "Delete Author"})
-.then()
-.catch(err=>console.log)
-db.action.create({action_id: 14,description:"Edit Author"})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 15,description:"User Change Password"})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 16,description:"Admin Change Password"})
-.then()
-.catch(err => console.log(err))
-db.action.create({action_id: 17,description:"Login as admin"})
-.then()
-.catch(err => console.log(err))
+// /*Initialize DB*/
+// //Author
+// db.author.create({author_id: 1, first_name: "Rick", last_name: "Riordan"})
+// .then()
+// .catch(err=>console.log)
+// db.author.create({author_id: 2, first_name: "Jennifer", last_name: "Niven"})
+// .then()
+// .catch(err=>console.log)
+// db.author.create({author_id: 3, first_name: "Jenny", last_name: "Han"})
+// .then()
+// .catch(err=>console.log)
 
+// //Book
+// db.book.create({book_id: 1, title: "Percy Jackson", publisher: "Disney", year_publication: 2012, isbn:1111111111, call_number: 111})
+// .then()
+// .catch(err=>console.log)
+// db.book.create({book_id: 2, title: "Bright Places", publisher: "Rainbow", year_publication: 2014, isbn:1111111112, call_number: 112})
+// .then()
+// .catch(err=>console.log)
+// db.book.create({book_id: 3, title: "All the Boys", publisher: "Rainbow", year_publication: 2013, isbn:1111111122, call_number: 121})
+// .then()
+// .catch(err=>console.log)
 
+// //Book Authors
+// db.book_author.create({book_id: 1, author_id:1})
+// .then()
+// .catch(err=>console.log)
+// db.book_author.create({book_id: 2, author_id:2})
+// .then()
+// .catch(err=>console.log)
+// db.book_author.create({book_id: 3, author_id:3})
+// .then()
+// .catch(err=>console.log)
+// db.book_author.create({book_id: 3, author_id:2})
+// .then()
+// .catch(err=>console.log)
+
+// //Users
+// db.user.create({user_id:1, last_name: "Lao", first_name:"Rebecalyn", username:"Reb", password:"Lao", email:"reb.lao@dlsu.edu.ph", question:"Who was your childhood hero?", answer:"Supergirl", role_name: "Education"})
+// .then()
+// .catch(err=>console.log)
+// db.user.create({user_id:2, last_name: "Co", first_name:"Denzel", username:"Denz", password:"Co", email:"denz.co@dlsu.edu.ph", question:"Who was your childhood hero?", answer:"Supergirl", role_name: "Manager"})
+// .then()
+// .catch(err=>console.log)
+// db.user.create({user_id:3, last_name: "Ng", first_name:"Schuyler", username:"Sky", password:"Ng", email:"reb.lao@dlsu.edu.ph", question:"Who was your childhood hero?", answer:"Supergirl", role_name: "Education"})
+// .then()
+// .catch(err=>console.log)
 
 module.exports = db;

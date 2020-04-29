@@ -131,9 +131,9 @@ async function ValidateUpdateBook(user_id, book_id, title, publisher, year_publi
         response.payload = "Book has been updated!"
 
         /*User Action*/
-        // await EditBook(user_id, book_id)
-        // .then(console.log("Action logged as Edit Book!"))
-        // .catch(err => console.log(err))
+        await EditBook(user_id, book_id)
+        .then(console.log("Action logged as Edit Book!"))
+        .catch(err => console.log(err))
       }
     } else {
       response.status="ERROR"
