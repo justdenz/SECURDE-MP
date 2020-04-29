@@ -64,6 +64,19 @@ async function CheckExistingUsername(username){
     return 0
 }
 
+async function CheckExistingID(user_id){
+    const user = await db.user.findOne({
+        raw: true,
+        where: {
+            user_id: user_id
+        },
+        paranoid: true,
+    })
+
+    if(user) return 1
+    return 0
+}
+
 async function DeleteUser(user_id){
     let result = await db.user.destroy({
         where:{
@@ -110,5 +123,6 @@ module.exports = {
     CheckExistingEmail,
     CheckExistingUsername,
     ChangePassword,
-    GetUserByRole
+    GetUserByRole,
+    CheckExistingID
 }
