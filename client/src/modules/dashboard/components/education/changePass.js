@@ -117,26 +117,35 @@ class Page extends Component {
                     required: true,
                     message: 'Please input your new password!',
                   },
-                  // {
-                  //   min: 8,
-                  //   message: 'Minimum of 8 characters'
-                  // },
-                  // {
-                  //   pattern: /^[@#]/,
-                  //   message: "Password must start with '@' or '#'"
-                  // },
-                  // {
-                  //   pattern: /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
-                  //   message: "Password must be alphanumeric"
-                  // },
-                  // {
-                  //   pattern: /(?=.*[A-Z])/,
-                  //   message: "Password must contain an upper case letter"
-                  // },
-                  // {
-                  //   pattern: /(?=.*[a-z])/,
-                  //   message: "Password must contain a lower case letter"
-                  // },
+                  {
+                    min: 8,
+                    message: 'Minimum of 8 characters'
+                  },
+                  {
+                    pattern: /^[@#]/,
+                    message: "Password must start with '@' or '#'"
+                  },
+                  {
+                    pattern: /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
+                    message: "Password must be alphanumeric"
+                  },
+                  {
+                    pattern: /(?=.*[A-Z])/,
+                    message: "Password must contain an upper case letter"
+                  },
+                  {
+                    pattern: /(?=.*[a-z])/,
+                    message: "Password must contain a lower case letter"
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(rule, value) {
+                      if (!value || getFieldValue('old') !== value) {
+                        return Promise.resolve();
+                      }
+
+                      return Promise.reject('Please input a new password!');
+                    },
+                  }),
                 ]}
                 hasFeedback
               >
