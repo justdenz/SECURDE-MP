@@ -141,35 +141,35 @@ async function GetAllUserActionByUser(user_id){
 }
 
 async function GetAllUserActions(){
-  const action = await db.user_action.findAll({
+  const actions = await db.user_action.findAll({
     raw: true,
     paranoid: true,
     attributes:['user_action_id', 'user_id', 'createdAt', 'book_id', 'bookinstance_id', 'action_id']
   })
 
-  var actions 
-  for(actions of action){
-    let user = await db.user.findOne({
+  var action
+  for(action of actions){
+    let user = db.user.findOne({
       raw: true,
       where:{
-        user_id: actions.user_id
+        user_id: action.user_id
       },
       attributes: ['first_name', 'last_name', 'username']
     })
-    let each_action = await db.action.findOne({
+    let each_action = db.action.findOne({
       raw: true,
       where:{
-        action_id: actions.action_id
+        action_id: action.action_id
       },
       attributes: ['description']
     })
-    actions.first_name = user.first_name
-    actions.last_name = user.last_name
-    actions.username = user.username
-    actions.description = each_action.description
+    action.first_name = user.first_name
+    action.last_name = user.last_name
+    action.username = user.username
+    action.description = each_action.description
   }
 
-  if(action) return action
+  if(actions) return actions
   return null
 }
 
