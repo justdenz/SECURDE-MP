@@ -291,6 +291,7 @@ async function GetPreviousBorrowedBooks(user_id){
       where: {
         bookinstance_id: id.bookinstance_id
       },
+      paranoid: false,
       attributes: ['book_id']
     })
 
@@ -299,6 +300,7 @@ async function GetPreviousBorrowedBooks(user_id){
       where: {
         book_id: book_id.book_id
       },
+      paranoid: false,
       attributes: ['title']
     })
     var bookHistory = {
