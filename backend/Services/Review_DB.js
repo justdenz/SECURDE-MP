@@ -17,9 +17,11 @@ async function GetAllReviewsByUser(user_id){
       where: {
         book_id: review.book_id
       },
+      paranoid: false,
       attributes: ['title']
     })
     review.book_title = book.title
+    console.log(review.book_title)
   }
 
   if(reviews) return reviews
