@@ -16,6 +16,7 @@ class Page extends Component {
         title: 'User ID',
         dataIndex: 'user_id',
         key: 'user_id',
+        render: id => id ? id : "Admin"
       },
       {
         title: 'Username',
