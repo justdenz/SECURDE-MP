@@ -155,7 +155,7 @@ class Page extends Component {
               <Form.Item
                 name="confirm"
                 label="Confirm New Password"
-                dependencies={['password']}
+                dependencies={['new_password']}
                 hasFeedback
                 rules={[
                   {
