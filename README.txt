@@ -1,17 +1,5 @@
-1. When creating a user...
-  - URL
-    /user/validate_signup
-  - Success 
-    status = "OK"
-    payload = user object
-  - Duplicate username or email
-    status = "DUPLICATE"
-    payload = "The (whatever is duplicate, can be both) already exists, please try another one..."
-  - Error
-    status = "ERROR"
-    paylod = "There was an error creating the user, please try again..."
+Database Used: MySQL Workbench
+Framework: NodeJS and React
 
-2. When logging in...
-  - URL
-    /user/validate_login
-
+1. Just install the dependencies on the backend and client folder by running 'npm i' command on both folders
+2. To change database credentials and admin credentials, use the .env file located on ./backend/.env
