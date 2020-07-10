@@ -9,7 +9,11 @@ Set Up
       DATABASE='library'    (name of schema)
       HOST='localhost'      
 2. To change database credentials, navigate to the .env file located on ./backend/.env
-3. Install the npm dependencies in BOTH the /backend and /client folder by running 'npm i' command on the corresponding folders
+3. To change admin credentials (for the admin account), navigate to the same file as above.
+    Default Credentials for Admin Account:
+      ADMIN_USERNAME='admin'
+      ADMIN_PASSWORD='password' 
+4. Install the npm dependencies in BOTH the /backend and /client folder by running 'npm i' command on the corresponding folders
 
 
 Running the program
